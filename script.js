@@ -15,7 +15,11 @@ const state = {
   activePrompt: null,
   turnstileToken: "",
   turnstileReady: false,
+  turnstileVerified: false,
+  turnstileVerifying: false,
 };
+
+let turnstileVerifyPromise = null;
 
 const copy = {
   en: {
@@ -60,6 +64,8 @@ const copy = {
     copyGateNeedsTurnstile: "Complete Turnstile before copying prompts.",
     turnstileLoading: "Turnstile loading",
     turnstileReady: "Human check passed",
+    turnstileVerifying: "Verifying human check...",
+    turnstileVerifyFailed: "Server verification failed. Try Turnstile again.",
     turnstileExpired: "Turnstile expired. Verify again.",
     modalSource: "View source",
     faqTitle: "What is Image Prompt Generator?",
@@ -131,6 +137,8 @@ const copy = {
     copyGateNeedsTurnstile: "请先完成 Turnstile 人机验证，再复制提示词。",
     turnstileLoading: "Turnstile 加载中",
     turnstileReady: "人机验证已通过",
+    turnstileVerifying: "正在验证人机结果...",
+    turnstileVerifyFailed: "服务端验证失败，请重新完成 Turnstile。",
     turnstileExpired: "Turnstile 已过期，请重新验证。",
     modalSource: "查看来源",
     faqTitle: "Image Prompt Generator 是什么？",
@@ -294,6 +302,10 @@ function metaContent(name) {
   return document.querySelector(`meta[name="${name}"]`)?.getAttribute("content")?.trim() || "";
 }
 
+function turnstileVerifyEndpoint() {
+  return metaContent("turnstile-verify-endpoint") || "/api/verify-turnstile";
+}
+
 function authorLabel(item) {
   const source = item.source || "unknown";
   if (source === "Image Prompt Generator") return source;
@@ -428,9 +440,8 @@ function applyFilters() {
 }
 
 async function copyText(text) {
-  const gateMessage = getCopyGateMessage();
-  if (gateMessage) {
-    showToast(gateMessage);
+  const ready = await ensureTurnstileReady();
+  if (!ready) {
     return false;
   }
   try {
@@ -563,17 +574,60 @@ function updateBackToTopVisibility() {
 
 function getCopyGateMessage() {
   if (!state.turnstileToken) return t("copyGateNeedsTurnstile");
+  if (state.turnstileVerifying) return t("turnstileVerifying");
+  if (!state.turnstileVerified) return t("turnstileVerifyFailed");
   return "";
 }
 
-function ensureTurnstileReady() {
-  if (state.turnstileToken) return true;
+async function verifyTurnstileToken() {
+  if (state.turnstileVerified) return true;
+  if (!state.turnstileToken) return false;
+  if (turnstileVerifyPromise) return turnstileVerifyPromise;
+
+  state.turnstileVerifying = true;
+  updateTurnstileStatus(t("turnstileVerifying"));
+  updateCopyGate();
+
+  turnstileVerifyPromise = fetch(turnstileVerifyEndpoint(), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token: state.turnstileToken }),
+  })
+    .then(async (response) => {
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.success) throw new Error(result.error || "turnstile verification failed");
+      state.turnstileVerified = true;
+      state.turnstileReady = true;
+      updateTurnstileStatus(t("turnstileReady"));
+      updateCopyGate();
+      return true;
+    })
+    .catch(() => {
+      state.turnstileVerified = false;
+      state.turnstileReady = false;
+      updateTurnstileStatus(t("turnstileVerifyFailed"));
+      showToast(t("turnstileVerifyFailed"));
+      updateCopyGate();
+      return false;
+    })
+    .finally(() => {
+      state.turnstileVerifying = false;
+      turnstileVerifyPromise = null;
+      updateCopyGate();
+    });
+
+  return turnstileVerifyPromise;
+}
+
+async function ensureTurnstileReady() {
+  if (state.turnstileVerified) return true;
+  if (state.turnstileToken) return verifyTurnstileToken();
   showToast(t("copyGateNeedsTurnstile"));
   return false;
 }
 
 function updateTurnstileStatus(message) {
-  els.turnstileStatus.textContent = message || (state.turnstileToken ? t("turnstileReady") : t("turnstileLoading"));
+  els.turnstileStatus.textContent = message || (state.turnstileVerified ? t("turnstileReady") : t("turnstileLoading"));
 }
 
 function updateCopyGate() {
@@ -596,26 +650,33 @@ function initTurnstile() {
     sitekey: siteKey,
     callback: (token) => {
       state.turnstileToken = token;
-      state.turnstileReady = true;
-      updateTurnstileStatus(t("turnstileReady"));
+      state.turnstileReady = false;
+      state.turnstileVerified = false;
+      state.turnstileVerifying = true;
+      updateTurnstileStatus(t("turnstileVerifying"));
       updateCopyGate();
+      verifyTurnstileToken();
     },
     "expired-callback": () => {
       state.turnstileToken = "";
       state.turnstileReady = false;
+      state.turnstileVerified = false;
+      state.turnstileVerifying = false;
       updateTurnstileStatus(t("turnstileExpired"));
       updateCopyGate();
     },
     "error-callback": () => {
       state.turnstileToken = "";
       state.turnstileReady = false;
+      state.turnstileVerified = false;
+      state.turnstileVerifying = false;
       updateTurnstileStatus("Turnstile error");
       updateCopyGate();
     },
   });
 }
 
-function tryPrompt(item) {
+async function tryPrompt(item) {
   els.subjectInput.value = item.prompt;
   if (item.model.includes("Nano")) els.modelSelect.value = "Nano Banana Pro";
   if (item.model.includes("Seedream")) els.modelSelect.value = "Seedream 5 Pro";
@@ -626,14 +687,14 @@ function tryPrompt(item) {
   if (item.model.includes("Gemini")) els.modelSelect.value = "Gemini 3 Pro";
   state.model = els.modelSelect.value;
   state.category = ALL_CATEGORIES;
-  generatePrompt();
+  await generatePrompt();
   applyFilters();
-  copyText(item.prompt);
+  await copyText(item.prompt);
   document.querySelector("#generator").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function generatePrompt() {
-  if (!ensureTurnstileReady()) return false;
+async function generatePrompt() {
+  if (!(await ensureTurnstileReady())) return false;
   const subject = els.subjectInput.value.trim() || t("subjectFallback");
   const model = els.modelSelect.value;
   const ratio = els.ratioSelect.value;

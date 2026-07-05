@@ -1,0 +1,10 @@
+name = "image-prompt-generator-api"
+main = "workers/turnstile.js"
+compatibility_date = "2026-07-05"
+
+routes = [
+  { pattern = "image-prompt-generator.com/api/*", zone_name = "image-prompt-generator.com" }
+]
+
+[vars]
+ALLOWED_ORIGINS = "https://image-prompt-generator.com,https://www.image-prompt-generator.com,https://xianyu110.github.io,http://127.0.0.1:8765,http://localhost:8765"
