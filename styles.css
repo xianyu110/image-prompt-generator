@@ -4,6 +4,11 @@
   --green-dark: #0f7f60;
   --paper: #f1f1ef;
   --white: #ffffff;
+  --surface: #ffffff;
+  --soft: #f7f8f9;
+  --soft-green: #d8eee6;
+  --tag: #eef0f2;
+  --tag-model: #dce9ff;
   --ink: #080808;
   --muted: #666b70;
   --line: #0a0a0a;
@@ -11,6 +16,25 @@
   --shadow: 8px 8px 0 #000;
   --small-shadow: 4px 4px 0 #000;
   --radius: 0;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --green: #0da171;
+  --green-dark: #0b6e53;
+  --paper: #101313;
+  --white: #ffffff;
+  --surface: #181d1d;
+  --soft: #202727;
+  --soft-green: #123f35;
+  --tag: #273030;
+  --tag-model: #1d344f;
+  --ink: #f6f7f3;
+  --muted: #a9b2ad;
+  --line: #f3f4ef;
+  --blue: #8bb9ff;
+  --shadow: 8px 8px 0 #000;
+  --small-shadow: 4px 4px 0 #000;
 }
 
 * {
@@ -54,6 +78,12 @@ a {
   background: var(--green);
 }
 
+.topbar-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
@@ -91,7 +121,8 @@ a {
   width: 42px;
   height: 38px;
   border: 3px solid var(--line);
-  background: var(--white);
+  background: var(--surface);
+  color: var(--ink);
   box-shadow: 3px 3px 0 #000;
 }
 
@@ -101,6 +132,18 @@ a {
   height: 3px;
   margin: 4px auto;
   background: var(--ink);
+}
+
+.utility-button {
+  min-height: 34px;
+  padding: 0 10px;
+  border: 3px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 950;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 #000;
 }
 
 .hero {
@@ -154,7 +197,7 @@ a {
   width: min(700px, 100%);
   min-height: 158px;
   border: 5px solid var(--line);
-  background: var(--white);
+  background: var(--surface);
   box-shadow: 7px 7px 0 #000;
 }
 
@@ -171,7 +214,7 @@ a {
   border: 0;
   border-right: 4px solid var(--line);
   outline: 0;
-  background: #f7f8f9;
+  background: var(--soft);
   color: var(--ink);
   font-size: 15px;
   font-weight: 650;
@@ -185,7 +228,7 @@ a {
   padding: 8px 14px;
   border-top: 3px solid var(--line);
   border-right: 4px solid var(--line);
-  background: var(--white);
+  background: var(--surface);
 }
 
 .composer-tools select,
@@ -196,7 +239,7 @@ a {
 .share-button {
   min-height: 34px;
   border: 3px solid var(--line);
-  background: var(--white);
+  background: var(--surface);
   color: var(--ink);
   font-size: 13px;
   font-weight: 900;
@@ -216,7 +259,7 @@ a {
   min-height: 34px;
   padding: 0 12px;
   border: 3px dashed var(--line);
-  background: #f7f8f9;
+  background: var(--soft);
   color: var(--muted);
   font-size: 12px;
   font-weight: 950;
@@ -231,7 +274,7 @@ a {
   gap: 8px;
   border: 0;
   background: #050505;
-  color: var(--white);
+  color: #ffffff;
   font-size: 18px;
   font-weight: 950;
   cursor: pointer;
@@ -248,7 +291,7 @@ a {
   width: min(700px, 100%);
   margin-top: 18px;
   border: 4px solid var(--line);
-  background: var(--white);
+  background: var(--surface);
   box-shadow: var(--small-shadow);
 }
 
@@ -276,7 +319,7 @@ a {
   padding: 8px 18px;
   border: 3px solid var(--line);
   border-radius: 999px;
-  background: var(--white);
+  background: var(--surface);
   font-size: 12px;
   font-weight: 950;
   box-shadow: 3px 3px 0 rgba(0, 0, 0, .28);
@@ -327,7 +370,7 @@ a {
 .prompt-card {
   display: grid;
   border: 4px solid var(--line);
-  background: var(--white);
+  background: var(--surface);
   box-shadow: var(--small-shadow);
   cursor: pointer;
   transition: transform .16s ease, box-shadow .16s ease;
@@ -345,7 +388,7 @@ a {
   gap: 10px;
   min-height: 48px;
   padding: 0 14px;
-  border-bottom: 1px solid #d8dde1;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 18%, transparent);
   font-size: 13px;
   font-weight: 900;
 }
@@ -368,7 +411,7 @@ a {
   overflow: hidden;
   margin: 14px 14px 0;
   border: 3px solid var(--line);
-  background: #d8eee6;
+  background: var(--soft-green);
 }
 
 .card-image img {
@@ -383,7 +426,7 @@ a {
   place-items: center;
   height: 100%;
   padding: 18px;
-  background: linear-gradient(135deg, #d8eee6, #fff0b7);
+  background: linear-gradient(135deg, var(--soft-green), color-mix(in srgb, var(--green) 28%, var(--surface)));
   color: var(--ink);
   font-weight: 950;
   text-align: center;
@@ -392,13 +435,13 @@ a {
 .prompt-preview {
   margin: 14px;
   border: 3px solid var(--line);
-  background: #f7f8f9;
+  background: var(--soft);
 }
 
 .preview-bar {
   padding: 7px 10px;
   background: var(--ink);
-  color: var(--white);
+  color: var(--paper);
   font-size: 12px;
   font-weight: 950;
 }
@@ -409,7 +452,7 @@ a {
   margin: 0;
   overflow: hidden;
   padding: 12px;
-  color: #1a1a1a;
+  color: var(--ink);
   font-size: 14px;
   font-weight: 650;
   -webkit-box-orient: vertical;
@@ -428,14 +471,14 @@ a {
   align-items: center;
   min-height: 24px;
   padding: 0 8px;
-  background: #eef0f2;
+  background: var(--tag);
   color: var(--ink);
   font-size: 11px;
   font-weight: 950;
 }
 
 .tag.model {
-  background: #dce9ff;
+  background: var(--tag-model);
   color: var(--blue);
 }
 
@@ -454,12 +497,12 @@ a {
   min-height: 44px;
   padding: 0 14px;
   background: #151515;
-  color: var(--white);
+  color: #ffffff;
 }
 
 .share-button {
   min-width: 42px;
-  background: var(--white);
+  background: var(--surface);
   color: var(--ink);
 }
 
@@ -488,7 +531,8 @@ a {
   padding: 0 14px;
   border: 4px solid var(--line);
   outline: 0;
-  background: var(--white);
+  background: var(--surface);
+  color: var(--ink);
   font-size: 14px;
   font-weight: 750;
   box-shadow: var(--small-shadow);
@@ -514,13 +558,13 @@ a {
 
 .filter-chip.active {
   background: var(--green);
-  color: var(--white);
+  color: #ffffff;
 }
 
 .empty-state {
   padding: 28px;
   border: 4px solid var(--line);
-  background: var(--white);
+  background: var(--surface);
   box-shadow: var(--small-shadow);
   font-weight: 850;
   text-align: center;
@@ -539,7 +583,7 @@ a {
 
 details {
   border: 4px solid var(--line);
-  background: var(--white);
+  background: var(--surface);
   box-shadow: var(--small-shadow);
 }
 
@@ -580,7 +624,7 @@ details p {
   max-height: 88vh;
   overflow: auto;
   border: 5px solid var(--line);
-  background: var(--white);
+  background: var(--surface);
   box-shadow: 10px 10px 0 #000;
 }
 
@@ -592,7 +636,8 @@ details p {
   width: 40px;
   height: 40px;
   border: 3px solid var(--line);
-  background: var(--white);
+  background: var(--surface);
+  color: var(--ink);
   box-shadow: 3px 3px 0 #000;
   font-size: 26px;
   font-weight: 950;
@@ -602,7 +647,7 @@ details p {
 .modal-image {
   min-height: 360px;
   border-right: 4px solid var(--line);
-  background: #d8eee6;
+  background: var(--soft-green);
 }
 
 .modal-image img {
@@ -636,7 +681,8 @@ details p {
   margin: 0;
   padding: 14px;
   border: 3px solid var(--line);
-  background: #f7f8f9;
+  background: var(--soft);
+  color: var(--ink);
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   font-size: 13px;
   line-height: 1.55;
@@ -672,7 +718,7 @@ details p {
   z-index: 120;
   padding: 12px 16px;
   border: 3px solid var(--line);
-  background: var(--white);
+  background: var(--surface);
   color: var(--ink);
   font-weight: 950;
   box-shadow: var(--small-shadow);
@@ -704,6 +750,17 @@ details p {
 }
 
 @media (max-width: 760px) {
+  .topbar {
+    gap: 12px;
+  }
+
+  .brand span:last-child {
+    max-width: 168px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .nav-links {
     position: fixed;
     top: 62px;
@@ -724,6 +781,12 @@ details p {
 
   .menu-button {
     display: block;
+  }
+
+  .utility-button {
+    min-height: 32px;
+    padding: 0 8px;
+    font-size: 11px;
   }
 
   .prompt-composer {

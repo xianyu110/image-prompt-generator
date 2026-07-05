@@ -1,13 +1,16 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Image Prompt Generator | AI 图片与视频提示词生成器</title>
-  <meta name="description" content="Image Prompt Generator 收集 GPT Image、Seedream、Seedance、Grok、Gemini 等模型可用的 AI image prompt 案例，带图片、作者信息和一键复制。">
+  <title>Image Prompt Generator | Free AI Image Prompt Generator</title>
+  <meta name="description" content="Image Prompt Generator helps you create and explore AI image prompts for GPT Image, Seedream, Seedance, Grok Imagine, Gemini, and Nano Banana Pro, with images, authors, model filters, and one-click copy.">
+  <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://image-prompt-generator.com/">
+  <link rel="alternate" hreflang="en" href="https://image-prompt-generator.com/">
+  <link rel="alternate" hreflang="zh-CN" href="https://image-prompt-generator.com/?lang=zh">
   <meta property="og:title" content="Image Prompt Generator">
-  <meta property="og:description" content="上方生成 AI 图片/视频提示词，下方浏览带图片和作者信息的热门 prompt 案例。">
+  <meta property="og:description" content="Generate AI image prompts by model and browse prompt examples with images, authors, and source links.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://image-prompt-generator.com/">
   <meta name="twitter:card" content="summary_large_image">
@@ -18,6 +21,7 @@
       "@type": "WebSite",
       "name": "Image Prompt Generator",
       "url": "https://image-prompt-generator.com/",
+      "inLanguage": "en",
       "description": "AI image and video prompt generator with image prompt gallery.",
       "potentialAction": {
         "@type": "SearchAction",
@@ -34,38 +38,42 @@
       <span class="brand-mark" aria-hidden="true"></span>
       <span>Image Prompt Generator</span>
     </a>
-    <nav class="nav-links" aria-label="主导航">
-      <a href="#generator">提示词生成</a>
-      <a href="#hot">热门提示词</a>
-      <a href="#library">全部案例</a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="#generator" id="navGenerator">Generator</a>
+      <a href="#hot" id="navHot">Trending Prompts</a>
+      <a href="#library" id="navLibrary">Prompt Library</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <button class="menu-button" id="menuButton" type="button" aria-label="打开菜单">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="topbar-actions">
+      <button class="utility-button" id="languageToggle" type="button" aria-label="Switch language">中文</button>
+      <button class="utility-button" id="themeToggle" type="button" aria-label="Toggle dark mode">Dark</button>
+      <button class="menu-button" id="menuButton" type="button" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </header>
 
   <main id="top">
     <section class="hero" id="generator">
       <div class="hero-title">
         <h1>Image Prompt Generator</h1>
-        <div class="title-sticker">提示词生成器</div>
-        <p>每日持续更新中</p>
+        <div class="title-sticker" id="titleSticker">Prompt Generator</div>
+        <p id="heroSubtitle">Fresh AI image prompts updated daily</p>
       </div>
 
       <form class="prompt-composer" id="builderForm">
         <div class="composer-main">
-          <textarea id="subjectInput" rows="4" placeholder="描述你想要生成的图像...（例如：赛博朋克风格的夜晚城市）">一张高级质感的 AI 图片提示词网站首页，上方是生成框，下方是带图片和作者信息的提示词卡片</textarea>
+          <textarea id="subjectInput" rows="4" placeholder="Describe the image you want to generate...">a cinematic orange and white cat taking a thoughtful selfie inside a dramatically lit room, wide-angle lens, sharp focus, high-resolution photograph</textarea>
           <div class="composer-tools">
-            <select id="styleSelect" aria-label="风格">
-              <option>商业摄影</option>
-              <option>电影感人像</option>
-              <option>3D 粘土渲染</option>
-              <option>手绘信息图</option>
-              <option>编辑精准改图</option>
-              <option>视频分镜</option>
+            <select id="styleSelect" aria-label="Style">
+              <option value="commercial">Commercial photo</option>
+              <option value="portrait">Cinematic portrait</option>
+              <option value="clay">3D clay render</option>
+              <option value="infographic">Hand-drawn infographic</option>
+              <option value="edit">Precise image edit</option>
+              <option value="storyboard">Video storyboard</option>
             </select>
-            <select id="modelSelect" aria-label="模型">
+            <select id="modelSelect" aria-label="Model">
               <option>GPT Image 2</option>
               <option>GPT Image 1.5</option>
               <option>Nano Banana Pro</option>
@@ -74,7 +82,7 @@
               <option>Grok Imagine</option>
               <option>Gemini 3 Pro</option>
             </select>
-            <select id="ratioSelect" aria-label="比例">
+            <select id="ratioSelect" aria-label="Aspect ratio">
               <option>1:1</option>
               <option>4:5</option>
               <option>9:16</option>
@@ -87,25 +95,25 @@
         </div>
         <button class="generate-button" type="submit">
           <span class="spark" aria-hidden="true"></span>
-          <span>生成</span>
+          <span id="generateLabel">Generate</span>
         </button>
       </form>
 
       <div class="generated-output" id="generatedOutput" hidden>
         <div>
-          <strong>生成结果</strong>
-          <button class="mini-copy" id="copyGeneratedButton" type="button">复制</button>
+          <strong id="generatedTitle">Generated Prompt</strong>
+          <button class="mini-copy" id="copyGeneratedButton" type="button">Copy</button>
         </div>
         <pre id="builderOutput"></pre>
       </div>
 
-      <div class="stat-pill">30,000+ 免费图像、视频提示词</div>
+      <div class="stat-pill" id="statPill">30,000+ free image and video prompts</div>
     </section>
 
     <section class="hot-prompts" id="hot">
       <div class="section-header">
-        <h2>热门提示词</h2>
-        <button class="outline-button" id="shuffleButton" type="button">换一批</button>
+        <h2 id="hotTitle">Trending Prompts</h2>
+        <button class="outline-button" id="shuffleButton" type="button">Shuffle</button>
       </div>
       <div class="prompt-grid featured-grid" id="featuredGrid"></div>
     </section>
@@ -113,11 +121,11 @@
     <section class="library" id="library">
       <div class="library-toolbar">
         <div>
-          <h2>全部提示词</h2>
-          <p id="resultCount">正在加载...</p>
+          <h2 id="libraryTitle">Prompt Library</h2>
+          <p id="resultCount">Loading...</p>
         </div>
         <label class="search-box" for="searchInput">
-          <input id="searchInput" type="search" placeholder="搜索作者、模型、风格、提示词..." autocomplete="off">
+          <input id="searchInput" type="search" placeholder="Search author, model, style, prompt..." autocomplete="off">
         </label>
       </div>
       <div class="filter-row">
@@ -125,23 +133,23 @@
         <div id="categoryFilters" class="filter-list" aria-label="分类筛选"></div>
       </div>
       <div class="prompt-grid" id="promptGrid"></div>
-      <p class="empty-state" id="emptyState" hidden>没有找到匹配的提示词，换个关键词试试。</p>
+      <p class="empty-state" id="emptyState" hidden>No matching prompts found. Try another keyword or model.</p>
     </section>
 
     <section class="faq" id="faq">
-      <h2>Image Prompt Generator 是什么？</h2>
+      <h2 id="faqTitle">What is Image Prompt Generator?</h2>
       <div class="faq-grid">
         <details open>
-          <summary>这个网站和 YouMind 那类提示词页面有什么不同？</summary>
-          <p>页面结构参考“上方生成、下方案例流”的使用方式，但内容来自本地开源提示词集合和自有 Seedream 模板，并保留作者/来源信息。</p>
+          <summary id="faqOneTitle">How is this different from a normal prompt list?</summary>
+          <p id="faqOneBody">The page combines a model-aware prompt generator with a browsable prompt gallery. Each card keeps the author, source, image preview, model, and copy action.</p>
         </details>
         <details>
-          <summary>提示词可以直接复制到不同图片模型里吗？</summary>
-          <p>可以。每张卡片都有完整提示词、图片预览、作者来源和复制按钮，也可以先在顶部生成框选择模型后改写再使用。</p>
+          <summary id="faqTwoTitle">Can I filter prompts by image model?</summary>
+          <p id="faqTwoBody">Yes. Pick a model in the generator dropdown and the prompt gallery below switches to examples and templates for that model.</p>
         </details>
         <details>
-          <summary>Seedance 2.0 能放进图片提示词生成器吗？</summary>
-          <p>可以。Seedance 2.0 官方定位更偏多模态音视频生成，支持文字、图片、音频、视频作为输入；同时第三方创作平台也提供图片生成/编辑入口，所以这里按“静帧图像提示词 + 视频分镜提示词”一起支持。</p>
+          <summary id="faqThreeTitle">Why include Seedance 2.0?</summary>
+          <p id="faqThreeBody">Seedance 2.0 is best known for multimodal video generation, while some third-party creator tools expose image workflows. This generator supports both image keyframe prompts and video storyboard prompts.</p>
         </details>
       </div>
     </section>
@@ -149,15 +157,15 @@
 
   <div class="modal" id="promptModal" hidden>
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button class="modal-close" id="modalClose" type="button" aria-label="关闭">×</button>
+      <button class="modal-close" id="modalClose" type="button" aria-label="Close">×</button>
       <div class="modal-image" id="modalImage"></div>
       <div class="modal-body">
         <p class="author-line" id="modalAuthor"></p>
         <h2 id="modalTitle"></h2>
         <pre id="modalPrompt"></pre>
         <div class="modal-actions">
-          <button class="try-button" id="copyModalButton" type="button">立即尝试</button>
-          <a class="share-button" id="modalSource" href="#" target="_blank" rel="noreferrer">查看来源</a>
+          <button class="try-button" id="copyModalButton" type="button">Try it</button>
+          <a class="share-button" id="modalSource" href="#" target="_blank" rel="noreferrer">View source</a>
         </div>
       </div>
     </div>
