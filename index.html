@@ -46,6 +46,16 @@
     </nav>
     <div class="topbar-actions">
       <button class="utility-button" id="languageToggle" type="button" aria-label="Switch language">中文</button>
+      <label class="background-picker" for="backgroundSelect">
+        <span>Background</span>
+        <select id="backgroundSelect" aria-label="Change website background color">
+          <option value="green">Green</option>
+          <option value="blue">Blue</option>
+          <option value="pink">Pink</option>
+          <option value="yellow">Yellow</option>
+          <option value="black">Black</option>
+        </select>
+      </label>
       <button class="utility-button" id="themeToggle" type="button" aria-label="Toggle dark mode">Dark</button>
       <button class="menu-button" id="menuButton" type="button" aria-label="Open menu">
         <span></span><span></span><span></span>
@@ -116,9 +126,30 @@
           <h2 id="libraryTitle">Prompt Library</h2>
           <p id="resultCount">Loading...</p>
         </div>
-        <label class="search-box" for="searchInput">
-          <input id="searchInput" type="search" placeholder="Search author, model, style, prompt..." autocomplete="off">
-        </label>
+        <div class="library-controls" aria-label="Prompt library controls">
+          <label class="control-box search-box" for="searchInput">
+            <span id="searchLabel">Search</span>
+            <input id="searchInput" type="search" placeholder="Search author, model, style, prompt..." autocomplete="off">
+          </label>
+          <label class="control-box" for="libraryModelSelect">
+            <span id="modelFilterLabel">Model</span>
+            <select id="libraryModelSelect"></select>
+          </label>
+          <label class="control-box" for="libraryCategorySelect">
+            <span id="categoryFilterLabel">Category</span>
+            <select id="libraryCategorySelect"></select>
+          </label>
+          <label class="control-box" for="sortSelect">
+            <span id="sortLabel">Sort</span>
+            <select id="sortSelect">
+              <option value="featured">Featured</option>
+              <option value="newest">Newest</option>
+              <option value="model">Model A-Z</option>
+              <option value="category">Category A-Z</option>
+              <option value="author">Author A-Z</option>
+            </select>
+          </label>
+        </div>
       </div>
       <div class="filter-row">
         <div id="modelFilters" class="filter-list" aria-label="模型筛选"></div>
@@ -168,6 +199,7 @@
     <a href="https://github.com/xianyu110/image-prompt-generator" target="_blank" rel="noreferrer">GitHub</a>
   </footer>
 
+  <button class="back-to-top" id="backToTopButton" type="button" aria-label="Back to top">↑</button>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="script.js"></script>
 </body>

@@ -8,8 +8,10 @@ const state = {
   query: "",
   model: ALL_MODELS,
   category: ALL_CATEGORIES,
+  sort: "featured",
   language: "en",
   theme: "light",
+  background: "green",
   activePrompt: null,
 };
 
@@ -28,7 +30,16 @@ const copy = {
     shuffle: "Shuffle",
     libraryTitle: "Prompt Library",
     loading: "Loading...",
+    searchLabel: "Search",
     searchPlaceholder: "Search author, model, style, prompt...",
+    modelFilterLabel: "Model",
+    categoryFilterLabel: "Category",
+    sortLabel: "Sort",
+    sortFeatured: "Featured",
+    sortNewest: "Newest",
+    sortModel: "Model A-Z",
+    sortCategory: "Category A-Z",
+    sortAuthor: "Author A-Z",
     emptyState: "No matching prompts found. Try another keyword or model.",
     allModels: "All models",
     allCategories: "All categories",
@@ -52,6 +63,8 @@ const copy = {
     languageToggle: "中文",
     themeDark: "Dark",
     themeLight: "Light",
+    backgroundLabel: "Background",
+    backToTop: "Back to top",
     subjectFallback: "a high-quality AI image",
     loadError: "Prompt data failed to load.",
     metaTitle: "Image Prompt Generator | Free AI Image Prompt Generator",
@@ -71,7 +84,16 @@ const copy = {
     shuffle: "换一批",
     libraryTitle: "全部提示词",
     loading: "正在加载...",
+    searchLabel: "搜索",
     searchPlaceholder: "搜索作者、模型、风格、提示词...",
+    modelFilterLabel: "模型",
+    categoryFilterLabel: "分类",
+    sortLabel: "排序",
+    sortFeatured: "默认精选",
+    sortNewest: "最新",
+    sortModel: "模型 A-Z",
+    sortCategory: "分类 A-Z",
+    sortAuthor: "作者 A-Z",
     emptyState: "没有找到匹配的提示词，换个关键词或模型试试。",
     allModels: "全部模型",
     allCategories: "全部分类",
@@ -95,6 +117,8 @@ const copy = {
     languageToggle: "English",
     themeDark: "深色",
     themeLight: "浅色",
+    backgroundLabel: "背景",
+    backToTop: "回到顶部",
     subjectFallback: "一张高质量 AI 图片",
     loadError: "提示词数据加载失败。",
     metaTitle: "Image Prompt Generator | AI 图片与视频提示词生成器",
@@ -147,6 +171,13 @@ const builtInPrompts = [
 
 const els = {
   search: document.querySelector("#searchInput"),
+  searchLabel: document.querySelector("#searchLabel"),
+  libraryModelSelect: document.querySelector("#libraryModelSelect"),
+  libraryCategorySelect: document.querySelector("#libraryCategorySelect"),
+  modelFilterLabel: document.querySelector("#modelFilterLabel"),
+  categoryFilterLabel: document.querySelector("#categoryFilterLabel"),
+  sortSelect: document.querySelector("#sortSelect"),
+  sortLabel: document.querySelector("#sortLabel"),
   promptGrid: document.querySelector("#promptGrid"),
   featuredGrid: document.querySelector("#featuredGrid"),
   resultCount: document.querySelector("#resultCount"),
@@ -173,6 +204,9 @@ const els = {
   menuButton: document.querySelector("#menuButton"),
   languageToggle: document.querySelector("#languageToggle"),
   themeToggle: document.querySelector("#themeToggle"),
+  backgroundSelect: document.querySelector("#backgroundSelect"),
+  backgroundPickerLabel: document.querySelector(".background-picker span"),
+  backToTopButton: document.querySelector("#backToTopButton"),
 };
 
 function t(key, ...args) {
@@ -188,6 +222,13 @@ function modelMatches(item, selectedModel) {
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b));
+}
+
+function compareText(a, b) {
+  return String(a || "").localeCompare(String(b || ""), state.language === "zh" ? "zh-CN" : "en", {
+    sensitivity: "base",
+    numeric: true,
+  });
 }
 
 function escapeHtml(value) {
@@ -277,14 +318,53 @@ function buildFilter(container, values, active, allLabel, key, allValue) {
   }).join("");
 }
 
+function buildSelect(select, items, active) {
+  select.innerHTML = items.map((item) => {
+    const selected = item.value === active ? " selected" : "";
+    return `<option value="${escapeHtml(item.value)}"${selected}>${escapeHtml(item.label)}</option>`;
+  }).join("");
+}
+
+function renderSortOptions() {
+  buildSelect(els.sortSelect, [
+    { label: t("sortFeatured"), value: "featured" },
+    { label: t("sortNewest"), value: "newest" },
+    { label: t("sortModel"), value: "model" },
+    { label: t("sortCategory"), value: "category" },
+    { label: t("sortAuthor"), value: "author" },
+  ], state.sort);
+}
+
 function renderFilters() {
+  const modelItems = [{ label: t("allModels"), value: ALL_MODELS }, ...Object.keys(modelAliases).map((value) => ({ label: value, value }))];
+  const categoryItems = [{ label: t("allCategories"), value: ALL_CATEGORIES }, ...unique(state.prompts.map((item) => item.category)).map((value) => ({ label: value, value }))];
   buildFilter(els.modelFilters, Object.keys(modelAliases), state.model, t("allModels"), "model", ALL_MODELS);
   buildFilter(els.categoryFilters, unique(state.prompts.map((item) => item.category)), state.category, t("allCategories"), "category", ALL_CATEGORIES);
+  buildSelect(els.libraryModelSelect, modelItems, state.model);
+  buildSelect(els.libraryCategorySelect, categoryItems, state.category);
+}
+
+function sortPrompts(items) {
+  const bySourceOrder = (a, b) => (a._index || 0) - (b._index || 0);
+  const sorted = [...items];
+  if (state.sort === "newest") {
+    return sorted.sort((a, b) => (b._index || 0) - (a._index || 0));
+  }
+  if (state.sort === "model") {
+    return sorted.sort((a, b) => compareText(a.model, b.model) || bySourceOrder(a, b));
+  }
+  if (state.sort === "category") {
+    return sorted.sort((a, b) => compareText(a.category, b.category) || bySourceOrder(a, b));
+  }
+  if (state.sort === "author") {
+    return sorted.sort((a, b) => compareText(authorLabel(a), authorLabel(b)) || bySourceOrder(a, b));
+  }
+  return sorted.sort(bySourceOrder);
 }
 
 function applyFilters() {
   const q = normalize(state.query);
-  state.filtered = state.prompts.filter((item) => {
+  const filtered = state.prompts.filter((item) => {
     const modelMatch = modelMatches(item, state.model);
     const categoryMatch = state.category === ALL_CATEGORIES || item.category === state.category;
     const haystack = normalize([
@@ -296,6 +376,7 @@ function applyFilters() {
     ].join(" "));
     return modelMatch && categoryMatch && (!q || haystack.includes(q));
   });
+  state.filtered = sortPrompts(filtered);
   renderFilters();
   renderFeatured();
   renderGrid();
@@ -357,6 +438,14 @@ function setTheme(theme) {
   els.themeToggle.setAttribute("aria-label", state.theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
 }
 
+function setBackground(background) {
+  const allowed = ["green", "blue", "pink", "yellow", "black"];
+  state.background = allowed.includes(background) ? background : "green";
+  document.documentElement.dataset.bg = state.background;
+  localStorage.setItem("ipg-background", state.background);
+  els.backgroundSelect.value = state.background;
+}
+
 function renderStaticCopy() {
   document.title = t("metaTitle");
   const metaDescription = document.querySelector('meta[name="description"]');
@@ -373,7 +462,12 @@ function renderStaticCopy() {
   document.querySelector("#hotTitle").textContent = t("hotTitle");
   els.shuffleButton.textContent = t("shuffle");
   document.querySelector("#libraryTitle").textContent = t("libraryTitle");
+  els.searchLabel.textContent = t("searchLabel");
   els.search.placeholder = t("searchPlaceholder");
+  els.modelFilterLabel.textContent = t("modelFilterLabel");
+  els.categoryFilterLabel.textContent = t("categoryFilterLabel");
+  els.sortLabel.textContent = t("sortLabel");
+  renderSortOptions();
   els.emptyState.textContent = t("emptyState");
   document.querySelector("#faqTitle").textContent = t("faqTitle");
   document.querySelector("#faqOneTitle").textContent = t("faqOneTitle");
@@ -385,7 +479,11 @@ function renderStaticCopy() {
   els.copyModalButton.textContent = t("tryIt");
   els.modalSource.textContent = t("modalSource");
   els.languageToggle.textContent = t("languageToggle");
+  els.backgroundPickerLabel.textContent = t("backgroundLabel");
+  els.backToTopButton.setAttribute("aria-label", t("backToTop"));
+  els.backToTopButton.setAttribute("title", t("backToTop"));
   setTheme(state.theme);
+  setBackground(state.background);
 }
 
 function syncModelFilterFromSelect() {
@@ -393,6 +491,10 @@ function syncModelFilterFromSelect() {
   state.category = ALL_CATEGORIES;
   state.featuredOffset = 0;
   applyFilters();
+}
+
+function updateBackToTopVisibility() {
+  els.backToTopButton.classList.toggle("show", window.scrollY > 520);
 }
 
 function tryPrompt(item) {
@@ -503,6 +605,24 @@ function attachEvents() {
     applyFilters();
   });
 
+  els.libraryModelSelect.addEventListener("change", (event) => {
+    state.model = event.target.value || ALL_MODELS;
+    state.featuredOffset = 0;
+    if (state.model !== ALL_MODELS) els.modelSelect.value = state.model;
+    applyFilters();
+  });
+
+  els.libraryCategorySelect.addEventListener("change", (event) => {
+    state.category = event.target.value || ALL_CATEGORIES;
+    state.featuredOffset = 0;
+    applyFilters();
+  });
+
+  els.sortSelect.addEventListener("change", (event) => {
+    state.sort = event.target.value || "featured";
+    applyFilters();
+  });
+
   els.modelSelect.addEventListener("change", () => {
     syncModelFilterFromSelect();
     generatePrompt();
@@ -562,9 +682,20 @@ function attachEvents() {
     setTheme(state.theme === "dark" ? "light" : "dark");
   });
 
+  els.backgroundSelect.addEventListener("change", (event) => {
+    setBackground(event.target.value);
+  });
+
   document.querySelectorAll(".nav-links a").forEach((link) => {
     link.addEventListener("click", () => document.body.classList.remove("menu-open"));
   });
+
+  els.backToTopButton.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  window.addEventListener("scroll", updateBackToTopVisibility, { passive: true });
+  updateBackToTopVisibility();
 }
 
 async function init() {
@@ -572,11 +703,12 @@ async function init() {
   state.query = params.get("q") || "";
   state.language = params.get("lang") === "zh" ? "zh" : (localStorage.getItem("ipg-language") || "en");
   state.theme = localStorage.getItem("ipg-theme") || "light";
+  state.background = localStorage.getItem("ipg-background") || "green";
   els.search.value = state.query;
 
   const response = await fetch("data/prompts.json");
   const data = await response.json();
-  state.prompts = [...(data.prompts || []), ...builtInPrompts];
+  state.prompts = [...(data.prompts || []), ...builtInPrompts].map((item, index) => ({ ...item, _index: index }));
   state.filtered = state.prompts;
   state.model = els.modelSelect.value || ALL_MODELS;
 
