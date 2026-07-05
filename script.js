@@ -102,15 +102,6 @@ const copy = {
   },
 };
 
-const styleLabels = {
-  commercial: { en: "Commercial photo", zh: "商业摄影" },
-  portrait: { en: "Cinematic portrait", zh: "电影感人像" },
-  clay: { en: "3D clay render", zh: "3D 粘土渲染" },
-  infographic: { en: "Hand-drawn infographic", zh: "手绘信息图" },
-  edit: { en: "Precise image edit", zh: "编辑精准改图" },
-  storyboard: { en: "Video storyboard", zh: "视频分镜" },
-};
-
 const modelAliases = {
   "GPT Image 2": ["GPT Image 2"],
   "GPT Image 1.5": ["GPT Image 1.5"],
@@ -165,7 +156,6 @@ const els = {
   shuffleButton: document.querySelector("#shuffleButton"),
   builderForm: document.querySelector("#builderForm"),
   subjectInput: document.querySelector("#subjectInput"),
-  styleSelect: document.querySelector("#styleSelect"),
   modelSelect: document.querySelector("#modelSelect"),
   ratioSelect: document.querySelector("#ratioSelect"),
   generatedOutput: document.querySelector("#generatedOutput"),
@@ -367,12 +357,6 @@ function setTheme(theme) {
   els.themeToggle.setAttribute("aria-label", state.theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
 }
 
-function renderStyleOptions() {
-  Array.from(els.styleSelect.options).forEach((option) => {
-    option.textContent = styleLabels[option.value]?.[state.language] || option.value;
-  });
-}
-
 function renderStaticCopy() {
   document.title = t("metaTitle");
   const metaDescription = document.querySelector('meta[name="description"]');
@@ -402,7 +386,6 @@ function renderStaticCopy() {
   els.modalSource.textContent = t("modalSource");
   els.languageToggle.textContent = t("languageToggle");
   setTheme(state.theme);
-  renderStyleOptions();
 }
 
 function syncModelFilterFromSelect() {
@@ -431,8 +414,6 @@ function tryPrompt(item) {
 
 function generatePrompt() {
   const subject = els.subjectInput.value.trim() || t("subjectFallback");
-  const styleKey = els.styleSelect.value;
-  const style = styleLabels[styleKey]?.[state.language] || styleKey;
   const model = els.modelSelect.value;
   const ratio = els.ratioSelect.value;
   const modelHints = state.language === "zh" ? {
@@ -456,26 +437,13 @@ function generatePrompt() {
     state.language === "zh" ? `主题：${subject}` : `Subject: ${subject}`,
     state.language === "zh" ? `目标模型：${model}` : `Target model: ${model}`,
     state.language === "zh" ? `模型策略：${modelHints[model] || "根据模型能力生成高质量视觉结果。"}` : `Model strategy: ${modelHints[model] || "Create a high-quality visual result based on the model's strengths."}`,
-    state.language === "zh" ? `风格：${style}` : `Style: ${style}`,
     state.language === "zh" ? `比例：${ratio}` : `Aspect ratio: ${ratio}`,
   ];
-  const isVideoStoryboard = model === "Seedance 2.0" && styleKey === "storyboard";
-  const output = isVideoStoryboard
-    ? state.language === "zh" ? [
-        ...shared,
-        "视频结构：用 3-5 个镜头描述起承转合，每个镜头包含景别、主体动作、镜头运动、时长和转场。",
-        "运动要求：动作连续、主体一致、避免突兀变形，镜头移动自然。",
-        "质量要求：无水印，无错乱文字，无多余肢体，画面节奏适合短视频传播。",
-      ] : [
-        ...shared,
-        "Video structure: describe 3-5 shots with a clear beginning, development, turn, and ending. Each shot should include framing, subject action, camera movement, duration, and transition.",
-        "Motion requirements: continuous action, consistent subject identity, no sudden deformation, natural camera movement.",
-        "Quality requirements: no watermark, no corrupted text, no extra limbs, and a rhythm suitable for short-form video.",
-      ]
-    : state.language === "zh" ? [
+  const output = state.language === "zh" ? [
         ...shared,
         "画面结构：主体明确，前景/中景/背景层次清晰，保留足够留白，光影和材质细节完整。",
         model === "Seedance 2.0" ? "Seedance 静帧建议：把单张图当作视频关键帧来写，明确动作瞬间、运动方向、镜头焦段和动态张力。" : "",
+        model === "Seedance 2.0" ? "可选分镜扩展：如果要做视频，继续补 3-5 个镜头，每个镜头写清景别、主体动作、镜头运动、时长和转场。" : "",
         "文本要求：如画面包含文字，必须短、清楚、可读，并与版式自然融合。",
         "质量要求：无水印，无多余畸变，不要破损手指、错误透视、脏乱背景或低质贴图感。",
         "可替换变量：把 [主体]、[品牌/人物]、[场景]、[文字] 替换成你的具体需求。",
@@ -483,6 +451,7 @@ function generatePrompt() {
         ...shared,
         "Composition: clear subject, readable foreground/midground/background layers, enough negative space, complete lighting and material details.",
         model === "Seedance 2.0" ? "Seedance keyframe note: write a single image as a video keyframe with a clear action moment, motion direction, lens focal length, and dynamic tension." : "",
+        model === "Seedance 2.0" ? "Optional storyboard extension: for video, add 3-5 shots and specify framing, subject action, camera movement, duration, and transition for each shot." : "",
         "Text rule: if text appears in the image, keep it short, readable, and naturally integrated with the layout.",
         "Quality rule: no watermark, no extra distortions, no broken fingers, wrong perspective, messy background, or low-quality texture.",
         "Replaceable variables: swap [subject], [brand/person], [scene], and [text] with your specific need.",
@@ -537,10 +506,6 @@ function attachEvents() {
   els.modelSelect.addEventListener("change", () => {
     syncModelFilterFromSelect();
     generatePrompt();
-  });
-
-  els.styleSelect.addEventListener("change", () => {
-    if (!els.generatedOutput.hidden) generatePrompt();
   });
 
   els.ratioSelect.addEventListener("change", () => {
