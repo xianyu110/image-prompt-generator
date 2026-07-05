@@ -15,7 +15,6 @@ const state = {
   activePrompt: null,
   turnstileToken: "",
   turnstileReady: false,
-  authUser: null,
 };
 
 const copy = {
@@ -56,16 +55,12 @@ const copy = {
     tryIt: "Try it",
     copied: "Prompt copied",
     copyGateTitle: "Copy protection",
-    copyGateText: "Complete Turnstile and sign in with Google before copying prompts.",
+    copyGateText: "Complete Turnstile before copying prompts.",
     copyGateReady: "Copy is enabled for this browser session.",
     copyGateNeedsTurnstile: "Complete Turnstile before copying prompts.",
-    copyGateNeedsLogin: "Sign in with Google before copying prompts.",
-    copyGateMissingGoogleConfig: "Add your Google OAuth Client ID to enable Google sign-in.",
     turnstileLoading: "Turnstile loading",
     turnstileReady: "Human check passed",
     turnstileExpired: "Turnstile expired. Verify again.",
-    signedInAs: (email) => `Signed in as ${email}`,
-    signOut: "Sign out",
     modalSource: "View source",
     faqTitle: "What is Image Prompt Generator?",
     faqOneTitle: "How is this different from a normal prompt list?",
@@ -131,16 +126,12 @@ const copy = {
     tryIt: "立即尝试",
     copied: "已复制提示词",
     copyGateTitle: "复制保护",
-    copyGateText: "复制提示词前，需要先完成人机验证并使用 Google 登录。",
+    copyGateText: "复制提示词前，需要先完成 Turnstile 人机验证。",
     copyGateReady: "当前浏览器会话已允许复制。",
     copyGateNeedsTurnstile: "请先完成 Turnstile 人机验证，再复制提示词。",
-    copyGateNeedsLogin: "请先使用 Google 登录，再复制提示词。",
-    copyGateMissingGoogleConfig: "请先配置 Google OAuth Client ID，才能启用 Google 登录。",
     turnstileLoading: "Turnstile 加载中",
     turnstileReady: "人机验证已通过",
     turnstileExpired: "Turnstile 已过期，请重新验证。",
-    signedInAs: (email) => `已登录 ${email}`,
-    signOut: "退出登录",
     modalSource: "查看来源",
     faqTitle: "Image Prompt Generator 是什么？",
     faqOneTitle: "这个网站和普通提示词列表有什么不同？",
@@ -248,9 +239,6 @@ const els = {
   copyGate: document.querySelector("#copyGate"),
   copyGateTitle: document.querySelector("#copyGateTitle"),
   copyGateText: document.querySelector("#copyGateText"),
-  googleSignInButton: document.querySelector("#googleSignInButton"),
-  signOutButton: document.querySelector("#signOutButton"),
-  authEmail: document.querySelector("#authEmail"),
   turnstileSlot: document.querySelector("#turnstileSlot"),
   turnstileStatus: document.querySelector("#turnstileStatus"),
   toast: document.querySelector("#toast"),
@@ -304,18 +292,6 @@ function truncate(value, max = 230) {
 
 function metaContent(name) {
   return document.querySelector(`meta[name="${name}"]`)?.getAttribute("content")?.trim() || "";
-}
-
-function parseJwtPayload(token) {
-  try {
-    const payload = token.split(".")[1];
-    if (!payload) return null;
-    const normalized = payload.replace(/-/g, "+").replace(/_/g, "/");
-    const decoded = atob(normalized.padEnd(Math.ceil(normalized.length / 4) * 4, "="));
-    return JSON.parse(decoded);
-  } catch {
-    return null;
-  }
 }
 
 function authorLabel(item) {
@@ -534,7 +510,6 @@ function renderStaticCopy() {
   document.querySelector("#generatedTitle").textContent = t("generatedTitle");
   els.copyGeneratedButton.textContent = t("copy");
   els.copyGateTitle.textContent = t("copyGateTitle");
-  els.signOutButton.textContent = t("signOut");
   document.querySelector("#statPill").textContent = t("statPill");
   document.querySelector("#hotTitle").textContent = t("hotTitle");
   els.shuffleButton.textContent = t("shuffle");
@@ -571,7 +546,6 @@ function renderStaticCopy() {
   els.backToTopButton.setAttribute("title", t("backToTop"));
   setTheme(state.theme);
   setBackground(state.background);
-  if (!metaContent("google-client-id")) renderMissingGoogleConfig();
   updateTurnstileStatus();
   updateCopyGate();
 }
@@ -589,7 +563,6 @@ function updateBackToTopVisibility() {
 
 function getCopyGateMessage() {
   if (!state.turnstileToken) return t("copyGateNeedsTurnstile");
-  if (!state.authUser) return t("copyGateNeedsLogin");
   return "";
 }
 
@@ -607,19 +580,6 @@ function updateCopyGate() {
   const missing = getCopyGateMessage();
   els.copyGate.dataset.state = missing ? "locked" : "ready";
   els.copyGateText.textContent = missing || t("copyGateReady");
-  if (state.authUser?.email) {
-    els.authEmail.hidden = false;
-    els.authEmail.textContent = t("signedInAs", state.authUser.email);
-    els.signOutButton.hidden = false;
-  } else {
-    els.authEmail.hidden = true;
-    els.authEmail.textContent = "";
-    els.signOutButton.hidden = true;
-  }
-}
-
-function renderMissingGoogleConfig() {
-  els.googleSignInButton.innerHTML = `<button class="mini-copy secondary" type="button" disabled>${escapeHtml(t("copyGateMissingGoogleConfig"))}</button>`;
 }
 
 function initTurnstile() {
@@ -652,36 +612,6 @@ function initTurnstile() {
       updateTurnstileStatus("Turnstile error");
       updateCopyGate();
     },
-  });
-}
-
-function initGoogleSignIn() {
-  const clientId = metaContent("google-client-id");
-  if (!clientId) {
-    renderMissingGoogleConfig();
-    updateCopyGate();
-    return;
-  }
-  if (!window.google?.accounts?.id) {
-    setTimeout(initGoogleSignIn, 250);
-    return;
-  }
-  window.google.accounts.id.initialize({
-    client_id: clientId,
-    callback: (response) => {
-      const profile = parseJwtPayload(response.credential);
-      state.authUser = {
-        email: profile?.email || "Google user",
-        name: profile?.name || "",
-      };
-      updateCopyGate();
-    },
-  });
-  window.google.accounts.id.renderButton(els.googleSignInButton, {
-    theme: state.theme === "dark" ? "filled_black" : "outline",
-    size: "large",
-    text: "signin_with",
-    shape: "rectangular",
   });
 }
 
@@ -878,11 +808,6 @@ function attachEvents() {
     setBackground(event.target.value);
   });
 
-  els.signOutButton.addEventListener("click", () => {
-    state.authUser = null;
-    updateCopyGate();
-  });
-
   document.querySelectorAll(".nav-links a").forEach((link) => {
     link.addEventListener("click", () => document.body.classList.remove("menu-open"));
   });
@@ -913,7 +838,6 @@ async function init() {
   applyFilters();
   attachEvents();
   initTurnstile();
-  initGoogleSignIn();
 }
 
 init().catch((error) => {

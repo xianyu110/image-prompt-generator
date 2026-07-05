@@ -15,7 +15,6 @@
   <meta property="og:url" content="https://image-prompt-generator.com/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="turnstile-site-key" content="0x4AAAAAADv0Q1P-Bkzj6LLM">
-  <meta name="google-client-id" content="">
   <link rel="icon" type="image/svg+xml" href="assets/site-icon.svg">
   <link rel="apple-touch-icon" href="assets/site-icon.svg">
   <script type="application/ld+json">
@@ -108,12 +107,7 @@
       <div class="copy-gate" id="copyGate" data-state="locked">
         <div>
           <strong id="copyGateTitle">Copy protection</strong>
-          <p id="copyGateText">Complete Turnstile and sign in with Google before copying prompts.</p>
-          <p class="auth-email" id="authEmail" hidden></p>
-        </div>
-        <div class="copy-gate-actions">
-          <div class="google-signin-slot" id="googleSignInButton"></div>
-          <button class="mini-copy secondary" id="signOutButton" type="button" hidden>Sign out</button>
+          <p id="copyGateText">Complete Turnstile before copying prompts.</p>
         </div>
       </div>
 
@@ -238,7 +232,6 @@
   <button class="back-to-top" id="backToTopButton" type="button" aria-label="Back to top">↑</button>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="script.js"></script>
 </body>
 </html>
