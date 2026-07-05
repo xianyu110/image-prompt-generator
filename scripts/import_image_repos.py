@@ -26,9 +26,17 @@ IMPORTED_ASSETS = ROOT / "assets/imported"
 IMPORTED_DATA = ROOT / "data/imported-prompts.json"
 PROMPTS_DATA = ROOT / "data/prompts.json"
 
-OWNERS = ["YouMind-OpenLab", "xianyu110"]
-MAX_REPOS_PER_OWNER = 30
-MAX_ITEMS_PER_REPO = int(os.environ.get("MAX_ITEMS_PER_REPO", "120"))
+WHITELIST_REPOS = [
+    ("YouMind-OpenLab", "awesome-gpt-image-2"),
+    ("YouMind-OpenLab", "awesome-nano-banana-pro-prompts"),
+    ("YouMind-OpenLab", "awesome-gpt-image-1.5"),
+    ("YouMind-OpenLab", "awesome-seedream-4.5"),
+    ("YouMind-OpenLab", "awesome-gemini-3-prompts"),
+    ("YouMind-OpenLab", "awesome-christmas-card-prompts"),
+    ("YouMind-OpenLab", "awesome-grok-imagine-prompts"),
+    ("YouMind-OpenLab", "awesome-seedance-2-prompts"),
+]
+MAX_ITEMS_PER_REPO = int(os.environ.get("MAX_ITEMS_PER_REPO", "80"))
 MAX_IMAGE_BYTES = int(os.environ.get("MAX_IMAGE_BYTES", str(4 * 1024 * 1024)))
 IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
 TEXT_SUFFIXES = {".md", ".mdx", ".json"}
@@ -42,6 +50,10 @@ REPO_KEYWORDS = [
     "gptimage",
     "gemini",
     "gallery",
+]
+LOCAL_REPOS = [
+    ROOT.parent / "awesome-nanobananapro-prompts",
+    ROOT.parent / "awesome-gptimage2",
 ]
 
 
@@ -69,34 +81,10 @@ def clean_text(value: str) -> str:
     return re.sub(r"\s+", " ", value).strip()
 
 
-def list_repos(owner: str) -> list[Repo]:
-    result = run(
-        [
-            "gh",
-            "repo",
-            "list",
-            owner,
-            "--limit",
-            str(MAX_REPOS_PER_OWNER),
-            "--json",
-            "name,description,url,isArchived,isFork",
-        ]
-    )
-    rows = json.loads(result.stdout)
-    repos: list[Repo] = []
-    for row in rows:
-        haystack = f"{row.get('name') or ''} {row.get('description') or ''}".lower()
-        if row.get("isArchived"):
-            continue
-        if any(keyword in haystack for keyword in REPO_KEYWORDS):
-            repos.append(
-                Repo(
-                    owner=owner,
-                    name=row["name"],
-                    url=row["url"],
-                    description=row.get("description") or "",
-                )
-            )
+def whitelisted_repos() -> list[Repo]:
+    repos = []
+    for owner, name in WHITELIST_REPOS:
+        repos.append(Repo(owner=owner, name=name, url=f"https://github.com/{owner}/{name}", description="whitelisted image prompt repo"))
     return repos
 
 
@@ -104,7 +92,6 @@ def clone_or_update(repo: Repo) -> Path:
     CACHE.mkdir(parents=True, exist_ok=True)
     dest = CACHE / repo.owner / repo.name
     if (dest / ".git").exists():
-        run(["git", "pull", "--ff-only"], cwd=dest, check=False)
         return dest
     dest.parent.mkdir(parents=True, exist_ok=True)
     run(["git", "clone", "--depth", "1", repo.url, str(dest)], check=False)
@@ -198,10 +185,34 @@ def extract_code_prompt(block: str) -> str | None:
     return None
 
 
+def extract_prompt_anywhere(block: str) -> str | None:
+    prompt = extract_code_prompt(block)
+    if prompt:
+        return prompt
+    if "#### 📝 Prompt" in block or "#### 📝 提示词" in block or "#### Prompt" in block:
+        code = re.search(r"```(?:[a-zA-Z]+)?\s*(.*?)```", block, re.S)
+        if code and len(code.group(1).strip()) >= 24:
+            return code.group(1).strip()
+    code_blocks = re.findall(r"```(?:[a-zA-Z]+)?\s*(.*?)```", block, re.S)
+    for code in code_blocks:
+        code = code.strip()
+        if len(code) >= 80 and not code.startswith(("npm ", "pnpm ", "git ")):
+            return code
+    return None
+
+
 def extract_images(block: str) -> list[str]:
     html = re.findall(r'<img\s+[^>]*src=["\']([^"\']+)["\']', block, flags=re.I)
     md = re.findall(r"!\[[^\]]*\]\(([^)]+)\)", block)
-    return [src.strip() for src in html + md if src.strip()]
+    images = []
+    for src in html + md:
+        src = src.strip()
+        if not src:
+            continue
+        if any(skip in src for skip in ["img.shields.io", "awesome.re/badge", "badge.svg"]):
+            continue
+        images.append(src)
+    return images
 
 
 def category_for(title: str, prompt: str) -> str:
@@ -242,7 +253,7 @@ def parse_markdown_file(path: Path, repo_path: Path, repo: Repo) -> list[dict]:
     text = path.read_text(encoding="utf-8", errors="ignore")
     rows: list[dict] = []
     for title, block in markdown_blocks(text):
-        prompt = extract_code_prompt(block)
+        prompt = extract_prompt_anywhere(block)
         images = extract_images(block)
         if not prompt or not images:
             continue
@@ -329,16 +340,38 @@ def parse_json_file(path: Path, repo_path: Path, repo: Repo) -> list[dict]:
 
 def parse_repo(repo_path: Path, repo: Repo) -> list[dict]:
     rows: list[dict] = []
-    files = [
-        p
-        for p in repo_path.rglob("*")
-        if p.is_file()
-        and p.suffix.lower() in TEXT_SUFFIXES
-        and ".git" not in p.parts
-        and "node_modules" not in p.parts
-        and p.stat().st_size < 2_000_000
-    ]
-    priority = sorted(files, key=lambda p: (0 if p.name.lower().startswith("readme") else 1, len(p.parts), str(p)))
+    preferred_names = {
+        "README.md",
+        "README_zh.md",
+        "README_zh-CN.md",
+        "README_EN.md",
+        "100.md",
+        "200.md",
+        "300.md",
+        "400.md",
+        "500.md",
+        "600.md",
+        "700.md",
+    }
+    files = []
+    for p in repo_path.rglob("*"):
+        if (
+            p.is_file()
+            and p.suffix.lower() in TEXT_SUFFIXES
+            and ".git" not in p.parts
+            and "node_modules" not in p.parts
+            and p.stat().st_size < 2_500_000
+            and (p.name in preferred_names or p.suffix.lower() == ".json")
+        ):
+            files.append(p)
+    priority = sorted(
+        files,
+        key=lambda p: (
+            0 if p.name == "README.md" else 1 if p.name.startswith("README_zh") else 2 if p.name in preferred_names else 3,
+            len(p.parts),
+            str(p),
+        ),
+    )
     for path in priority:
         if len(rows) >= MAX_ITEMS_PER_REPO:
             break
@@ -346,6 +379,8 @@ def parse_repo(repo_path: Path, repo: Repo) -> list[dict]:
             rows.extend(parse_markdown_file(path, repo_path, repo))
         elif path.suffix.lower() == ".json":
             rows.extend(parse_json_file(path, repo_path, repo))
+        if len(rows) >= MAX_ITEMS_PER_REPO:
+            break
     deduped: list[dict] = []
     seen = set()
     for row in rows:
@@ -357,6 +392,16 @@ def parse_repo(repo_path: Path, repo: Repo) -> list[dict]:
         if len(deduped) >= MAX_ITEMS_PER_REPO:
             break
     return deduped
+
+
+def local_repo_objects() -> list[tuple[Path, Repo]]:
+    repos = []
+    for path in LOCAL_REPOS:
+        if not path.exists():
+            continue
+        name = path.name
+        repos.append((path, Repo(owner="xianyu110-local", name=name, url=f"https://github.com/xianyu110/{name}", description="local source repo")))
+    return repos
 
 
 def merge_into_prompts(imported: list[dict]) -> None:
@@ -373,9 +418,7 @@ def merge_into_prompts(imported: list[dict]) -> None:
 
 
 def main() -> int:
-    repos: list[Repo] = []
-    for owner in OWNERS:
-        repos.extend(list_repos(owner))
+    repos = whitelisted_repos()
     imported: list[dict] = []
     summary = []
     for repo in repos:
@@ -387,6 +430,13 @@ def main() -> int:
         imported.extend(rows)
         summary.append({"repo": f"{repo.owner}/{repo.name}", "items": len(rows), "url": repo.url})
         print(f"{repo.owner}/{repo.name}: {len(rows)} items")
+        sys.stdout.flush()
+    for repo_path, repo in local_repo_objects():
+        rows = parse_repo(repo_path, repo)
+        imported.extend(rows)
+        summary.append({"repo": f"{repo.owner}/{repo.name}", "items": len(rows), "url": repo.url})
+        print(f"{repo.owner}/{repo.name}: {len(rows)} items")
+        sys.stdout.flush()
     IMPORTED_DATA.parent.mkdir(parents=True, exist_ok=True)
     IMPORTED_DATA.write_text(
         json.dumps({"meta": {"count": len(imported), "repos": summary}, "prompts": imported}, ensure_ascii=False, indent=2)
