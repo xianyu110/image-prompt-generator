@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://image-prompt-generator.com/sitemap.xml
+Sitemap: https://image-prompt-generator.com/image-sitemap.xml

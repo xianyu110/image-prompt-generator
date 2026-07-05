@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://image-prompt-generator.com/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/gpt-image-2-prompts/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/seedream-5-pro-prompts/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/seedance-2-prompts/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/grok-imagine-prompts/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/gemini-3-pro-prompts/</loc>
+    <priority>0.8</priority>
+  </url>
+</urlset>

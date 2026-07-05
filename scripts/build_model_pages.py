@@ -139,6 +139,11 @@ def published_image_path(item):
     image = item.get("image") or ""
     if not image.startswith(("assets/thumbs/", "assets/imported/")):
         return ""
+    if image.startswith("assets/thumbs/"):
+        stem = Path(image).stem
+        optimized = f"assets/thumbs-optimized/{stem}.webp"
+        if (ROOT / optimized).is_file():
+            return optimized
     if not (ROOT / image).is_file():
         return ""
     return image
@@ -375,6 +380,16 @@ def write_sitemap():
     <priority>{priority}</priority>
   </url>""" for loc, priority in urls)
     (ROOT / "sitemap.xml").write_text(f"""<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://image-prompt-generator.com/pages-sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://image-prompt-generator.com/image-sitemap.xml</loc>
+  </sitemap>
+</sitemapindex>
+""")
+    (ROOT / "pages-sitemap.xml").write_text(f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {body}
 </urlset>

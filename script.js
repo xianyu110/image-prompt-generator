@@ -1,9 +1,12 @@
 const ALL_MODELS = "__all_models__";
 const ALL_CATEGORIES = "__all_categories__";
+const PROMPT_INDEX_URL = "data/prompt-index.json";
 
 const state = {
   prompts: [],
   filtered: [],
+  promptIndex: null,
+  loadingPrompts: false,
   featuredOffset: 0,
   query: "",
   model: ALL_MODELS,
@@ -22,6 +25,10 @@ const state = {
 };
 
 let turnstileVerifyPromise = null;
+const promptStore = new Map();
+const loadedModels = new Set();
+const pendingModelLoads = new Map();
+let filterRequestId = 0;
 
 const copy = {
   en: {
@@ -279,6 +286,98 @@ function modelMatches(item, selectedModel) {
   return aliases.includes(item.model);
 }
 
+function modelKey(model) {
+  return model === ALL_MODELS ? ALL_MODELS : model;
+}
+
+function promptKey(item) {
+  return item.id || `${item.model}:${item.title}:${item.prompt}`;
+}
+
+function allKnownModels() {
+  const indexed = state.promptIndex?.models ? Object.keys(state.promptIndex.models) : [];
+  return unique([...Object.keys(modelAliases), ...indexed]);
+}
+
+function isGeneratorModel(model) {
+  return Object.prototype.hasOwnProperty.call(modelAliases, model);
+}
+
+function normalizeImageUrl(image) {
+  if (!image) return "";
+  if (/^https?:\/\//.test(image)) return image;
+  if (image.startsWith("assets/imported/")) {
+    return `https://raw.githubusercontent.com/xianyu110/image-prompt-generator/main/${image}`;
+  }
+  return image;
+}
+
+function storePrompts(items) {
+  items.forEach((item) => {
+    const cleaned = {
+      ...item,
+      image: normalizeImageUrl(item.image),
+      _index: Number.isFinite(item.order) ? item.order : Number.MAX_SAFE_INTEGER,
+    };
+    promptStore.set(promptKey(cleaned), cleaned);
+  });
+}
+
+function promptsForModel(selectedModel) {
+  if (selectedModel === ALL_MODELS) {
+    return [...promptStore.values()];
+  }
+  return [...promptStore.values()].filter((item) => modelMatches(item, selectedModel));
+}
+
+async function loadPromptIndex() {
+  if (state.promptIndex) return state.promptIndex;
+  const response = await fetch(PROMPT_INDEX_URL);
+  if (!response.ok) throw new Error("prompt index failed to load");
+  state.promptIndex = await response.json();
+  return state.promptIndex;
+}
+
+async function loadPromptModel(model) {
+  const key = modelKey(model);
+  if (loadedModels.has(key)) return;
+  if (pendingModelLoads.has(key)) return pendingModelLoads.get(key);
+
+  const promise = (async () => {
+    const index = await loadPromptIndex();
+    if (key === ALL_MODELS) {
+      await Promise.all(allKnownModels().map((knownModel) => loadPromptModel(knownModel)));
+      loadedModels.add(key);
+      return;
+    }
+
+    const modelInfo = index.models?.[key];
+    if (!modelInfo?.file) {
+      loadedModels.add(key);
+      return;
+    }
+    const response = await fetch(modelInfo.file);
+    if (!response.ok) throw new Error(`${key} prompts failed to load`);
+    const data = await response.json();
+    storePrompts(data.prompts || []);
+    loadedModels.add(key);
+  })().finally(() => {
+    pendingModelLoads.delete(key);
+  });
+
+  pendingModelLoads.set(key, promise);
+  return promise;
+}
+
+async function loadPromptsForCurrentModel() {
+  state.loadingPrompts = true;
+  if (els.resultCount) els.resultCount.textContent = t("loading");
+  await loadPromptModel(state.model);
+  state.prompts = [...promptsForModel(state.model), ...builtInPrompts.filter((item) => modelMatches(item, state.model))]
+    .map((item, index) => ({ ...item, _index: Number.isFinite(item._index) ? item._index : Number.MAX_SAFE_INTEGER - builtInPrompts.length + index }));
+  state.loadingPrompts = false;
+}
+
 function unique(values) {
   return [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b));
 }
@@ -377,7 +476,7 @@ function renderFeatured() {
 function renderGrid() {
   els.promptGrid.innerHTML = state.filtered.map(cardTemplate).join("");
   els.emptyState.hidden = state.filtered.length > 0;
-  els.resultCount.textContent = t("resultCount", state.filtered.length, state.prompts.length);
+  els.resultCount.textContent = state.loadingPrompts ? t("loading") : t("resultCount", state.filtered.length, state.prompts.length);
 }
 
 function buildFilter(container, values, active, allLabel, key, allValue) {
@@ -407,10 +506,14 @@ function renderSortOptions() {
 }
 
 function renderFilters() {
-  const modelItems = [{ label: t("allModels"), value: ALL_MODELS }, ...Object.keys(modelAliases).map((value) => ({ label: value, value }))];
-  const categoryItems = [{ label: t("allCategories"), value: ALL_CATEGORIES }, ...unique(state.prompts.map((item) => item.category)).map((value) => ({ label: value, value }))];
-  buildFilter(els.modelFilters, Object.keys(modelAliases), state.model, t("allModels"), "model", ALL_MODELS);
-  buildFilter(els.categoryFilters, unique(state.prompts.map((item) => item.category)), state.category, t("allCategories"), "category", ALL_CATEGORIES);
+  const models = allKnownModels();
+  const categories = state.model === ALL_MODELS
+    ? (state.promptIndex?.categories || unique(state.prompts.map((item) => item.category)))
+    : (state.promptIndex?.models?.[state.model]?.categories || unique(state.prompts.map((item) => item.category)));
+  const modelItems = [{ label: t("allModels"), value: ALL_MODELS }, ...models.map((value) => ({ label: value, value }))];
+  const categoryItems = [{ label: t("allCategories"), value: ALL_CATEGORIES }, ...categories.map((value) => ({ label: value, value }))];
+  buildFilter(els.modelFilters, models, state.model, t("allModels"), "model", ALL_MODELS);
+  buildFilter(els.categoryFilters, categories, state.category, t("allCategories"), "category", ALL_CATEGORIES);
   buildSelect(els.libraryModelSelect, modelItems, state.model);
   buildSelect(els.libraryCategorySelect, categoryItems, state.category);
 }
@@ -433,7 +536,10 @@ function sortPrompts(items) {
   return sorted.sort(bySourceOrder);
 }
 
-function applyFilters() {
+async function applyFilters() {
+  const requestId = ++filterRequestId;
+  await loadPromptsForCurrentModel();
+  if (requestId !== filterRequestId) return;
   const q = normalize(state.query);
   const filtered = state.prompts.filter((item) => {
     const modelMatch = modelMatches(item, state.model);
@@ -575,11 +681,11 @@ function renderStaticCopy() {
   updateCopyGate();
 }
 
-function syncModelFilterFromSelect() {
+async function syncModelFilterFromSelect() {
   state.model = els.modelSelect.value || ALL_MODELS;
   state.category = ALL_CATEGORIES;
   state.featuredOffset = 0;
-  applyFilters();
+  await applyFilters();
 }
 
 function updateBackToTopVisibility() {
@@ -706,7 +812,7 @@ async function tryPrompt(item) {
   state.model = els.modelSelect.value;
   state.category = ALL_CATEGORIES;
   await generatePrompt();
-  applyFilters();
+  await applyFilters();
   await copyText(item.prompt);
   document.querySelector("#generator").scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -807,7 +913,7 @@ async function generatePrompt() {
 }
 
 function findPrompt(id) {
-  return state.prompts.find((item) => item.id === id);
+  return state.prompts.find((item) => item.id === id) || [...promptStore.values()].find((item) => item.id === id);
 }
 
 function handleCardClick(event) {
@@ -849,26 +955,27 @@ function attachEvents() {
     applyFilters();
   });
 
-  els.libraryModelSelect.addEventListener("change", (event) => {
+  els.libraryModelSelect.addEventListener("change", async (event) => {
     state.model = event.target.value || ALL_MODELS;
+    state.category = ALL_CATEGORIES;
     state.featuredOffset = 0;
-    if (state.model !== ALL_MODELS) els.modelSelect.value = state.model;
-    applyFilters();
+    if (isGeneratorModel(state.model)) els.modelSelect.value = state.model;
+    await applyFilters();
   });
 
-  els.libraryCategorySelect.addEventListener("change", (event) => {
+  els.libraryCategorySelect.addEventListener("change", async (event) => {
     state.category = event.target.value || ALL_CATEGORIES;
     state.featuredOffset = 0;
-    applyFilters();
+    await applyFilters();
   });
 
-  els.sortSelect.addEventListener("change", (event) => {
+  els.sortSelect.addEventListener("change", async (event) => {
     state.sort = event.target.value || "featured";
-    applyFilters();
+    await applyFilters();
   });
 
-  els.modelSelect.addEventListener("change", () => {
-    syncModelFilterFromSelect();
+  els.modelSelect.addEventListener("change", async () => {
+    await syncModelFilterFromSelect();
     generatePrompt();
   });
 
@@ -876,15 +983,18 @@ function attachEvents() {
     if (!els.generatedOutput.hidden) generatePrompt();
   });
 
-  document.addEventListener("click", (event) => {
+  document.addEventListener("click", async (event) => {
     const filter = event.target.closest("[data-filter]");
     if (!filter) return;
-    if (filter.dataset.filter === "model") state.model = filter.dataset.value;
+    if (filter.dataset.filter === "model") {
+      state.model = filter.dataset.value;
+      state.category = ALL_CATEGORIES;
+    }
     if (filter.dataset.filter === "category") state.category = filter.dataset.value;
-    if (filter.dataset.filter === "model" && state.model !== ALL_MODELS) {
+    if (filter.dataset.filter === "model" && isGeneratorModel(state.model)) {
       els.modelSelect.value = state.model;
     }
-    applyFilters();
+    await applyFilters();
   });
 
   els.shuffleButton.addEventListener("click", () => {
@@ -952,15 +1062,12 @@ async function init() {
   state.background = localStorage.getItem("ipg-background") || "green";
   els.search.value = state.query;
 
-  const response = await fetch("data/prompts.json");
-  const data = await response.json();
-  state.prompts = [...(data.prompts || []), ...builtInPrompts].map((item, index) => ({ ...item, _index: index }));
-  state.filtered = state.prompts;
   state.model = els.modelSelect.value || ALL_MODELS;
 
+  await loadPromptIndex();
   renderStaticCopy();
-  applyFilters();
   attachEvents();
+  await applyFilters();
   initTurnstile();
 }
 

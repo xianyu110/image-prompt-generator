@@ -30,12 +30,14 @@ jobs:
           set -euo pipefail
 
           rm -rf public
-          mkdir -p public/assets public/data
+          mkdir -p public/assets public/data/prompts
 
-          cp index.html styles.css script.js CNAME .nojekyll robots.txt sitemap.xml public/
+          cp index.html styles.css script.js CNAME .nojekyll robots.txt sitemap.xml pages-sitemap.xml public/
+          cp image-sitemap.xml public/
           cp assets/site-icon.svg public/assets/
-          cp -R assets/thumbs public/assets/
-          cp data/imported-prompts.json public/data/
+          cp -R assets/thumbs-optimized public/assets/
+          cp data/prompt-index.json public/data/
+          cp -R data/prompts/. public/data/prompts/
           cp data/model-page-assets.json public/data/
           cp -R gpt-image-2-prompts seedream-5-pro-prompts seedance-2-prompts grok-imagine-prompts gemini-3-pro-prompts public/
           python3 - <<'PY'
@@ -43,12 +45,13 @@ jobs:
           from pathlib import Path
 
           raw_base = "https://raw.githubusercontent.com/xianyu110/image-prompt-generator/main/"
-          data = json.loads(Path("data/prompts.json").read_text())
-          for prompt in data.get("prompts", []):
-              image = prompt.get("image") or ""
-              if image.startswith("assets/imported/"):
-                  prompt["image"] = raw_base + image
-          Path("public/data/prompts.json").write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+          for path in Path("public/data/prompts").glob("*.json"):
+              data = json.loads(path.read_text())
+              for prompt in data.get("prompts", []):
+                  image = prompt.get("image") or ""
+                  if image.startswith("assets/imported/"):
+                      prompt["image"] = raw_base + image
+              path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n")
           PY
 
           du -sh public
