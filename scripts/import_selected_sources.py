@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -18,7 +19,7 @@ CACHE = ROOT / ".cache/source-repos"
 ASSET_ROOT = ROOT / "assets/imported"
 IMPORTED_DATA = ROOT / "data/imported-prompts.json"
 PROMPTS_DATA = ROOT / "data/prompts.json"
-MAX_PER_SOURCE = 80
+MAX_PER_SOURCE = int(os.environ.get("MAX_PER_SOURCE", "80"))
 MAX_BYTES = 5 * 1024 * 1024
 IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
 
