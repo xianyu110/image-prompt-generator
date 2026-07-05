@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Image Prompt Generator icon">
+  <rect x="4" y="4" width="56" height="56" rx="10" fill="#17a77d"/>
+  <rect x="10" y="10" width="44" height="44" rx="6" fill="#fff" stroke="#080808" stroke-width="5"/>
+  <path d="M20 24h24M20 33h16M20 42h10" stroke="#080808" stroke-width="5" stroke-linecap="square"/>
+  <path d="M44 35l3 6 6 3-6 3-3 6-3-6-6-3 6-3 3-6z" fill="#17a77d" stroke="#080808" stroke-width="3" stroke-linejoin="round"/>
+</svg>

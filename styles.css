@@ -131,6 +131,8 @@ a {
   border: 3px solid var(--line);
   background: var(--white);
   box-shadow: 3px 3px 0 #000;
+  display: block;
+  object-fit: cover;
 }
 
 .nav-links {
