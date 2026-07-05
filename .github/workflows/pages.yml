@@ -35,7 +35,19 @@ jobs:
           cp index.html styles.css script.js CNAME .nojekyll robots.txt sitemap.xml public/
           cp assets/site-icon.svg public/assets/
           cp -R assets/thumbs public/assets/
+          python3 - <<'PY'
+          import json
+          import shutil
+          from pathlib import Path
+
+          for asset in json.loads(Path("data/model-page-assets.json").read_text()):
+              source = Path(asset)
+              target = Path("public") / asset
+              target.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copy2(source, target)
+          PY
           cp data/imported-prompts.json public/data/
+          cp data/model-page-assets.json public/data/
           cp -R gpt-image-2-prompts seedream-5-pro-prompts seedance-2-prompts grok-imagine-prompts gemini-3-pro-prompts public/
 
           python3 - <<'PY'
@@ -45,10 +57,11 @@ jobs:
           source = Path("data/prompts.json")
           target = Path("public/data/prompts.json")
           data = json.loads(source.read_text())
+          model_page_assets = set(json.loads(Path("data/model-page-assets.json").read_text()))
 
           for prompt in data.get("prompts", []):
               image = prompt.get("image") or ""
-              if image.startswith("assets/imported/"):
+              if image.startswith("assets/imported/") and image not in model_page_assets:
                   prompt["image"] = ""
 
           target.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")

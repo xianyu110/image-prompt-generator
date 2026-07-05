@@ -134,9 +134,18 @@ def author_label(item):
     return source if source.startswith("@") else f"@{source}"
 
 
-def image_html(item, prefix="../"):
+def published_image_path(item):
     image = item.get("image") or ""
-    if image and image.startswith("assets/thumbs/"):
+    if not image.startswith(("assets/thumbs/", "assets/imported/")):
+        return ""
+    if not (ROOT / image).is_file():
+        return ""
+    return image
+
+
+def image_html(item, prefix="../"):
+    image = published_image_path(item)
+    if image:
         return f'<div class="card-image"><img src="{prefix}{safe(image)}" alt="{safe(item.get("title"))}" loading="lazy"></div>'
     return f'<div class="card-image"><div class="image-fallback">{safe(item.get("model"))}<br>{safe(item.get("category"))}</div></div>'
 
@@ -365,18 +374,35 @@ def write_sitemap():
 """)
 
 
+def write_model_page_assets(selected_by_slug):
+    assets = sorted({
+        image
+        for prompts in selected_by_slug.values()
+        for prompt in prompts
+        for image in [published_image_path(prompt)]
+        if image.startswith("assets/imported/")
+    })
+    (ROOT / "data" / "model-page-assets.json").write_text(
+        json.dumps(assets, ensure_ascii=False, indent=2) + "\n"
+    )
+
+
 def clean_html(value):
     return "\n".join(line.rstrip() for line in value.splitlines()) + "\n"
 
 
 def main():
     prompts = load_prompts()
+    selected_by_slug = {}
     for page in MODEL_PAGES:
         page_dir = ROOT / page["slug"]
         page_dir.mkdir(exist_ok=True)
         selected = page_prompts(prompts, page)
+        selected_by_slug[page["slug"]] = selected
         (page_dir / "index.html").write_text(clean_html(render_page(page, selected)))
         print(f"wrote {page['slug']}/index.html with {len(selected)} prompts")
+    write_model_page_assets(selected_by_slug)
+    print("updated data/model-page-assets.json")
     write_sitemap()
     print("updated sitemap.xml")
 
