@@ -36,6 +36,7 @@ jobs:
           cp assets/site-icon.svg public/assets/
           cp -R assets/thumbs public/assets/
           cp data/imported-prompts.json public/data/
+          cp -R gpt-image-2-prompts seedream-5-pro-prompts seedance-2-prompts grok-imagine-prompts gemini-3-pro-prompts public/
 
           python3 - <<'PY'
           import json

@@ -43,13 +43,16 @@ jobs:
       - name: Validate imported images
         run: python3 scripts/validate_imports.py
 
+      - name: Build SEO model pages
+        run: python3 scripts/build_model_pages.py
+
       - name: Commit and push changes
         run: |
-          if git diff --quiet -- data assets/imported scripts/import_selected_sources.py scripts/import_ai_skill_references.py scripts/sync_source_repos.py; then
+          if git diff --quiet -- data assets/imported gpt-image-2-prompts seedream-5-pro-prompts seedance-2-prompts grok-imagine-prompts gemini-3-pro-prompts sitemap.xml scripts/import_selected_sources.py scripts/import_ai_skill_references.py scripts/sync_source_repos.py scripts/build_model_pages.py; then
             echo "No prompt asset changes."
             exit 0
           fi
 
-          git add data assets/imported scripts/import_selected_sources.py scripts/import_ai_skill_references.py scripts/sync_source_repos.py
+          git add data assets/imported gpt-image-2-prompts seedream-5-pro-prompts seedance-2-prompts grok-imagine-prompts gemini-3-pro-prompts sitemap.xml scripts/import_selected_sources.py scripts/import_ai_skill_references.py scripts/sync_source_repos.py scripts/build_model_pages.py
           git commit -m "chore: update prompt assets"
           git push
