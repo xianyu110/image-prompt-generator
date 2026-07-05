@@ -741,6 +741,28 @@ a {
   text-align: center;
 }
 
+.lazy-load-sentinel {
+  display: grid;
+  place-items: center;
+  min-height: 64px;
+  margin-top: 28px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.lazy-load-sentinel span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 3px solid var(--line);
+  background: var(--surface);
+  box-shadow: 3px 3px 0 #000;
+}
+
 .faq {
   padding: 42px 0 82px;
   border-top: 4px solid var(--line);

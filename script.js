@@ -1,10 +1,12 @@
 const ALL_MODELS = "__all_models__";
 const ALL_CATEGORIES = "__all_categories__";
 const PROMPT_INDEX_URL = "data/prompt-index.json";
+const GRID_BATCH_SIZE = 48;
 
 const state = {
   prompts: [],
   filtered: [],
+  visibleCount: GRID_BATCH_SIZE,
   promptIndex: null,
   loadingPrompts: false,
   featuredOffset: 0,
@@ -29,6 +31,7 @@ const promptStore = new Map();
 const loadedModels = new Set();
 const pendingModelLoads = new Map();
 let filterRequestId = 0;
+let gridObserver = null;
 
 const copy = {
   en: {
@@ -60,6 +63,8 @@ const copy = {
     allModels: "All models",
     allCategories: "All categories",
     resultCount: (shown, total) => `${shown} prompts · ${total} total`,
+    visibleResultCount: (shown, matched, total) => `${shown} of ${matched} shown · ${total} total`,
+    loadingMore: "Loading more prompts...",
     author: "Author",
     selected: "Selected",
     original: "Original",
@@ -137,6 +142,8 @@ const copy = {
     allModels: "全部模型",
     allCategories: "全部分类",
     resultCount: (shown, total) => `${shown} 条提示词 · 共 ${total} 条`,
+    visibleResultCount: (shown, matched, total) => `已显示 ${shown} / ${matched} 条 · 共 ${total} 条`,
+    loadingMore: "正在加载更多提示词...",
     author: "作者",
     selected: "已选择",
     original: "原创",
@@ -240,6 +247,8 @@ const els = {
   sortSelect: document.querySelector("#sortSelect"),
   sortLabel: document.querySelector("#sortLabel"),
   promptGrid: document.querySelector("#promptGrid"),
+  lazyLoadSentinel: document.querySelector("#lazyLoadSentinel"),
+  lazyLoadStatus: document.querySelector("#lazyLoadStatus"),
   featuredGrid: document.querySelector("#featuredGrid"),
   resultCount: document.querySelector("#resultCount"),
   modelFilters: document.querySelector("#modelFilters"),
@@ -474,9 +483,44 @@ function renderFeatured() {
 }
 
 function renderGrid() {
-  els.promptGrid.innerHTML = state.filtered.map(cardTemplate).join("");
+  const visibleItems = state.filtered.slice(0, state.visibleCount);
+  els.promptGrid.innerHTML = visibleItems.map(cardTemplate).join("");
   els.emptyState.hidden = state.filtered.length > 0;
-  els.resultCount.textContent = state.loadingPrompts ? t("loading") : t("resultCount", state.filtered.length, state.prompts.length);
+  if (state.loadingPrompts) {
+    els.resultCount.textContent = t("loading");
+  } else if (visibleItems.length < state.filtered.length) {
+    els.resultCount.textContent = t("visibleResultCount", visibleItems.length, state.filtered.length, state.prompts.length);
+  } else {
+    els.resultCount.textContent = t("resultCount", state.filtered.length, state.prompts.length);
+  }
+  updateLazyLoadState();
+}
+
+function loadMorePrompts() {
+  if (state.visibleCount >= state.filtered.length) return;
+  state.visibleCount += GRID_BATCH_SIZE;
+  renderGrid();
+}
+
+function updateLazyLoadState() {
+  if (!els.lazyLoadSentinel || !els.lazyLoadStatus) return;
+  const hasMore = state.visibleCount < state.filtered.length;
+  els.lazyLoadSentinel.hidden = !hasMore;
+  els.lazyLoadStatus.textContent = hasMore ? t("loadingMore") : "";
+}
+
+function initLazyLoadObserver() {
+  if (!els.lazyLoadSentinel || gridObserver) return;
+  if (!("IntersectionObserver" in window)) {
+    els.lazyLoadSentinel.addEventListener("click", loadMorePrompts);
+    return;
+  }
+  gridObserver = new IntersectionObserver((entries) => {
+    if (entries.some((entry) => entry.isIntersecting)) {
+      loadMorePrompts();
+    }
+  }, { rootMargin: "900px 0px" });
+  gridObserver.observe(els.lazyLoadSentinel);
 }
 
 function buildFilter(container, values, active, allLabel, key, allValue) {
@@ -540,6 +584,7 @@ async function applyFilters() {
   const requestId = ++filterRequestId;
   await loadPromptsForCurrentModel();
   if (requestId !== filterRequestId) return;
+  state.visibleCount = GRID_BATCH_SIZE;
   const q = normalize(state.query);
   const filtered = state.prompts.filter((item) => {
     const modelMatch = modelMatches(item, state.model);
@@ -675,6 +720,7 @@ function renderStaticCopy() {
   els.backgroundPickerLabel.textContent = t("backgroundLabel");
   els.backToTopButton.setAttribute("aria-label", t("backToTop"));
   els.backToTopButton.setAttribute("title", t("backToTop"));
+  updateLazyLoadState();
   setTheme(state.theme);
   setBackground(state.background);
   updateTurnstileStatus();
@@ -1067,6 +1113,7 @@ async function init() {
   await loadPromptIndex();
   renderStaticCopy();
   attachEvents();
+  initLazyLoadObserver();
   await applyFilters();
   initTurnstile();
 }
