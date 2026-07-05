@@ -25,10 +25,39 @@ jobs:
         uses: actions/checkout@v4
       - name: Configure Pages
         uses: actions/configure-pages@v5
+      - name: Build Pages artifact
+        run: |
+          set -euo pipefail
+
+          rm -rf public
+          mkdir -p public/assets public/data
+
+          cp index.html styles.css script.js CNAME .nojekyll robots.txt sitemap.xml public/
+          cp assets/site-icon.svg public/assets/
+          cp -R assets/thumbs public/assets/
+          cp data/imported-prompts.json public/data/
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          source = Path("data/prompts.json")
+          target = Path("public/data/prompts.json")
+          data = json.loads(source.read_text())
+
+          for prompt in data.get("prompts", []):
+              image = prompt.get("image") or ""
+              if image.startswith("assets/imported/"):
+                  prompt["image"] = ""
+
+          target.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+          PY
+
+          du -sh public
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: public
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
