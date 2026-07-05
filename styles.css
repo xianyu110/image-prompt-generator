@@ -382,6 +382,11 @@ a {
   cursor: pointer;
 }
 
+.generate-button:disabled {
+  cursor: wait;
+  opacity: .76;
+}
+
 .spark::before {
   content: "✦";
   color: var(--white);

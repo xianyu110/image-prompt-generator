@@ -9,3 +9,5 @@ routes = [
 
 [vars]
 ALLOWED_ORIGINS = "https://image-prompt-generator.com,https://www.image-prompt-generator.com,https://xianyu110.github.io,http://127.0.0.1:8765,http://localhost:8765"
+UPSTREAM_API_BASE_URL = "https://apipro.maynor1024.live"
+PROMPT_TEXT_MODEL = "gpt-4o"
