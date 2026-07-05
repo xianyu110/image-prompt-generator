@@ -34,16 +34,22 @@ jobs:
           MAX_PER_SOURCE: "140"
         run: python3 scripts/import_selected_sources.py
 
+      - name: Import YouMind image prompt references
+        env:
+          PROMPT_TARGET_TOTAL: "3200"
+          AI_SKILL_WORKERS: "8"
+        run: python3 scripts/import_ai_skill_references.py
+
       - name: Validate imported images
         run: python3 scripts/validate_imports.py
 
       - name: Commit and push changes
         run: |
-          if git diff --quiet -- data assets/imported scripts/import_selected_sources.py; then
+          if git diff --quiet -- data assets/imported scripts/import_selected_sources.py scripts/import_ai_skill_references.py scripts/sync_source_repos.py; then
             echo "No prompt asset changes."
             exit 0
           fi
 
-          git add data assets/imported scripts/import_selected_sources.py
+          git add data assets/imported scripts/import_selected_sources.py scripts/import_ai_skill_references.py scripts/sync_source_repos.py
           git commit -m "chore: update prompt assets"
           git push

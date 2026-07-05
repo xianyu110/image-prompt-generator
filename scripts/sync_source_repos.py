@@ -15,6 +15,7 @@ REPOS = [
     ("xianyu110", "awesome-gptimage2"),
     ("xianyu110", "awesome-gemini-3-prompts"),
     ("xianyu110", "awesome-seedream-4.5"),
+    ("YouMind-OpenLab", "ai-image-prompts-skill"),
     ("YouMind-OpenLab", "awesome-gpt-image-2"),
     ("YouMind-OpenLab", "awesome-nano-banana-pro-prompts"),
     ("YouMind-OpenLab", "awesome-gpt-image-1.5"),
