@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GPT Image 2 提示词生成器 | Image Prompt Generator</title>
+  <meta name="description" content="GPT Image 2 提示词生成器，收集带图片、作者信息和可复制提示词的 AI image prompt 案例。">
+  <link rel="canonical" href="https://image-prompt-generator.com/">
+  <meta property="og:title" content="GPT Image 2 提示词生成器">
+  <meta property="og:description" content="上方生成提示词，下方浏览带图片和作者信息的热门 AI image prompts。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://image-prompt-generator.com/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"%3E%3Crect width="64" height="64" rx="6" fill="%2316a47c"/%3E%3Crect x="13" y="23" width="38" height="22" fill="white" stroke="black" stroke-width="4"/%3E%3Cpath d="M20 37h24" stroke="black" stroke-width="5"/%3E%3C/svg%3E'>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Image Prompt Generator",
+      "url": "https://image-prompt-generator.com/",
+      "description": "GPT Image 2 prompt generator and AI image prompt gallery.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://image-prompt-generator.com/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Image Prompt Generator">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Image Prompt Generator</span>
+    </a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="#generator">提示词生成</a>
+      <a href="#hot">热门提示词</a>
+      <a href="#library">全部案例</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <button class="menu-button" id="menuButton" type="button" aria-label="打开菜单">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <main id="top">
+    <section class="hero" id="generator">
+      <div class="hero-title">
+        <h1>GPT IMAGE 2</h1>
+        <div class="title-sticker">提示词</div>
+        <p>每日持续更新中</p>
+      </div>
+
+      <form class="prompt-composer" id="builderForm">
+        <div class="composer-main">
+          <textarea id="subjectInput" rows="4" placeholder="描述你想要生成的图像...（例如：赛博朋克风格的夜晚城市）">一张高级质感的 AI 图片提示词网站首页，上方是生成框，下方是带图片和作者信息的提示词卡片</textarea>
+          <div class="composer-tools">
+            <button class="tool-button" type="button" id="settingsButton">设置</button>
+            <button class="tool-button" type="button" id="imageButton">图片</button>
+            <select id="styleSelect" aria-label="风格">
+              <option>商业摄影</option>
+              <option>电影感人像</option>
+              <option>3D 粘土渲染</option>
+              <option>手绘信息图</option>
+              <option>编辑精准改图</option>
+            </select>
+            <select id="modelSelect" aria-label="模型">
+              <option>GPT Image 2</option>
+              <option>Nano Banana Pro</option>
+              <option>Seedream 5 Pro</option>
+            </select>
+            <select id="ratioSelect" aria-label="比例">
+              <option>1:1</option>
+              <option>4:5</option>
+              <option>9:16</option>
+              <option>16:9</option>
+            </select>
+          </div>
+        </div>
+        <button class="generate-button" type="submit">
+          <span class="spark" aria-hidden="true"></span>
+          <span>生成</span>
+        </button>
+      </form>
+
+      <div class="generated-output" id="generatedOutput" hidden>
+        <div>
+          <strong>生成结果</strong>
+          <button class="mini-copy" id="copyGeneratedButton" type="button">复制</button>
+        </div>
+        <pre id="builderOutput"></pre>
+      </div>
+
+      <div class="stat-pill">30,000+ 免费图像、视频提示词</div>
+    </section>
+
+    <section class="hot-prompts" id="hot">
+      <div class="section-header">
+        <h2>热门提示词</h2>
+        <button class="outline-button" id="shuffleButton" type="button">换一批</button>
+      </div>
+      <div class="prompt-grid featured-grid" id="featuredGrid"></div>
+    </section>
+
+    <section class="library" id="library">
+      <div class="library-toolbar">
+        <div>
+          <h2>全部提示词</h2>
+          <p id="resultCount">正在加载...</p>
+        </div>
+        <label class="search-box" for="searchInput">
+          <input id="searchInput" type="search" placeholder="搜索作者、模型、风格、提示词..." autocomplete="off">
+        </label>
+      </div>
+      <div class="filter-row">
+        <div id="modelFilters" class="filter-list" aria-label="模型筛选"></div>
+        <div id="categoryFilters" class="filter-list" aria-label="分类筛选"></div>
+      </div>
+      <div class="prompt-grid" id="promptGrid"></div>
+      <p class="empty-state" id="emptyState" hidden>没有找到匹配的提示词，换个关键词试试。</p>
+    </section>
+
+    <section class="faq" id="faq">
+      <h2>Image Prompt Generator 是什么？</h2>
+      <div class="faq-grid">
+        <details open>
+          <summary>这个网站和 YouMind 那类提示词页面有什么不同？</summary>
+          <p>页面结构参考“上方生成、下方案例流”的使用方式，但内容来自本地开源提示词集合和自有 Seedream 模板，并保留作者/来源信息。</p>
+        </details>
+        <details>
+          <summary>提示词可以直接复制到 GPT Image 2 吗？</summary>
+          <p>可以。每张卡片都有完整提示词、图片预览、作者来源和复制按钮，也可以先在顶部生成框改写再使用。</p>
+        </details>
+        <details>
+          <summary>后续能接 Seedream 5 Pro 吗？</summary>
+          <p>可以。当前第一版先做静态站和提示词库，下一步可以把生成按钮接到 Cloudflare Worker 或 Vercel API，避免在前端暴露密钥。</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="promptModal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" id="modalClose" type="button" aria-label="关闭">×</button>
+      <div class="modal-image" id="modalImage"></div>
+      <div class="modal-body">
+        <p class="author-line" id="modalAuthor"></p>
+        <h2 id="modalTitle"></h2>
+        <pre id="modalPrompt"></pre>
+        <div class="modal-actions">
+          <button class="try-button" id="copyModalButton" type="button">立即尝试</button>
+          <a class="share-button" id="modalSource" href="#" target="_blank" rel="noreferrer">查看来源</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Image Prompt Generator · GPT Image 2 prompts with images, authors, and source links.</p>
+    <a href="https://github.com/xianyu110/image-prompt-generator" target="_blank" rel="noreferrer">GitHub</a>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
