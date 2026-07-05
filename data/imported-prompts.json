@@ -1,6 +1,6 @@
 {
   "meta": {
-    "count": 662,
+    "count": 665,
     "sources": [
       {
         "repo": "xianyu110/awesome-nanobananapro-prompts",
@@ -27,10 +27,6 @@
         "items": 25
       },
       {
-        "repo": "YouMind-OpenLab/awesome-grok-imagine-prompts",
-        "items": 0
-      },
-      {
         "repo": "xianyu110/awesome-gemini-3-prompts",
         "file": "/Users/chinamanor/Downloads/cursor/image-prompt-generator/.cache/source-repos/xianyu110/awesome-gemini-3-prompts/README.md",
         "items": 49
@@ -49,6 +45,11 @@
         "repo": "YouMind-OpenLab/awesome-christmas-card-prompts",
         "file": "/Users/chinamanor/Downloads/cursor/image-prompt-generator/.cache/source-repos/YouMind-OpenLab/awesome-christmas-card-prompts/README.md",
         "items": 80
+      },
+      {
+        "repo": "YouMind-OpenLab/awesome-grok-imagine-prompts",
+        "file": "/Users/chinamanor/Downloads/cursor/image-prompt-generator/.cache/source-repos/YouMind-OpenLab/awesome-grok-imagine-prompts/README.md",
+        "items": 3
       }
     ]
   },
@@ -10642,6 +10643,54 @@
       "sourceFile": "/Users/chinamanor/Downloads/cursor/image-prompt-generator/.cache/source-repos/YouMind-OpenLab/awesome-christmas-card-prompts/README.md",
       "image": "assets/imported/YouMind-OpenLab/awesome-christmas-card-prompts/README-80-Flocked-Tree-with-Red-Ornaments-and-Bokeh.jpg",
       "prompt": "An exquisite, printable Christmas card design, frontal view, aspect ratio 1:1.4.\n\nThe composition features a close-up of a heavily flocked Christmas tree on the left side. The branches are covered in thick, soft white artificial snow. The tree is elegantly decorated with a mix of ornaments: glossy metallic red baubles, textured glittery red baubles, and smooth, matte white baubles. A few green pine needles and a small cluster of red berries are visible near the bottom.\n\nThe background on the right is a sophisticated, dark gray monochrome, filled with a beautiful bokeh effect of soft, out-of-focus white lights, creating a dreamy and festive atmosphere. The image uses a selective color style, where only the red ornaments and text are in vibrant color, while the rest of the scene is in shades of white and gray.\n\nOver the bokeh background on the right, the greeting {argument name=\"greeting\" default=\"Merry Christmas\"} is written in an elegant, flowing red script font, perfectly matching the color of the ornaments. The overall aesthetic is modern, clean, and sophisticated.",
+      "language": "mixed",
+      "license": "check source repository"
+    },
+    {
+      "id": "import-YouMind-OpenLab-awesome-grok-imagine-prompts-1",
+      "title": "Elon Musk Explaining Oxygen Circulation in SpaceX Engine",
+      "model": "Grok Imagine",
+      "category": "Creative",
+      "style": "Creative",
+      "useCase": "Creative",
+      "source": "CHINA PUNTER🇳🇬🇨🇳",
+      "sourceUrl": "https://github.com/YouMind-OpenLab/awesome-grok-imagine-prompts/blob/main/README.md",
+      "sourceRepo": "YouMind-OpenLab/awesome-grok-imagine-prompts",
+      "sourceFile": "/Users/chinamanor/Downloads/cursor/image-prompt-generator/.cache/source-repos/YouMind-OpenLab/awesome-grok-imagine-prompts/README.md",
+      "image": "assets/imported/YouMind-OpenLab/awesome-grok-imagine-prompts/README-1-Elon-Musk-Explaining-Oxygen-Circulation-in-SpaceX-Engine.jpg",
+      "prompt": "Using Grok to generate a of @elonmusk giving explanation in spacex engine about circulation of oxygen.",
+      "language": "mixed",
+      "license": "check source repository"
+    },
+    {
+      "id": "import-YouMind-OpenLab-awesome-grok-imagine-prompts-2",
+      "title": "Grok Imagine prompt for Hachiko's life video",
+      "model": "Grok Imagine",
+      "category": "Video",
+      "style": "Video",
+      "useCase": "Video",
+      "source": "Hachiko - $HACHI",
+      "sourceUrl": "https://github.com/YouMind-OpenLab/awesome-grok-imagine-prompts/blob/main/README.md",
+      "sourceRepo": "YouMind-OpenLab/awesome-grok-imagine-prompts",
+      "sourceFile": "/Users/chinamanor/Downloads/cursor/image-prompt-generator/.cache/source-repos/YouMind-OpenLab/awesome-grok-imagine-prompts/README.md",
+      "image": "assets/imported/YouMind-OpenLab/awesome-grok-imagine-prompts/README-2-Grok-Imagine-prompt-for-Hachiko-s-life-video.jpg",
+      "prompt": "Realistic cartoon style video of Hachiko’s true 1920s Tokyo life: the Akita puppy born in 1923 in Ōdate, adopted by Professor Ueno in 1924, their daily walks to Shibuya Station, Ueno’s sudden death in 1925 from cerebral haemorrhage, and Hachiko’s real, faithful wait every day for nearly 10 years until his passing in 1935 amid crowds and seasons.",
+      "language": "mixed",
+      "license": "check source repository"
+    },
+    {
+      "id": "import-YouMind-OpenLab-awesome-grok-imagine-prompts-3",
+      "title": "Video generation prompt: Celestial Valkyrie descending to Earth in the rain",
+      "model": "Grok Imagine",
+      "category": "Video",
+      "style": "Video",
+      "useCase": "Video",
+      "source": "Apple",
+      "sourceUrl": "https://github.com/YouMind-OpenLab/awesome-grok-imagine-prompts/blob/main/README.md",
+      "sourceRepo": "YouMind-OpenLab/awesome-grok-imagine-prompts",
+      "sourceFile": "/Users/chinamanor/Downloads/cursor/image-prompt-generator/.cache/source-repos/YouMind-OpenLab/awesome-grok-imagine-prompts/README.md",
+      "image": "assets/imported/YouMind-OpenLab/awesome-grok-imagine-prompts/README-3-Video-generation-prompt-Celestial-Valkyrie-descending-to-Earth-in-the-rain.jpg",
+      "prompt": "A mystical and noble celestial Valkyrie, a dignified and beautiful woman with long silver hair and shining armor, holding a holy spear, descending to Earth in the moment, with rain pouring down, radiating a solemn and sacred aura as she is drawn down from Valhalla in a fantastical appearance.",
       "language": "mixed",
       "license": "check source repository"
     }
