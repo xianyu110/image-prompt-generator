@@ -1,6 +1,7 @@
 name = "image-prompt-generator-api"
 main = "workers/turnstile.js"
 compatibility_date = "2026-07-05"
+workers_dev = true
 
 routes = [
   { pattern = "image-prompt-generator.com/api/*", zone_name = "image-prompt-generator.com" }
