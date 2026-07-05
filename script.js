@@ -45,9 +45,18 @@ const copy = {
     generatedTitle: "Generated Prompt",
     copy: "Copy",
     statPill: "3,000 image prompts",
-    hotTitle: "Trending Prompts",
+    hotTitle: "Free AI Image Prompt Generator",
     shuffle: "Shuffle",
-    libraryTitle: "Prompt Library",
+    libraryTitle: "Image Prompt Examples",
+    modelPagesTitle: "Prompt Generator by Model",
+    guideTitle: "How to Write Better Image Prompts",
+    guidePointOne: "Start with a clear subject, scene, and visual goal.",
+    guidePointTwo: "Add style, lighting, camera angle, composition, and aspect ratio.",
+    guidePointThree: "Use model-specific instructions for text rendering, edits, keyframes, or product shots.",
+    guideChecklistTitle: "Prompt Checklist",
+    guideChecklistOne: "Subject + scene",
+    guideChecklistTwo: "Style + lighting",
+    guideChecklistThree: "Composition + constraints",
     loading: "Loading...",
     searchLabel: "Search",
     searchPlaceholder: "Search author, model, style, prompt...",
@@ -124,9 +133,18 @@ const copy = {
     generatedTitle: "生成结果",
     copy: "复制",
     statPill: "3,000 图片提示词",
-    hotTitle: "热门提示词",
+    hotTitle: "免费 AI 图片提示词生成器",
     shuffle: "换一批",
-    libraryTitle: "全部提示词",
+    libraryTitle: "图片提示词案例",
+    modelPagesTitle: "按模型生成提示词",
+    guideTitle: "如何写出更好的图片提示词",
+    guidePointOne: "先写清楚主体、场景和视觉目标。",
+    guidePointTwo: "补充风格、光线、镜头角度、构图和画面比例。",
+    guidePointThree: "根据模型加入文字渲染、改图、关键帧或商品图等专属要求。",
+    guideChecklistTitle: "提示词检查清单",
+    guideChecklistOne: "主体 + 场景",
+    guideChecklistTwo: "风格 + 光线",
+    guideChecklistThree: "构图 + 约束",
     loading: "正在加载...",
     searchLabel: "搜索",
     searchPlaceholder: "搜索作者、模型、风格、提示词...",
@@ -687,9 +705,18 @@ function renderStaticCopy() {
   els.copyGeneratedButton.textContent = t("copy");
   els.copyGateTitle.textContent = t("copyGateTitle");
   document.querySelector("#statPill").textContent = t("statPill");
+  document.querySelector("#modelPagesTitle").textContent = t("modelPagesTitle");
   document.querySelector("#hotTitle").textContent = t("hotTitle");
   els.shuffleButton.textContent = t("shuffle");
   document.querySelector("#libraryTitle").textContent = t("libraryTitle");
+  document.querySelector("#guideTitle").textContent = t("guideTitle");
+  document.querySelector("#guidePointOne").textContent = t("guidePointOne");
+  document.querySelector("#guidePointTwo").textContent = t("guidePointTwo");
+  document.querySelector("#guidePointThree").textContent = t("guidePointThree");
+  document.querySelector("#guideChecklistTitle").textContent = t("guideChecklistTitle");
+  document.querySelector("#guideChecklistOne").textContent = t("guideChecklistOne");
+  document.querySelector("#guideChecklistTwo").textContent = t("guideChecklistTwo");
+  document.querySelector("#guideChecklistThree").textContent = t("guideChecklistThree");
   els.searchLabel.textContent = t("searchLabel");
   els.search.placeholder = t("searchPlaceholder");
   els.modelFilterLabel.textContent = t("modelFilterLabel");
@@ -1102,8 +1129,9 @@ function attachEvents() {
 
 async function init() {
   const params = new URLSearchParams(window.location.search);
+  const requestedLanguage = params.get("lang");
   state.query = params.get("q") || "";
-  state.language = params.get("lang") === "zh" ? "zh" : (localStorage.getItem("ipg-language") || "en");
+  state.language = ["en", "zh"].includes(requestedLanguage) ? requestedLanguage : (localStorage.getItem("ipg-language") || "en");
   state.theme = localStorage.getItem("ipg-theme") || "light";
   state.background = localStorage.getItem("ipg-background") || "green";
   els.search.value = state.query;

@@ -38,6 +38,46 @@
       }
     }
   </script>
+  <script type="application/ld+json" id="faqSchema">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How is Image Prompt Generator different from a normal prompt list?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Image Prompt Generator combines a model-aware prompt generator with a browsable prompt gallery. Each card keeps the author, source, image preview, model, and copy action."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I filter image prompts by AI model?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Pick a model in the generator dropdown or prompt library filters to switch the gallery to examples and templates for that model."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I write better image prompts?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A strong image prompt should include a clear subject, scene, style, lighting, composition, aspect ratio, model-specific instructions, and optional negative constraints."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use these image prompts commercially?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Check the source for each card before commercial use. Some prompts come from open collections, some from attributed social posts, and some are original templates from this site."
+          }
+        }
+      ]
+    }
+  </script>
   <link rel="stylesheet" href="styles.css?v=20260705-lazy">
 </head>
 <body>
@@ -130,7 +170,7 @@
 
     <section class="model-links" aria-label="AI image model prompt pages">
       <div class="section-header">
-        <h2>Prompt Pages by Model</h2>
+        <h2 id="modelPagesTitle">Prompt Generator by Model</h2>
         <a class="outline-button" href="#library">Explore</a>
       </div>
       <div class="model-link-grid">
@@ -144,16 +184,35 @@
 
     <section class="hot-prompts" id="hot">
       <div class="section-header">
-        <h2 id="hotTitle">Trending Prompts</h2>
+        <h2 id="hotTitle">Free AI Image Prompt Generator</h2>
         <button class="outline-button" id="shuffleButton" type="button">Shuffle</button>
       </div>
       <div class="prompt-grid featured-grid" id="featuredGrid"></div>
     </section>
 
+    <section class="model-guide" id="prompt-guide" aria-label="How to write better image prompts">
+      <div>
+        <h2 id="guideTitle">How to Write Better Image Prompts</h2>
+        <ul>
+          <li id="guidePointOne">Start with a clear subject, scene, and visual goal.</li>
+          <li id="guidePointTwo">Add style, lighting, camera angle, composition, and aspect ratio.</li>
+          <li id="guidePointThree">Use model-specific instructions for text rendering, edits, keyframes, or product shots.</li>
+        </ul>
+      </div>
+      <div>
+        <strong class="guide-card-title" id="guideChecklistTitle">Prompt Checklist</strong>
+        <ul>
+          <li id="guideChecklistOne">Subject + scene</li>
+          <li id="guideChecklistTwo">Style + lighting</li>
+          <li id="guideChecklistThree">Composition + constraints</li>
+        </ul>
+      </div>
+    </section>
+
     <section class="library" id="library">
       <div class="library-toolbar">
         <div>
-          <h2 id="libraryTitle">Prompt Library</h2>
+          <h2 id="libraryTitle">Image Prompt Examples</h2>
           <p id="resultCount">Loading...</p>
         </div>
         <div class="library-controls" aria-label="Prompt library controls">
@@ -237,7 +296,7 @@
       <div class="modal-image" id="modalImage"></div>
       <div class="modal-body">
         <p class="author-line" id="modalAuthor"></p>
-        <h2 id="modalTitle"></h2>
+        <strong id="modalTitle"></strong>
         <pre id="modalPrompt"></pre>
         <div class="modal-actions">
           <button class="try-button" id="copyModalButton" type="button">Try it</button>
