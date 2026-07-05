@@ -83,13 +83,13 @@ def model_for(repo: str) -> str:
     if "gpt-image-1.5" in text:
         return "GPT Image 1.5"
     if "seedream" in text:
-        return "Seedream"
+        return "Seedream 5 Pro"
     if "gemini-3" in text:
         return "Gemini 3 Pro"
     if "grok" in text:
         return "Grok Imagine"
     if "seedance" in text:
-        return "Seedance"
+        return "Seedance 2.0"
     if "nano" in text or "banana" in text or "gemini" in text:
         return "Nano Banana Pro"
     return "AI Image Model"
@@ -124,19 +124,15 @@ def source_url(owner: str, repo: str, file_path: Path) -> str:
 
 
 def parse_blocks(text: str) -> list[tuple[str, str]]:
-    no_matches = list(re.finditer(r"^### No\.\s*\d+:\s*(.+)$", text, re.M))
-    if no_matches:
-        blocks = []
-        for index, match in enumerate(no_matches):
-            title = clean(match.group(1))
-            start = match.end()
-            end = no_matches[index + 1].start() if index + 1 < len(no_matches) else len(text)
-            blocks.append((title, text[start:end]))
-        return blocks
-    matches = list(re.finditer(r"^(#{2,4})\s+(.+)$", text, re.M))
+    matches = [
+        match
+        for match in re.finditer(r"^###\s+(.+)$", text, re.M)
+        if "Prompt" in text[match.end() : match.end() + 2500]
+    ]
     blocks = []
     for index, match in enumerate(matches):
-        title = clean(match.group(2))
+        title = clean(match.group(1))
+        title = re.sub(r"^No\.\s*\d+\s*:\s*", "", title).strip()
         start = match.end()
         end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
         blocks.append((title, text[start:end]))
