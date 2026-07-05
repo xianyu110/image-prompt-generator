@@ -25,8 +25,8 @@ IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
 
 
 SOURCES = [
-    ("xianyu110", "awesome-nanobananapro-prompts", WORKSPACE / "awesome-nanobananapro-prompts/gpt4o-image-prompts-master/100.md"),
-    ("xianyu110", "awesome-gptimage2", WORKSPACE / "awesome-gptimage2/data/latest-prompts.json"),
+    ("xianyu110", "awesome-nanobananapro-prompts", CACHE / "xianyu110/awesome-nanobananapro-prompts/gpt4o-image-prompts-master/100.md"),
+    ("xianyu110", "awesome-gptimage2", CACHE / "xianyu110/awesome-gptimage2/data/latest-prompts.json"),
     ("xianyu110", "awesome-gemini-3-prompts", CACHE / "xianyu110/awesome-gemini-3-prompts/README.md"),
     ("xianyu110", "awesome-seedream-4.5", CACHE / "xianyu110/awesome-seedream-4.5/README.md"),
     ("YouMind-OpenLab", "awesome-gpt-image-2", CACHE / "YouMind-OpenLab/awesome-gpt-image-2/README.md"),
@@ -39,6 +39,10 @@ SOURCES = [
     ("YouMind-OpenLab", "awesome-seedance-2-prompts", CACHE / "YouMind-OpenLab/awesome-seedance-2-prompts/README.md"),
 ]
 KNOWN_SOURCE_REPOS = {f"{owner}/{repo}" for owner, repo, _ in SOURCES}
+LOCAL_SOURCE_FALLBACKS = {
+    ("xianyu110", "awesome-nanobananapro-prompts"): WORKSPACE / "awesome-nanobananapro-prompts/gpt4o-image-prompts-master/100.md",
+    ("xianyu110", "awesome-gptimage2"): WORKSPACE / "awesome-gptimage2/data/latest-prompts.json",
+}
 
 
 def slug(value: str) -> str:
@@ -354,6 +358,15 @@ def selected_sources(args: list[str]) -> list[tuple[str, str, Path]]:
     return selected
 
 
+def resolve_source_path(owner: str, repo: str, file_path: Path) -> Path:
+    if file_path.exists():
+        return file_path
+    fallback = LOCAL_SOURCE_FALLBACKS.get((owner, repo))
+    if fallback and fallback.exists():
+        return fallback
+    return file_path
+
+
 def main() -> int:
     sources = selected_sources(sys.argv[1:])
     if not sources:
@@ -362,6 +375,7 @@ def main() -> int:
     imported = []
     summary = []
     for owner, repo, file_path in sources:
+        file_path = resolve_source_path(owner, repo, file_path)
         if not file_path.exists():
             print(f"skip missing {owner}/{repo}: {file_path}")
             continue

@@ -1,0 +1,49 @@
+name: Update prompt assets
+
+on:
+  schedule:
+    - cron: "12 20 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-prompt-assets
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git bot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync source repositories
+        run: python3 scripts/sync_source_repos.py
+
+      - name: Import prompt assets
+        env:
+          MAX_PER_SOURCE: "140"
+        run: python3 scripts/import_selected_sources.py
+
+      - name: Validate imported images
+        run: python3 scripts/validate_imports.py
+
+      - name: Commit and push changes
+        run: |
+          if git diff --quiet -- data assets/imported scripts/import_selected_sources.py; then
+            echo "No prompt asset changes."
+            exit 0
+          fi
+
+          git add data assets/imported scripts/import_selected_sources.py
+          git commit -m "chore: update prompt assets"
+          git push
