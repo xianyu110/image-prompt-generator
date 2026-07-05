@@ -7,6 +7,7 @@ import json
 import re
 import shutil
 import subprocess
+import sys
 import urllib.request
 from pathlib import Path
 
@@ -25,6 +26,8 @@ IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
 SOURCES = [
     ("xianyu110", "awesome-nanobananapro-prompts", WORKSPACE / "awesome-nanobananapro-prompts/gpt4o-image-prompts-master/100.md"),
     ("xianyu110", "awesome-gptimage2", WORKSPACE / "awesome-gptimage2/data/latest-prompts.json"),
+    ("xianyu110", "awesome-gemini-3-prompts", CACHE / "xianyu110/awesome-gemini-3-prompts/README.md"),
+    ("xianyu110", "awesome-seedream-4.5", CACHE / "xianyu110/awesome-seedream-4.5/README.md"),
     ("YouMind-OpenLab", "awesome-gpt-image-2", CACHE / "YouMind-OpenLab/awesome-gpt-image-2/README.md"),
     ("YouMind-OpenLab", "awesome-nano-banana-pro-prompts", CACHE / "YouMind-OpenLab/awesome-nano-banana-pro-prompts/README.md"),
     ("YouMind-OpenLab", "awesome-gpt-image-1.5", CACHE / "YouMind-OpenLab/awesome-gpt-image-1.5/README.md"),
@@ -34,6 +37,7 @@ SOURCES = [
     ("YouMind-OpenLab", "awesome-grok-imagine-prompts", CACHE / "YouMind-OpenLab/awesome-grok-imagine-prompts/README.md"),
     ("YouMind-OpenLab", "awesome-seedance-2-prompts", CACHE / "YouMind-OpenLab/awesome-seedance-2-prompts/README.md"),
 ]
+KNOWN_SOURCE_REPOS = {f"{owner}/{repo}" for owner, repo, _ in SOURCES}
 
 
 def slug(value: str) -> str:
@@ -75,6 +79,8 @@ def model_for(repo: str) -> str:
         return "GPT Image 1.5"
     if "seedream" in text:
         return "Seedream"
+    if "gemini-3" in text:
+        return "Gemini 3"
     if "grok" in text:
         return "Grok Imagine"
     if "seedance" in text:
@@ -289,21 +295,72 @@ def parse_json(owner: str, repo: str, file_path: Path) -> list[dict]:
     return rows
 
 
-def merge(imported: list[dict]) -> None:
+def merge(imported: list[dict], selected_repos: set[str]) -> None:
     payload = json.loads(PROMPTS_DATA.read_text(encoding="utf-8"))
-    prompts = {item["id"]: item for item in payload.get("prompts", [])}
+    existing = [
+        item
+        for item in payload.get("prompts", [])
+        if item.get("sourceRepo") not in selected_repos
+    ]
+    prompts = {item["id"]: item for item in existing}
     for item in imported:
         prompts[item["id"]] = item
     payload["prompts"] = list(prompts.values())
     payload.setdefault("meta", {})["count"] = len(payload["prompts"])
-    payload["meta"]["importedCount"] = len(imported)
+    payload["meta"]["importedCount"] = sum(1 for item in payload["prompts"] if item.get("sourceRepo"))
     PROMPTS_DATA.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def write_imported(imported: list[dict], summary: list[dict], selected_repos: set[str]) -> None:
+    if IMPORTED_DATA.exists():
+        payload = json.loads(IMPORTED_DATA.read_text(encoding="utf-8"))
+        existing_prompts = payload.get("prompts", [])
+        existing_sources = payload.get("meta", {}).get("sources", [])
+    else:
+        existing_prompts = []
+        existing_sources = []
+
+    prompts = [
+        item
+        for item in existing_prompts
+        if item.get("sourceRepo") not in selected_repos
+    ]
+    prompts.extend(imported)
+    sources = [
+        item
+        for item in existing_sources
+        if item.get("repo") not in selected_repos
+    ]
+    sources.extend(summary)
+    IMPORTED_DATA.write_text(
+        json.dumps({"meta": {"count": len(prompts), "sources": sources}, "prompts": prompts}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
+def selected_sources(args: list[str]) -> list[tuple[str, str, Path]]:
+    if not args:
+        return SOURCES
+    wanted = set(args)
+    selected = [
+        source
+        for source in SOURCES
+        if f"{source[0]}/{source[1]}" in wanted or source[1] in wanted
+    ]
+    missing = wanted - {f"{owner}/{repo}" for owner, repo, _ in selected} - {repo for _, repo, _ in selected}
+    if missing:
+        print(f"unknown source filter: {', '.join(sorted(missing))}", file=sys.stderr)
+    return selected
+
+
 def main() -> int:
+    sources = selected_sources(sys.argv[1:])
+    if not sources:
+        return 2
+    selected_repos = {f"{owner}/{repo}" for owner, repo, _ in sources}
     imported = []
     summary = []
-    for owner, repo, file_path in SOURCES:
+    for owner, repo, file_path in sources:
         if not file_path.exists():
             print(f"skip missing {owner}/{repo}: {file_path}")
             continue
@@ -314,8 +371,8 @@ def main() -> int:
         imported.extend(rows)
         summary.append({"repo": f"{owner}/{repo}", "file": str(file_path), "items": len(rows)})
         print(f"{owner}/{repo}: {len(rows)}")
-    IMPORTED_DATA.write_text(json.dumps({"meta": {"count": len(imported), "sources": summary}, "prompts": imported}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    merge(imported)
+    write_imported(imported, summary, selected_repos)
+    merge(imported, selected_repos)
     print(f"imported total: {len(imported)}")
     return 0
 
