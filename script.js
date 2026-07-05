@@ -111,7 +111,7 @@ const copy = {
     subjectFallback: "a high-quality AI image",
     loadError: "Prompt data failed to load.",
     metaTitle: "Image Prompt Generator | Free AI Image Prompt Generator",
-    metaDescription: "Image Prompt Generator helps you create and explore AI image prompts for GPT Image, Seedream, Seedance, Grok Imagine, Gemini, and Nano Banana Pro, with images, authors, model filters, and one-click copy.",
+    metaDescription: "Free AI image prompt generator with model filters, prompt examples, and copy-ready ideas for GPT Image, Seedream, Seedance, Grok Imagine, and Gemini.",
   },
   zh: {
     navGenerator: "提示词生成",
@@ -190,7 +190,7 @@ const copy = {
     subjectFallback: "一张高质量 AI 图片",
     loadError: "提示词数据加载失败。",
     metaTitle: "Image Prompt Generator | AI 图片与视频提示词生成器",
-    metaDescription: "Image Prompt Generator 收集 GPT Image、Seedream、Seedance、Grok、Gemini 等模型可用的 AI image prompt 案例，带图片、作者信息和一键复制。",
+    metaDescription: "Image Prompt Generator 提供免费 AI 图片提示词、模型筛选、案例库和可复制灵感，覆盖 GPT Image、Seedream、Seedance、Grok 与 Gemini。",
   },
 };
 
