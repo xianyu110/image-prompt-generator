@@ -60,6 +60,16 @@ const copy = {
     faqTwoBody: "Yes. Pick a model in the generator dropdown and the prompt gallery below switches to examples and templates for that model.",
     faqThreeTitle: "Why include Seedance 2.0?",
     faqThreeBody: "Seedance 2.0 is best known for multimodal video generation, while some third-party creator tools expose image workflows. This generator supports both image keyframe prompts and video storyboard prompts.",
+    faqFourTitle: "How do I use a prompt from the library?",
+    faqFourBody: "Click any prompt card to inspect the full prompt, then use Try it to copy the prompt into the generator box. You can change the model, aspect ratio, subject, or wording before pasting it into your image tool.",
+    faqFiveTitle: "Why keep author and source information?",
+    faqFiveBody: "Prompt examples are easier to trust when the original author, source link, and model context are visible. Attribution also makes it easier to revisit the original post or collection.",
+    faqSixTitle: "Can I use these prompts commercially?",
+    faqSixBody: "Check the source for each card before commercial use. Some prompts come from open collections, some from attributed social posts, and some are original templates from this site.",
+    faqSevenTitle: "Will the generator call Seedream 5 Pro directly?",
+    faqSevenBody: "The current version is a static prompt generator and gallery. A future version can connect Seedream 5 Pro through a server-side API layer such as Cloudflare Workers or Vercel Functions.",
+    faqEightTitle: "Can I change the site background color?",
+    faqEightBody: "Yes. Use the Background selector in the top bar to switch between green, blue, pink, yellow, and black. Your choice is saved locally in the browser.",
     languageToggle: "中文",
     themeDark: "Dark",
     themeLight: "Light",
@@ -114,6 +124,16 @@ const copy = {
     faqTwoBody: "可以。在顶部生成器选择一个模型后，下方提示词案例会切换到对应模型的案例和模板。",
     faqThreeTitle: "为什么加入 Seedance 2.0？",
     faqThreeBody: "Seedance 2.0 更常见的官方定位是多模态视频生成，也有第三方创作工具提供图片工作流。这里同时支持静帧图像提示词和视频分镜提示词。",
+    faqFourTitle: "怎么使用提示词库里的案例？",
+    faqFourBody: "点击任意提示词卡片可以查看完整内容，点“立即尝试”会把提示词复制并放进顶部生成框。你可以继续改模型、比例、主体和措辞。",
+    faqFiveTitle: "为什么要保留作者和来源信息？",
+    faqFiveBody: "保留作者、来源链接和模型上下文，能让案例更可信，也方便回到原帖或原始集合继续查看完整背景。",
+    faqSixTitle: "这些提示词可以商用吗？",
+    faqSixBody: "商用前请查看每张卡片的来源说明。有些来自开源集合，有些来自带署名的社交平台内容，也有部分是本站原创模板。",
+    faqSevenTitle: "生成器会直接调用 Seedream 5 Pro 吗？",
+    faqSevenBody: "当前版本是静态提示词生成器和案例库。后续可以通过 Cloudflare Workers 或 Vercel Functions 这类服务端 API 层接入 Seedream 5 Pro。",
+    faqEightTitle: "可以更换网站背景颜色吗？",
+    faqEightBody: "可以。顶部的“背景”选择器支持绿色、蓝色、粉色、黄色和黑色，并会把选择保存在当前浏览器里。",
     languageToggle: "English",
     themeDark: "深色",
     themeLight: "浅色",
@@ -476,6 +496,16 @@ function renderStaticCopy() {
   document.querySelector("#faqTwoBody").textContent = t("faqTwoBody");
   document.querySelector("#faqThreeTitle").textContent = t("faqThreeTitle");
   document.querySelector("#faqThreeBody").textContent = t("faqThreeBody");
+  document.querySelector("#faqFourTitle").textContent = t("faqFourTitle");
+  document.querySelector("#faqFourBody").textContent = t("faqFourBody");
+  document.querySelector("#faqFiveTitle").textContent = t("faqFiveTitle");
+  document.querySelector("#faqFiveBody").textContent = t("faqFiveBody");
+  document.querySelector("#faqSixTitle").textContent = t("faqSixTitle");
+  document.querySelector("#faqSixBody").textContent = t("faqSixBody");
+  document.querySelector("#faqSevenTitle").textContent = t("faqSevenTitle");
+  document.querySelector("#faqSevenBody").textContent = t("faqSevenBody");
+  document.querySelector("#faqEightTitle").textContent = t("faqEightTitle");
+  document.querySelector("#faqEightBody").textContent = t("faqEightBody");
   els.copyModalButton.textContent = t("tryIt");
   els.modalSource.textContent = t("modalSource");
   els.languageToggle.textContent = t("languageToggle");
