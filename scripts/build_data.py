@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import re
 import shutil
+import subprocess
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -81,9 +82,22 @@ def download_thumb(url: str | None, item_id: str) -> str | None:
         request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(request, timeout=15) as response:
             dest.write_bytes(response.read())
-        return f"assets/thumbs/{dest.name}"
+        if dest.stat().st_size > 0:
+            return f"assets/thumbs/{dest.name}"
     except (urllib.error.URLError, TimeoutError, OSError):
-        return url
+        pass
+    try:
+        subprocess.run(
+            ["curl", "-k", "-L", "--max-time", "35", "-A", "Mozilla/5.0", "-o", str(dest), url],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        if dest.exists() and dest.stat().st_size > 0:
+            return f"assets/thumbs/{dest.name}"
+    except (subprocess.CalledProcessError, OSError):
+        pass
+    return url
 
 
 def parse_nano(limit: int = 48) -> list[dict]:
