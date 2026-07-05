@@ -35,30 +35,21 @@ jobs:
           cp index.html styles.css script.js CNAME .nojekyll robots.txt sitemap.xml public/
           cp assets/site-icon.svg public/assets/
           cp -R assets/thumbs public/assets/
-          python3 - <<'PY'
-          import json
-          import shutil
-          from pathlib import Path
-
-          data = json.loads(Path("data/prompts.json").read_text())
-          imported_assets = sorted({
-              prompt.get("image")
-              for prompt in data.get("prompts", [])
-              if str(prompt.get("image") or "").startswith("assets/imported/")
-          })
-
-          for asset in imported_assets:
-              source = Path(asset)
-              if not source.is_file():
-                  continue
-              target = Path("public") / asset
-              target.parent.mkdir(parents=True, exist_ok=True)
-              shutil.copy2(source, target)
-          PY
           cp data/imported-prompts.json public/data/
           cp data/model-page-assets.json public/data/
           cp -R gpt-image-2-prompts seedream-5-pro-prompts seedance-2-prompts grok-imagine-prompts gemini-3-pro-prompts public/
-          cp data/prompts.json public/data/
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          raw_base = "https://raw.githubusercontent.com/xianyu110/image-prompt-generator/main/"
+          data = json.loads(Path("data/prompts.json").read_text())
+          for prompt in data.get("prompts", []):
+              image = prompt.get("image") or ""
+              if image.startswith("assets/imported/"):
+                  prompt["image"] = raw_base + image
+          Path("public/data/prompts.json").write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+          PY
 
           du -sh public
       - name: Upload artifact

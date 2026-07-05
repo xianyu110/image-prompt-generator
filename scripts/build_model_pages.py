@@ -6,6 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_URL = "https://image-prompt-generator.com"
+RAW_ASSET_BASE = "https://raw.githubusercontent.com/xianyu110/image-prompt-generator/main/"
 
 
 MODEL_PAGES = [
@@ -143,10 +144,16 @@ def published_image_path(item):
     return image
 
 
+def image_url(image, prefix="../"):
+    if image.startswith("assets/imported/"):
+        return RAW_ASSET_BASE + image
+    return prefix + image
+
+
 def image_html(item, prefix="../"):
     image = published_image_path(item)
     if image:
-        return f'<div class="card-image"><img src="{prefix}{safe(image)}" alt="{safe(item.get("title"))}" loading="lazy"></div>'
+        return f'<div class="card-image"><img src="{safe(image_url(image, prefix))}" alt="{safe(item.get("title"))}" loading="lazy"></div>'
     return f'<div class="card-image"><div class="image-fallback">{safe(item.get("model"))}<br>{safe(item.get("category"))}</div></div>'
 
 
