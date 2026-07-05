@@ -80,13 +80,21 @@ async function createAccessToken(env, hostname) {
 
 async function verifyAccessToken(env, token) {
   if (!env.TURNSTILE_SECRET_KEY || !token || !token.includes(".")) return false;
-  const [payload, signature] = token.split(".");
+  const parts = token.split(".");
+  if (parts.length !== 2) return false;
+  const [payload, signature] = parts;
   if (!payload || !signature) return false;
 
-  const expected = base64url(new Uint8Array(await hmac(env.TURNSTILE_SECRET_KEY, payload)));
-  const a = base64urlToBytes(signature);
-  const b = base64urlToBytes(expected);
-  if (a.length !== b.length) return false;
+  let a;
+  let b;
+  try {
+    const expected = base64url(new Uint8Array(await hmac(env.TURNSTILE_SECRET_KEY, payload)));
+    a = base64urlToBytes(signature);
+    b = base64urlToBytes(expected);
+    if (a.length !== b.length) return false;
+  } catch {
+    return false;
+  }
 
   let diff = 0;
   for (let index = 0; index < a.length; index += 1) diff |= a[index] ^ b[index];
@@ -215,14 +223,14 @@ async function generatePrompt(request, env) {
   if (!origin) {
     return json({ success: false, error: "origin_not_allowed" }, { status: 403 });
   }
-  if (!env.MAYNOR_API_KEY) {
-    return json({ success: false, error: "prompt_api_key_missing" }, { status: 500 }, origin);
-  }
 
   const body = await readJson(request);
   const accessToken = typeof body?.accessToken === "string" ? body.accessToken.trim() : "";
   if (!(await verifyAccessToken(env, accessToken))) {
     return json({ success: false, error: "human_check_required" }, { status: 401 }, origin);
+  }
+  if (!env.MAYNOR_API_KEY) {
+    return json({ success: false, error: "prompt_api_key_missing" }, { status: 500 }, origin);
   }
 
   const subject = cleanString(body?.subject, 3000);
