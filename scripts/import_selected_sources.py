@@ -80,7 +80,7 @@ def model_for(repo: str) -> str:
     if "seedream" in text:
         return "Seedream"
     if "gemini-3" in text:
-        return "Gemini 3"
+        return "Gemini 3 Pro"
     if "grok" in text:
         return "Grok Imagine"
     if "seedance" in text:

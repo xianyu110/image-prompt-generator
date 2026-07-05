@@ -6518,7 +6518,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-1",
       "title": "Thanksgiving Charlie Brown themed store",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6534,7 +6534,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-2",
       "title": "Futuristic animated landing page for AI game",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Product",
       "style": "Product",
       "useCase": "Product",
@@ -6550,7 +6550,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-3",
       "title": "Hello world web page with Linear-style variants",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6566,7 +6566,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-4",
       "title": "Luxury 3D watch product experience page (Next.js + Three.js)",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Product",
       "style": "Product",
       "useCase": "Product",
@@ -6582,7 +6582,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-5",
       "title": "Playful Zelda video capture editor prompt",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Infographic",
       "style": "Infographic",
       "useCase": "Infographic",
@@ -6598,7 +6598,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-6",
       "title": "Luxury smartwatch Three.js landing page with animated sections",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Product",
       "style": "Product",
       "useCase": "Product",
@@ -6614,7 +6614,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-7",
       "title": "Generate 40 simple SVG icons with download buttons",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6630,7 +6630,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-8",
       "title": "Voxel-art pagoda garden single-file HTML scene",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6646,7 +6646,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-9",
       "title": "Futuristic cryptocurrency dashboard UI",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Poster",
       "style": "Poster",
       "useCase": "Poster",
@@ -6662,7 +6662,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-10",
       "title": "SVG Ferris wheel mechanical animation in HTML",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6678,7 +6678,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-11",
       "title": "Keep-inspired Chinese workout course website",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Product",
       "style": "Product",
       "useCase": "Product",
@@ -6694,7 +6694,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-12",
       "title": "Keep-style Chinese fitness page (single HTML)",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Infographic",
       "style": "Infographic",
       "useCase": "Infographic",
@@ -6710,7 +6710,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-13",
       "title": "Neo-Brutalist website design prompt",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6726,7 +6726,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-14",
       "title": "Retro Polaroid camera website with photo wall",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6742,7 +6742,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-15",
       "title": "Dream journaling tarot-style web app",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Infographic",
       "style": "Infographic",
       "useCase": "Infographic",
@@ -6758,7 +6758,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-16",
       "title": "3D brick builder app with Gemini and React",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "3D",
       "style": "3D",
       "useCase": "3D",
@@ -6774,7 +6774,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-17",
       "title": "X (Twitter) MBTI analyzer web app",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6790,7 +6790,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-18",
       "title": "AI Hanfu wardrobe virtual try-on app",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "3D",
       "style": "3D",
       "useCase": "3D",
@@ -6806,7 +6806,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-19",
       "title": "Retro Motorola Fix Beeper typewriter web app",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Infographic",
       "style": "Infographic",
       "useCase": "Infographic",
@@ -6822,7 +6822,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-20",
       "title": "Chinese web app for Greek mythology constellations",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Portrait",
       "style": "Portrait",
       "useCase": "Portrait",
@@ -6838,7 +6838,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-21",
       "title": "Cyber-style modern Chinese almanac web app",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6854,7 +6854,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-22",
       "title": "Retro Polaroid-style camera web app",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6870,7 +6870,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-23",
       "title": "Maximalist digital hot dog startup website",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Product",
       "style": "Product",
       "useCase": "Product",
@@ -6886,7 +6886,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-24",
       "title": "Raymarched Mandelbulb fractal with audio-reactive particles in Three.js",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6902,7 +6902,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-25",
       "title": "Agency-style website for a client called AP",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6918,7 +6918,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-26",
       "title": "Laser eye effect web demo with Mediapipe and Three.js",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "3D",
       "style": "3D",
       "useCase": "3D",
@@ -6934,7 +6934,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-27",
       "title": "Three.js survival-mode replica of Minecraft",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6950,7 +6950,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-28",
       "title": "Enterprise landing page with interactive responsive design",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6966,7 +6966,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-29",
       "title": "Chinese traditional colors daily web app",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6982,7 +6982,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-30",
       "title": "Web-based Word-like rich text editor in one HTML file",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -6998,7 +6998,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-31",
       "title": "Chinese Twitter KOL leaderboard landing page",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7014,7 +7014,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-32",
       "title": "English picture book learning web app",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7030,7 +7030,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-33",
       "title": "Douyin recommendation algorithm demo animation",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7046,7 +7046,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-34",
       "title": "Multi-level gear linkage system animation",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7062,7 +7062,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-35",
       "title": "Parallax scrolling homepage with explosive visual effects",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7078,7 +7078,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-36",
       "title": "High-end Swiss-style landing page generator in React",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Poster",
       "style": "Poster",
       "useCase": "Poster",
@@ -7094,7 +7094,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-37",
       "title": "Glassmorphism neon interface UI",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7110,7 +7110,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-38",
       "title": "Interactive SVG demo of Tesla FSD road recognition",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7126,7 +7126,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-39",
       "title": "Rebuild GitHub’s React project page UI",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7142,7 +7142,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-40",
       "title": "Three.js museum walkthrough scene",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7158,7 +7158,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-41",
       "title": "Voxel art threejs scene generation prompt from image",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7174,7 +7174,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-42",
       "title": "3D Rubik’s cube web app with mix and solve controls",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "3D",
       "style": "3D",
       "useCase": "3D",
@@ -7190,7 +7190,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-43",
       "title": "CapCut-like video editor UI in Gemini",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Video",
       "style": "Video",
       "useCase": "Video",
@@ -7206,7 +7206,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-44",
       "title": "Single-file HTML billiards game",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7222,7 +7222,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-45",
       "title": "Quantum core monitoring single-page HTML",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7238,7 +7238,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-46",
       "title": "Dynamic point cloud special relativity webpage",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7254,7 +7254,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-47",
       "title": "Single-file SVG of an Xbox controller",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7270,7 +7270,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-48",
       "title": "Neobrutalist webpage generation prompt",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
@@ -7286,7 +7286,7 @@
     {
       "id": "import-xianyu110-awesome-gemini-3-prompts-49",
       "title": "New York skyline SVG single-HTML scene",
-      "model": "Gemini 3",
+      "model": "Gemini 3 Pro",
       "category": "Creative",
       "style": "Creative",
       "useCase": "Creative",
