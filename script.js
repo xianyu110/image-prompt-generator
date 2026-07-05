@@ -190,7 +190,11 @@ function tryPrompt(item) {
   els.subjectInput.value = item.prompt;
   if (item.model.includes("Nano")) els.modelSelect.value = "Nano Banana Pro";
   if (item.model.includes("Seedream")) els.modelSelect.value = "Seedream 5 Pro";
-  if (item.model.includes("GPT")) els.modelSelect.value = "GPT Image 2";
+  if (item.model.includes("GPT Image 1.5")) els.modelSelect.value = "GPT Image 1.5";
+  if (item.model.includes("GPT Image 2")) els.modelSelect.value = "GPT Image 2";
+  if (item.model.includes("Seedance")) els.modelSelect.value = "Seedance 2.0";
+  if (item.model.includes("Grok")) els.modelSelect.value = "Grok Imagine";
+  if (item.model.includes("Gemini")) els.modelSelect.value = "Gemini 3 Pro";
   generatePrompt();
   copyText(item.prompt);
   document.querySelector("#generator").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -201,19 +205,39 @@ function generatePrompt() {
   const style = els.styleSelect.value;
   const model = els.modelSelect.value;
   const ratio = els.ratioSelect.value;
-  const modelHint = model === "Seedream 5 Pro"
-    ? "强调可控编辑、文字可读性、多轮改图和商业设计落地。"
-    : model === "Nano Banana Pro"
-      ? "强调创意发散、复杂画面、多图融合和风格化视觉。"
-      : "强调真实世界知识、文本渲染、精确构图和高质量细节。";
-  els.builderOutput.textContent = [
-    `请生成：${subject}`,
-    `模型方向：${model}。${modelHint}`,
-    `视觉风格：${style}。`,
-    `画面比例：${ratio}。`,
-    "构图要求：主体明确，层次清晰，保留足够留白，画面有完整的光影和材质细节。",
-    "质量要求：文字清晰可读，无水印，无多余畸变，不要破损手指、错误透视或脏乱背景。",
-  ].join("\n");
+  const modelHints = {
+    "Seedream 5 Pro": "强调可控编辑、中文文字可读性、多轮改图、局部修改和商业设计落地。",
+    "Nano Banana Pro": "强调创意发散、复杂画面、多图融合、风格化视觉和强烈视觉记忆点。",
+    "GPT Image 2": "强调真实世界知识、文字渲染、精确构图、细节一致性和高质量成片。",
+    "GPT Image 1.5": "强调稳定照片质感、自然光影、清晰主体和较少复杂文字的安全构图。",
+    "Seedance 2.0": "可用于图片和视频；强调画面连续性、动作感、镜头语言、主体一致性和动态构图。",
+    "Grok Imagine": "强调热点语境、社交传播感、强反差创意和可快速理解的画面钩子。",
+    "Gemini 3 Pro": "强调复杂指令理解、多模态推理、信息结构和长上下文一致性。",
+  };
+  const shared = [
+    `主题：${subject}`,
+    `目标模型：${model}`,
+    `模型策略：${modelHints[model] || "根据模型能力生成高质量视觉结果。"}`,
+    `风格：${style}`,
+    `比例：${ratio}`,
+  ];
+  const isVideoStoryboard = model === "Seedance 2.0" && style === "视频分镜";
+  const output = isVideoStoryboard
+    ? [
+        ...shared,
+        "视频结构：用 3-5 个镜头描述起承转合，每个镜头包含景别、主体动作、镜头运动、时长和转场。",
+        "运动要求：动作连续、主体一致、避免突兀变形，镜头移动自然。",
+        "质量要求：无水印，无错乱文字，无多余肢体，画面节奏适合短视频传播。",
+      ]
+    : [
+        ...shared,
+        "画面结构：主体明确，前景/中景/背景层次清晰，保留足够留白，光影和材质细节完整。",
+        model === "Seedance 2.0" ? "Seedance 图片建议：即使生成单张图，也写清动作瞬间、运动方向、镜头焦段和动态张力。" : "",
+        "文本要求：如画面包含文字，必须短、清楚、可读，并与版式自然融合。",
+        "质量要求：无水印，无多余畸变，不要破损手指、错误透视、脏乱背景或低质贴图感。",
+        "可替换变量：把 [主体]、[品牌/人物]、[场景]、[文字] 替换成你的具体需求。",
+      ].filter(Boolean);
+  els.builderOutput.textContent = output.join("\n");
   els.generatedOutput.hidden = false;
 }
 

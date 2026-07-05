@@ -1,18 +1,30 @@
 # Image Prompt Generator
 
-GPT Image 2 提示词生成器和图片提示词图库。
+A GPT Image 2 prompt generator and AI image prompt gallery.
 
-Site target: <https://image-prompt-generator.com/>
-GitHub Pages: <https://github.com/xianyu110/image-prompt-generator>
+[Chinese README](readme/zh.md)
 
-## 内容概览
+Site: <https://image-prompt-generator.com/>
+GitHub: <https://github.com/xianyu110/image-prompt-generator>
 
-- 提示词总数：64
-- 带图片条目：60
-- 模型分布：GPT Image 2 12，Nano Banana Pro 48，Seedream 5 Pro 4
-- 页面结构：上方提示词生成框，下方提示词卡片流，保留作者、来源、图片和复制/尝试入口。
+## Overview
 
-## 本地预览
+- Total prompts: 64
+- Prompts with images: 60
+- Model sections: GPT Image 2 Prompts, Nano Banana Pro Prompts, Seedream 4.5 Prompts, GPT Image 1.5 Prompts, Seedance 2.0 Prompts, Grok Imagine Prompts, Gemini 3 Pro Prompts
+- Page structure: prompt composer on top, prompt cards below, with author/source, image, and copy/try actions.
+
+## Model Categories
+
+- [GPT Image 2 Prompts](#gpt-image-2-prompts): 12 entries
+- [Nano Banana Pro Prompts](#nano-banana-pro-prompts): 48 entries
+- [Seedream 4.5 Prompts](#seedream-45-prompts): 4 entries
+- [GPT Image 1.5 Prompts](#gpt-image-15-prompts): 0 entries
+- [Seedance 2.0 Prompts](#seedance-20-prompts): 0 entries
+- [Grok Imagine Prompts](#grok-imagine-prompts): 0 entries
+- [Gemini 3 Pro Prompts](#gemini-3-pro-prompts): 0 entries
+
+## Local Preview
 
 ```bash
 python3 -m http.server 8787
@@ -20,7 +32,7 @@ python3 -m http.server 8787
 
 Then open <http://localhost:8787/>.
 
-## 重建数据
+## Rebuild Data
 
 ```bash
 python3 scripts/build_data.py
@@ -28,13 +40,190 @@ python3 scripts/build_data.py
 
 The script reads local source repositories from the parent workspace and writes `data/prompts.json`.
 
-## 图片与提示词清单
+## Images and Prompts
 
-> 每条保留作者/来源信息；图片为本仓库本地资源时使用相对路径展示。
+> Grouped by model. Each entry keeps author/source attribution; local image assets are shown with relative paths.
 
-### 1. 终极跨界
+## GPT Image 2 Prompts
 
-- Model: `Nano Banana Pro`
+- Entries: 12
+- With images: 12
+
+### GPT Image 2 Prompts #1: Reusable Pixar-style 3D character portrait prompt
+
+- Category: `Portrait`
+- Author / Source: [Zara - @ZaraIrahh](https://x.com/ZaraIrahh/status/2048429244632408300)
+- Image: `assets/thumbs/gpt-01.png`
+
+![Reusable Pixar-style 3D character portrait prompt](assets/thumbs/gpt-01.png)
+
+Prompt:
+
+```text
+A stylized Pixar-style 3D portrait of a young person with smooth skin, large expressive blue eyes, soft facial features, wearing round transparent glasses, modern hairstyle (short styled hair / soft bob cut), casual outfit (hoodie or minimal sweater), slight head tilt and warm smile, friendly and approachable expression, ultra-clean character design, vibrant orange-to-pink gradient background, soft studio lighting with subtle rim light, cinematic depth of field, ultra-detailed, 8K render, octane render style.
+```
+
+### GPT Image 2 Prompts #2: Reusable cute animal selfie prompt
+
+- Category: `Portrait`
+- Author / Source: [Al-Shamus - @im_shahid7](https://x.com/im_shahid7/status/2048432604291240275)
+- Image: `assets/thumbs/gpt-02.jpg`
+
+![Reusable cute animal selfie prompt](assets/thumbs/gpt-02.jpg)
+
+Prompt:
+
+```text
+a cute orange and white cat, he looks like hes thinking. taking a selfie inside a dramatically lit room dark room. the cat has big eyes, a chubby face, and a happy expression. the image is a wide-angle shot with sharp focus and high resolution, resulting in a high-definition photograph.
+```
+
+### GPT Image 2 Prompts #3: Reusable fashion editorial portrait prompt with effects
+
+- Category: `Portrait`
+- Author / Source: [𝗦𝗮𝗻𝗶𝗮 - @saniaspeaks_](https://x.com/saniaspeaks_/status/2048431408318705733)
+- Image: `assets/thumbs/gpt-03.jpg`
+
+![Reusable fashion editorial portrait prompt with effects](assets/thumbs/gpt-03.jpg)
+
+Prompt:
+
+```text
+portrait of a young woman with short curly black hair and fair skin, wearing transparent safety goggles and a blue ribbed turtleneck sweater, seated in front of a solid azure blue background, double-exposure motion blur effect to the left side of the face, subtle soft reflections on the glasses, cold ambient lighting, high sharpness on facial features with dreamlike blur trail overlaying second face, fashion editorial studio setup, icy color palette, futuristic retro mood.
+```
+
+### GPT Image 2 Prompts #4: Reusable artistic progression/multi-panel prompt
+
+- Category: `Creative`
+- Author / Source: [Sharon Riley - @Just_sharon7](https://x.com/Just_sharon7/status/2048440567605190853)
+- Image: `assets/thumbs/gpt-04.png`
+
+![Reusable artistic progression/multi-panel prompt](assets/thumbs/gpt-04.png)
+
+Prompt:
+
+```text
+Artistic progression in five vertical panels: from realistic sketch to modern abstract sculpture of a ballerina in arabesque pose. 1. Detailed pencil sketch of ballerina on pointe, elegant extended leg and arms. 2. Refined mid-stage sketch. 3. Strongly stylized flowing lines. 4. Angular geometric abstraction. 5. Final sleek, ribbon-twisted contemporary metal sculpture with beautiful curves and tension. Black ink and charcoal style on white background, high-contrast artistic study, luxury sculpture aesthetic --ar 3:2
+```
+
+### GPT Image 2 Prompts #5: Reusable cyber-poetry portrait prompt with text projection
+
+- Category: `Portrait`
+- Author / Source: [Aijaz - @iamsofiaijaz](https://x.com/iamsofiaijaz/status/2048436757855945137)
+- Image: `assets/thumbs/gpt-05.png`
+
+![Reusable cyber-poetry portrait prompt with text projection](assets/thumbs/gpt-05.png)
+
+Prompt:
+
+```text
+A cinematic, ultra-realistic close-up portrait of a young woman with wet, tousled dark hair and luminous skin, staring directly into the camera with an intense, introspective expression. Glowing cyan handwritten text and symbols are projected across her face, neck, and shoulders, resembling poetic phrases, equations, and abstract handwriting. The light reflections shimmer on her damp skin, creating a futuristic, cyber-poetry aesthetic. Dark, moody background with soft shadows, shallow depth of field, sharp focus on the eyes, high contrast lighting, teal and blue color palette, hyper-detailed skin texture, photorealistic, dramatic atmosphere, cyberpunk meets fine-art portrait photography, 8K quality, cinematic lighting
+```
+
+### GPT Image 2 Prompts #6: Reusable luxury fashion ad prompt with text
+
+- Category: `Poster`
+- Author / Source: [Mr Das - @MrDasOnX](https://x.com/MrDasOnX/status/2048432301445644740)
+- Image: `assets/thumbs/gpt-06.png`
+
+![Reusable luxury fashion ad prompt with text](assets/thumbs/gpt-06.png)
+
+Prompt:
+
+```text
+Avant-garde luxury watch fashion ad, sophisticated female model in sleek black evening attire dramatically posing with an oversized glowing mechanical watch as the centerpiece, intricate gears and sparkling diamonds visible, bold metallic typography ‘TIMELESS’ floating in the foreground, reflective dark studio floor with scattered gold accents and subtle light beams, high-end editorial photography, dramatic cinematic lighting, luxurious atmosphere –ar 1:1 –stylize 750
+```
+
+### GPT Image 2 Prompts #7: Reusable cinematic urban portrait prompt
+
+- Category: `Portrait`
+- Author / Source: [K - @ChillaiKalan__](https://x.com/ChillaiKalan__/status/2048435840217731378)
+- Image: `assets/thumbs/gpt-07.png`
+
+![Reusable cinematic urban portrait prompt](assets/thumbs/gpt-07.png)
+
+Prompt:
+
+```text
+Edit this photo (keep the face unchanged), portrait. Cinematic close-up of a young woman at night in a moody urban setting with neon lighting. She looks back over her shoulder with a soft yet intense expression. Long dark wavy hair with wispy bangs, slightly wind-swept. Natural dewy makeup, minimal styling, wearing a dark oversized leather jacket. Background: blurred city bokeh with streetlights and car lights. Shot on Sony A7S III, 85mm lens, shallow depth of field. Off-center composition. Dramatic split lighting: cool blue on one side, warm red on the other. Teal-and-red color grade, high contrast, subtle film grain and glow.
+```
+
+### GPT Image 2 Prompts #8: Reusable luxury sports editorial prompt
+
+- Category: `Poster`
+- Author / Source: [Taaruk - @Taaruk_](https://x.com/Taaruk_/status/2048438203611533367)
+- Image: `assets/thumbs/gpt-08.png`
+
+![Reusable luxury sports editorial prompt](assets/thumbs/gpt-08.png)
+
+Prompt:
+
+```text
+A dramatic sports editorial scene featuring a professional male footballer wearing an all-black kit, reclining confidently on top of an oversized soccer ball. The ball is hyper-detailed with realistic panels and branding, placed on a glossy reflective floor. The athlete’s pose is relaxed yet powerful, with one arm hanging down and legs extended, showcasing strength and elegance. The background is a bold deep blue studio with massive “GOAL” typography in large, subtle shadowed letters. High-contrast studio lighting with sharp highlights and deep shadows sculpting the body. Clean, minimal composition with a luxury sports campaign aesthetic. Shot with an 85mm lens, ultra-realistic, cinematic lighting, crisp details, 8K resolution, Nike/Adidas-style commercial photography.
+```
+
+### GPT Image 2 Prompts #9: Reusable cinematic character prompt with environment details
+
+- Category: `Portrait`
+- Author / Source: [Snow - @iamrealsnow](https://x.com/iamrealsnow/status/2048444370844807555)
+- Image: `assets/thumbs/gpt-09.png`
+
+![Reusable cinematic character prompt with environment details](assets/thumbs/gpt-09.png)
+
+Prompt:
+
+```text
+A powerful young man standing in front of a matte black Hummer H2 on a snowy night, heavy snowfall, dark cinematic atmosphere. The Hummer has a glowing icy number plate with a frosted texture. The subject wears a long black trench coat, leather gloves, and boots, slightly messy hair, intense expression, looking straight into the camera. Low-angle shot to make him look dominant. Cold blue and deep shadow lighting, high contrast, sharp details, foggy breath visible, luxury criminal aura, ultra-realistic, 4K, dramatic tension.
+```
+
+### GPT Image 2 Prompts #10: Reusable detailed multi-panel transformation prompt for GPT Image 2
+
+- Category: `Portrait`
+- Author / Source: [simply - @kingofdairyque](https://x.com/kingofdairyque/status/2048447045640544549)
+- Image: `assets/thumbs/gpt-10.jpg`
+
+![Reusable detailed multi-panel transformation prompt for GPT Image 2](assets/thumbs/gpt-10.jpg)
+
+Prompt:
+
+```text
+A high-end cinematic transformation artwork displayed in five vertical panels, showing a luxury perfume evolving from raw essence into a sculptural masterpiece, each panel separated by thin black dividers. Panel 1 (Origin): A premium glass perfume bottle resting on a dark reflective surface, surrounded by raw ingredients like rose petals, oud wood, citrus peel, and mist, soft studio lighting, elegant shadows. Panel 2 (Release): The perfume begins to diffuse into the air, visible fragrant mist swirling upward in fluid motion, forming soft organic shapes, glowing particles and vapor trails. Panel 3 (Transformation): The mist starts shaping into a semi-formed silhouette (abstract human figure or flowing fabric), blending liquid, vapor, and light, luminous and dreamy. Panel 4 (Abstraction): The form becomes fully abstract — flowing ribbons of scent turning into sleek glass-like curves and fluid geometry, dynamic motion frozen mid-air. Panel 5 (Transcendence): Final form — a luxurious sculptural perfume bottle or abstract glass statue inspired by the scent’s essence, polished, reflective, with glowing highlights, sitting on a minimal pedestal. Style: ultra-detailed, photorealistic to abstract progression, deep black background, gold and silver accents, soft glow, high contrast lighting, glossy reflections, cinematic luxury aesthetic, perfume ad style, 4K quality, sharp focus.
+```
+
+### GPT Image 2 Prompts #11: Recent post with complete reusable sticker pack prompt and output image.
+
+- Category: `Portrait`
+- Author / Source: [Noor 🌸](https://x.com/Noor_ul_ain43/status/2049171970227581378)
+- Image: `assets/thumbs/gpt-11.png`
+
+![Recent post with complete reusable sticker pack prompt and output image.](assets/thumbs/gpt-11.png)
+
+Prompt:
+
+```text
+A high-quality sticker sheet featuring a cute semi-realistic cartoon girl inspired by the provided reference face: short messy bob haircut, bright yellow hair, soft freckles, brown eyes, glossy lips, hoop earrings, wearing a sleeveless yellow top. Create a grid of multiple expressions and poses: ... Ultra-detailed, 4K resolution, consistent character design across all stickers, no watermark, no extra text outside stickers.
+```
+
+### GPT Image 2 Prompts #12: Detailed reusable sports poster prompt for GPT Image 2 with media outputs.
+
+- Category: `Poster`
+- Author / Source: [SPEEDYAI](https://x.com/SPEEDAI07/status/2049171788731465970)
+- Image: `assets/thumbs/gpt-12.png`
+
+![Detailed reusable sports poster prompt for GPT Image 2 with media outputs.](assets/thumbs/gpt-12.png)
+
+Prompt:
+
+```text
+Design a '4:5' sports campaign poster that elevates 'Kylian Mbappé' into a sculptural icon of ruthless speed and modern dominance, capturing a moment of explosive elevation as if gravity itself is shattering beneath his acceleration. ... FINISH: Crisp detail on skin and fabric ... NEGATIVE: Avoid generic football poses ...
+```
+
+## Nano Banana Pro Prompts
+
+- Entries: 48
+- With images: 48
+
+### Nano Banana Pro Prompts #1: 终极跨界
+
 - Category: `Portrait`
 - Author / Source: [@TheRelianceAI](https://x.com/TheRelianceAI/status/1925146916133712191)
 - Image: `assets/thumbs/nano-100.png`
@@ -47,9 +236,8 @@ Prompt:
 Imagine [CHARAKTER 1] and [Charakter 2] casually sitting together at a table in a [FAST FOOD BRAND] restaurant. The atmosphere is relaxed and light-hearted, with the two characters engaged in an amusing or deep conversation over trays of food and drinks.
 ```
 
-### 2. 玩具盒中的历史
+### Nano Banana Pro Prompts #2: 玩具盒中的历史
 
-- Model: `Nano Banana Pro`
 - Category: `3D`
 - Author / Source: [@TheRelianceAI](https://x.com/TheRelianceAI/status/1925223613055017251)
 - Image: `assets/thumbs/nano-99.png`
@@ -62,9 +250,8 @@ Prompt:
 An ultra-realistic top-down photograph of a 3D-printed diorama inside a beige cardboard box, with the lid being held open by two human hands. The interior of the box reveals a miniature landscape of [COUNTRY NAME], featuring iconic landmarks, terrain, buildings, rivers, vegetation, and crowds of tiny, detailed human figures. The diorama is filled with vibrant, geographically appropriate elements, all crafted in a tactile, toy-like style using matte 3D-printed textures with visible layer lines. At the top, the inside of the box lid displays the phrase “[COUNTRY NAME]” in large, colorful, raised plastic letters—each letter in a different bright color. The lighting is warm and cinematic, highlighting the textures and shadows to evoke a sense of realism and charm, as if the viewer is opening a magical miniature version of the natio
 ```
 
-### 3. 3D卡通雕塑风格
+### Nano Banana Pro Prompts #3: 3D卡通雕塑风格
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@aziz4ai](https://x.com/aziz4ai/status/1925301120252924356)
 - Image: `assets/thumbs/nano-98.jpeg`
@@ -77,9 +264,8 @@ Prompt:
 a soft 3D cartoon-style sculpture of [brand product], made of smooth clay-like textures and vibrant pastel colors, placed in a minimalist isometric scene that complements the product’s nature, clean composition, gentle lighting, subtle shadows, with the product’s logo and a 3-word slogan displayed clearly belo
 ```
 
-### 4. 复古电脑开机画面解析为ASCII艺术
+### Nano Banana Pro Prompts #4: 复古电脑开机画面解析为ASCII艺术
 
-- Model: `Nano Banana Pro`
 - Category: `Infographic`
 - Author / Source: [@Gdgtify](https://x.com/Gdgtify/status/1925176250626159053)
 - Image: `assets/thumbs/nano-97.png`
@@ -92,9 +278,8 @@ Prompt:
 Retro CRT computer boot screen that resolves into ASCII-art of NYC's tallest building
 ```
 
-### 5. 3D蒸汽朋克Logo
+### Nano Banana Pro Prompts #5: 3D蒸汽朋克Logo
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@MayorKingAI](https://x.com/MayorKingAI/status/1925144570553327620)
 - Image: `assets/thumbs/nano-96.jpeg`
@@ -107,9 +292,8 @@ Prompt:
 3D sculpted logo of [LOGO NAME], in a steampunk style, made of aged brass and oxidized iron, with visible rivets, gears, and vintage mechanical elements, distressed and weathered surface, rich copper and bronze tones, engraved with Victorian-style filigree, retro-industrial design, soft spotlight lighting, neutral background, hyper-realistic render, ultra-high resolution, symmetrical composition
 ```
 
-### 6. 品牌平面纸风格
+### Nano Banana Pro Prompts #6: 品牌平面纸风格
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@HBCoop_](https://x.com/HBCoop_/status/1925213900192043236)
 - Image: `assets/thumbs/nano-95.png`
@@ -122,9 +306,8 @@ Prompt:
 A flat branded paper folds itself into the full 3D shape of a [Air Jordan 1 shoes], mid-motion. Dramatic studio lighting, origami texture detail, gradient shadows, Japanese minimalism feel.
 ```
 
-### 7. 制药风格商品
+### Nano Banana Pro Prompts #7: 制药风格商品
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@azed_ai](https://x.com/azed_ai/status/1925197464099049735)
 - Image: `assets/thumbs/nano-94.jpeg`
@@ -137,9 +320,8 @@ Prompt:
 A square-format digital photograph showing a fictional pharmaceutical-style product from [Brand Name] Pharmacy. The box is on the left, clean and minimalist, featuring bold text with the product name "[PRODUCT NAME]" and a witty line like "Take one [type] daily." Next to the box is a silver blister pack containing 6–10 themed pills or capsules shaped like [describe icon/logo/item, e.g., a coffee cup, burger, heart, Midjourney logo, etc.]. Neutral background, soft lighting, sharp focus, modern packaging aesthetic.
 ```
 
-### 8. 不同情绪状态的思想泡泡
+### Nano Banana Pro Prompts #8: 不同情绪状态的思想泡泡
 
-- Model: `Nano Banana Pro`
 - Category: `Portrait`
 - Author / Source: [@TheRelianceAI](https://x.com/TheRelianceAI/status/1925098220398465145)
 - Image: `assets/thumbs/nano-93.jpeg`
@@ -152,9 +334,8 @@ Prompt:
 A [SUBJECT] sits alone in a minimalistic room filled with floating, semi-transparent thought bubbles. Each bubble contains a fragment of their face from different emotional states — smiling, crying, screaming — forming a psychological self-portrait suspended in mid-air.
 ```
 
-### 9. 霓虹玻璃发光
+### Nano Banana Pro Prompts #9: 霓虹玻璃发光
 
-- Model: `Nano Banana Pro`
 - Category: `Portrait`
 - Author / Source: [@alban_gz](https://x.com/alban_gz/status/1925446996468371893)
 - Image: `assets/thumbs/nano-92.jpeg`
@@ -216,9 +397,8 @@ Recreate this image using the parameters from the JSON provided.
 }
 ```
 
-### 10. 动感雕塑
+### Nano Banana Pro Prompts #10: 动感雕塑
 
-- Model: `Nano Banana Pro`
 - Category: `3D`
 - Author / Source: [@azed_ai](https://x.com/azed_ai/status/1925490847564669153)
 - Image: `assets/thumbs/nano-91.png`
@@ -231,9 +411,8 @@ Prompt:
 A kinetic sculpture of a [subject], made of interlocking metal rods and panels in brushed [color1] and oxidized [color2]. Suspended in motion, with rotating parts casting mechanical shadows on a concrete pedestal.
 ```
 
-### 11. 将您的标志变成毛毡纹理
+### Nano Banana Pro Prompts #11: 将您的标志变成毛毡纹理
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@alex_prompter](https://x.com/alex_prompter/status/1925460683509899423)
 - Image: `assets/thumbs/nano-90.jpeg`
@@ -299,9 +478,8 @@ Retexture [BRAND NAME] logo following my JSON aesthetic below:
 }
 ```
 
-### 12. 海洋中三艘不同的奇幻帆船
+### Nano Banana Pro Prompts #12: 海洋中三艘不同的奇幻帆船
 
-- Model: `Nano Banana Pro`
 - Category: `Creative`
 - Author / Source: [@BeanieBlossom](https://x.com/BeanieBlossom/status/1925159751169810806)
 - Image: `assets/thumbs/nano-89.jpeg`
@@ -314,9 +492,8 @@ Prompt:
 Three different fantasy sailboats in the ocean, multiple scenes of beautiful aurora borealis and colorful moons with snowy mountains, a dreamy, fantasy landscape, in the style of digital art.
 ```
 
-### 13. AirBnB 任何东西
+### Nano Banana Pro Prompts #13: AirBnB 任何东西
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@R2_fieldworks](https://x.com/R2_fieldworks/status/1924433924106727531)
 - Image: `assets/thumbs/nano-88.png`
@@ -347,9 +524,8 @@ Rendering: hyper-detailed, photorealistic object with depth and tactility, like 
 Optional Add-on for Replication:  Use the attached photo as a reference for proportions and layout. Do not copy exactly — reinterpret it in the Airbnb icon aesthetic.
 ```
 
-### 14. 品牌解锁童年回忆
+### Nano Banana Pro Prompts #14: 品牌解锁童年回忆
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@TheRelianceAI](https://x.com/TheRelianceAI/status/1925606107608715268)
 - Image: `assets/thumbs/nano-87.png`
@@ -362,9 +538,8 @@ Prompt:
 A realistic, cinematic photograph of a vintage [BRAND NAME] item being gently lifted from a dusty stack of old children's books in a dimly lit attic. The item is designed in classic [BRAND NAME] style—featuring authentic patterns, textures, or logos (e.g. monograms, embossing, or signature motifs relevant to the brand). It is partially opened to reveal a miniature, warmly lit classroom inspired by [COUNTRY] school interiors, complete with small regional-style desks, a chalkboard with delicate handwriting in [LANGUAGE], and traditional local details like shoes, posters, or flags. A paper airplane hovers mid-air. The lighting is moody and nostalgic, with soft shadows and golden highlights suggesting afternoon light filtering through attic beams. On the top book cover at the bottom of the image, the [BRAND NAME] logo is written in an elegant, fountain-pen calligraphy style—subtle, integrated into the scene, and not obscuring the main subject.
 ```
 
-### 15. 未来的OpenAI可穿戴设备
+### Nano Banana Pro Prompts #15: 未来的OpenAI可穿戴设备
 
-- Model: `Nano Banana Pro`
 - Category: `Creative`
 - Author / Source: [@hc_dsn](https://x.com/hc_dsn/status/1925589916844794154)
 - Image: `assets/thumbs/nano-86.png`
@@ -377,9 +552,8 @@ Prompt:
 Create image with 1:1 ratio A next-gen wearable ai [device type] blending Jony Ive–inspired refined minimalism with a new material and interaction language symbolizing the power ChatGPT. The device is crafted from translucent aerogel fused with polished ceramic titanium, feather-light yet futuristic.  No seams, buttons, or traditional UI. Photographed floating against a pure white background, with a soft, diffused, nearly shadowless studio light.
 ```
 
-### 16. 知名戏曲片段的MBTI人格类型卡片
+### Nano Banana Pro Prompts #16: 知名戏曲片段的MBTI人格类型卡片
 
-- Model: `Nano Banana Pro`
 - Category: `Portrait`
 - Author / Source: [@op7418](https://x.com/op7418/status/1925869690120794320)
 - Image: `assets/thumbs/nano-85.jpeg`
@@ -419,9 +593,8 @@ Prompt:
 - 保持系列视觉一致性
 ```
 
-### 17. 渐变挤出Google I/O 2025大会视觉效果
+### Nano Banana Pro Prompts #17: 渐变挤出Google I/O 2025大会视觉效果
 
-- Model: `Nano Banana Pro`
 - Category: `Portrait`
 - Author / Source: [@hckmstrrahul](https://x.com/hckmstrrahul/status/1925567579856453701)
 - Image: `assets/thumbs/nano-84.jpeg`
@@ -492,9 +665,8 @@ Retexture this image in the following JSON style aesthetic:
 }
 ```
 
-### 18. Glitch 矢量徽标样式
+### Nano Banana Pro Prompts #18: Glitch 矢量徽标样式
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@Artedeingenio](https://x.com/Artedeingenio/status/1925844468294365289)
 - Image: `assets/thumbs/nano-83.png`
@@ -507,9 +679,8 @@ Prompt:
 A bold vector logo design in glitch art style, featuring distorted typography with RGB color channel shifts, fragmented lines, misaligned edges, digital noise effects, and a cyberpunk aesthetic. The logo appears corrupted or hacked, as if captured from a malfunctioning screen. Use a black or dark background for contrast, neon or high-saturation color palette, and sharp angular forms.
 ```
 
-### 19. 霓虹花卉和谐插图
+### Nano Banana Pro Prompts #19: 霓虹花卉和谐插图
 
-- Model: `Nano Banana Pro`
 - Category: `Illustration`
 - Author / Source: [@LudovicCreator](https://x.com/LudovicCreator/status/1926246931661042132)
 - Image: `assets/thumbs/nano-82.png`
@@ -522,9 +693,8 @@ Prompt:
 A Neon Floral Harmony illustration of [SUBJECT], with flowers and plants outlined in glowing neon hues. Use vibrant [COLOR1] and [COLOR2] to create a serene yet electrifying botanical scene
 ```
 
-### 20. 品牌乐器
+### Nano Banana Pro Prompts #20: 品牌乐器
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@TheRelianceAI](https://x.com/TheRelianceAI/status/1926148686884606257)
 - Image: `assets/thumbs/nano-81.png`
@@ -537,9 +707,8 @@ Prompt:
 A highly stylized and vibrant promotional image of a [INSTRUMENT] designed in the visual style of the [BRAND] brand — the instrument is reimagined with iconic colors, patterns, and aesthetic elements of the brand. Set in a dynamic, music-inspired environment, with glowing accents, product-style lighting, and joyful energy. Artistic fusion of music and design. 3D render look, high detail, vibrant colors, futuristic but playful.
 ```
 
-### 21. 水果的形状
+### Nano Banana Pro Prompts #21: 水果的形状
 
-- Model: `Nano Banana Pro`
 - Category: `Portrait`
 - Author / Source: [@umesh_ai](https://x.com/umesh_ai/status/1926182194159972503)
 - Image: `assets/thumbs/nano-80.jpeg`
@@ -552,9 +721,8 @@ Prompt:
 Create an image by arranging [NUMBER/AGGREGATE] of [FRUIT] strategically on a dark surface to form the shape of [OBJECT/EMOJI/LOGO]
 ```
 
-### 22. Alloy图标
+### Nano Banana Pro Prompts #22: Alloy图标
 
-- Model: `Nano Banana Pro`
 - Category: `Portrait`
 - Author / Source: [@hc_dsn](https://x.com/hc_dsn/status/1926095406871568670)
 - Image: `assets/thumbs/nano-79.jpeg`
@@ -617,9 +785,8 @@ turn a vector [ type
 }
 ```
 
-### 23. 毛绒形式表情符号
+### Nano Banana Pro Prompts #23: 毛绒形式表情符号
 
-- Model: `Nano Banana Pro`
 - Category: `Portrait`
 - Author / Source: [@alban_gz](https://x.com/alban_gz/status/1925833589431619616)
 - Image: `assets/thumbs/nano-78.png`
@@ -650,9 +817,8 @@ Recreate this [insert emoji] using the parameters from the JSON provided.
 }
 ```
 
-### 24. 3D零食卡通世界
+### Nano Banana Pro Prompts #24: 3D零食卡通世界
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@aziz4ai](https://x.com/aziz4ai/status/1925895453217898847)
 - Image: `assets/thumbs/nano-77.jpeg`
@@ -665,9 +831,8 @@ Prompt:
 A 3D-rendered digital illustration featuring a retro-style food truck inspired by the brand [INSERT BRAND NAME], designed with smooth pastel colors and soft textures. A black-and-white cartoon character stands beside the truck, holding a product that visually represents the brand. The environment reflects the brand’s world—playful hills, trees, and skies stylized with its color palette and product shapes. The brand’s logo is clearly displayed on the truck, and a short slogan appears naturally within the scene. Format: 1:1, isometric view, cinematic lighting, clean and joyful composition.
 ```
 
-### 25. 黑白漫画风格插图
+### Nano Banana Pro Prompts #25: 黑白漫画风格插图
 
-- Model: `Nano Banana Pro`
 - Category: `Portrait`
 - Author / Source: [@CharaspowerAI](https://x.com/CharaspowerAI/status/1923778050845528388)
 - Image: `assets/thumbs/nano-76.png`
@@ -680,9 +845,8 @@ Prompt:
 Highly dramatic and epic black and white manga-style illustration of [Your character and description].  Powerful, dynamic pose, exaggerated features emphasizing the intensity of the scene. Background with explosive energy bursts, lightning effects, and a whirlwind of debris
 ```
 
-### 26. 可爱干净的底座立体模型
+### Nano Banana Pro Prompts #26: 可爱干净的底座立体模型
 
-- Model: `Nano Banana Pro`
 - Category: `3D`
 - Author / Source: [@CharaspowerAI](https://x.com/CharaspowerAI/status/1925593447802540408)
 - Image: `assets/thumbs/nano-75.png`
@@ -695,9 +859,8 @@ Prompt:
 Highly detailed 3D-rendered chibi figurine diorama of [Character A] and [Character B], captured in a [scene/action], inside a [thematic display case shape] with [material]. The background features [visual effects: debris, aura, lightning, scenery], dynamic pose. The title "[custom phrase]" is embossed at the top in [font/style], matching the tone. Lighting is [studio, cinematic, ambient], color palette of [main colors]. Designed in a collectible, stylized, viral-friendly aesthetic.
 ```
 
-### 27. 3D可爱粉彩粘土图标
+### Nano Banana Pro Prompts #27: 3D可爱粉彩粘土图标
 
-- Model: `Nano Banana Pro`
 - Category: `3D`
 - Author / Source: [@icreatelife](https://x.com/icreatelife/status/1926014358783430945)
 - Image: `assets/thumbs/nano-74.png`
@@ -710,9 +873,8 @@ Prompt:
 Tiny cute isometric [smiling - optional] [OBJECT] emoji, shape, soft lighting, soft pastel colors, [COLOR], 3d icon clay render, blender 3d, pastel background
 ```
 
-### 28. 有趣的毛茸茸字母
+### Nano Banana Pro Prompts #28: 有趣的毛茸茸字母
 
-- Model: `Nano Banana Pro`
 - Category: `Portrait`
 - Author / Source: [@Anima_Labs](https://x.com/Anima_Labs/status/1925933980781535629)
 - Image: `assets/thumbs/nano-73.png`
@@ -725,9 +887,8 @@ Prompt:
 A highly realistic 3D render of the letter [A-Z] designed as a full-body fluffy monster. The letter shape itself is the creature’s body — no separate head or limbs. The eyes, mouth, and other monster features are embedded naturally into the letter form. The monster expresses a [mischievous / grumpy / shy / joyful / sleepy / surprised / confident] emotion through its eyes and mouth shape. The texture is dense, soft, and realistic fur, with subtle volume and shadow. The color palette is bold but clean — solid vibrant tones like mint, lilac, sky blue, or coral (avoid rainbow gradients). Studio lighting on a simple pastel background. No hats, no party props — just a minimal, high-quality character design with playful expression.
 ```
 
-### 29. 超现实主义油画
+### Nano Banana Pro Prompts #29: 超现实主义油画
 
-- Model: `Nano Banana Pro`
 - Category: `Creative`
 - Author / Source: [@azed_ai](https://x.com/azed_ai/status/1926217150093549680)
 - Image: `assets/thumbs/nano-72.png`
@@ -740,9 +901,8 @@ Prompt:
 A surreal oil painting of a [subject], executed in the style of early 20th-century dreamscapes. Melting shapes, floating forms, and swirling [color1] and [color2] brushstrokes create a dreamlike dissonance.
 ```
 
-### 30. 景观洞穴入口的形状
+### Nano Banana Pro Prompts #30: 景观洞穴入口的形状
 
-- Model: `Nano Banana Pro`
 - Category: `Creative`
 - Author / Source: [@umesh_ai](https://x.com/umesh_ai/status/1925819339413836010)
 - Image: `assets/thumbs/nano-71.png`
@@ -755,9 +915,8 @@ Prompt:
 Prompt: An image of a [TYPE] landscape, featuring a cave entrance that is shaped exactly like the outline of a [SHAPE]. The cave should blend naturally into the rugged terrain of the mountain, with the entrance forming a clear and unmistakable [SHAPE] shape. This [SHAPE] shape should be simple and defined, without intricate details, emphasizing just the overall [SHAPE] outline. The surrounding environment should include [DETAILS], but these elements should not distract from the cave's   [SHAPE]-shaped entrance. The lighting in the scene should enhance the visibility and distinctiveness of the [SHAPE]-shaped cave entrance.
 ```
 
-### 31. 重新构想的玫瑰金
+### Nano Banana Pro Prompts #31: 重新构想的玫瑰金
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@aziz4ai](https://x.com/aziz4ai/status/1925933649267970074)
 - Image: `assets/thumbs/nano-70.jpeg`
@@ -770,9 +929,8 @@ Prompt:
 Design a luxury-themed 1:1 image featuring a rose gold sculpture that embodies the essence of the jewelry brand “[BRAND NAME]”. The object must symbolically reflect the brand’s identity (e.g., falcon for Cartier, ring for Tiffany & Co., palm tree for Swarovski, camel for Prada). Embed premium crystal textures into key parts of the sculpture (e.g., wings, gem, leaves, or hump) to match the brand’s signature elegance. Use the brand’s iconic background color (e.g., Tiffany Blue, Swarovski White, Cartier Beige, Prada Sand) and place the official logo beneath the sculpture. Add a bold two-word slogan that aligns with the brand’s tone. Lighting should be pure white with high Kelvin value to ensure clarity and prevent yellow tint. The result must feel editorial, artistic, and visually exquisite.
 ```
 
-### 32. 品牌折叠纸
+### Nano Banana Pro Prompts #32: 品牌折叠纸
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@HBCoop_](https://x.com/HBCoop_/status/1925600123200881024)
 - Image: `assets/thumbs/nano-69.png`
@@ -789,9 +947,8 @@ The paper colors match the [insert brand name] brand’s signature palette and t
 Dramatic studio lighting, origami texture detail, soft gradient shadows. Stylized with Japanese minimalism and elegant negative space. The scene captures a clean, elevated transformation from flat brand identity into sculptural product form.
 ```
 
-### 33. 透明容器里有一个微型的3D世界
+### Nano Banana Pro Prompts #33: 透明容器里有一个微型的3D世界
 
-- Model: `Nano Banana Pro`
 - Category: `Portrait`
 - Author / Source: [@KoppulaMahende9](https://x.com/KoppulaMahende9/status/1920442464810270851)
 - Image: `assets/thumbs/nano-68.png`
@@ -804,9 +961,8 @@ Prompt:
 A giant [transparent or glossy] [object/container] with a miniature 3D diorama inside it, depicting [a symbolic or narrative scene], studio-lit with soft shadows, placed on a neutral matte surface. Emphasize visual contrast between the scale of the capsule and the detail within. Highlight texture, light refraction, and emotional tone (e.g., surreal, poetic, or sci-fi).
 ```
 
-### 34. 可爱微缩场景
+### Nano Banana Pro Prompts #34: 可爱微缩场景
 
-- Model: `Nano Banana Pro`
 - Category: `Portrait`
 - Author / Source: [@ZHO_ZHO_ZHO](https://x.com/ZHO_ZHO_ZHO/status/1925878276133708224)
 - Image: `assets/thumbs/nano-67.jpeg`
@@ -875,9 +1031,8 @@ Prompt:
 }
 ```
 
-### 35. 霓虹灯风格工具
+### Nano Banana Pro Prompts #35: 霓虹灯风格工具
 
-- Model: `Nano Banana Pro`
 - Category: `Portrait`
 - Author / Source: [@egeberkina](https://x.com/egeberkina/status/1926005869331849235)
 - Image: `assets/thumbs/nano-66.png`
@@ -925,9 +1080,8 @@ retexture the image attached based on the JSON aesthetic below
 }
 ```
 
-### 36. 皱巴巴的纸片
+### Nano Banana Pro Prompts #36: 皱巴巴的纸片
 
-- Model: `Nano Banana Pro`
 - Category: `Photography`
 - Author / Source: [@umesh_ai](https://x.com/umesh_ai/status/1925868463689462049)
 - Image: `assets/thumbs/nano-65.jpeg`
@@ -940,9 +1094,8 @@ Prompt:
 A photorealistic image of the word '[NAME]' spelled out using torn, highly crumpled pieces of white paper. Each letter is painted in bold [COLOR] on individual scraps, arranged loosely and unevenly, as if placed casually by hand, on a wooden table. The composition should convey a natural, handmade aesthetic with visible creases, shadows, and wood grain detail
 ```
 
-### 37. 洞壁画
+### Nano Banana Pro Prompts #37: 洞壁画
 
-- Model: `Nano Banana Pro`
 - Category: `Creative`
 - Author / Source: [@azed_ai](https://x.com/azed_ai/status/1925854528831643689)
 - Image: `assets/thumbs/nano-64.png`
@@ -955,9 +1108,8 @@ Prompt:
 A cave painting of a [subject], rendered with primitive ochres and charcoal lines on a rough stone wall. Smudged handprints, crude geometry, and flickering torchlight add a primal, ancient mood.
 ```
 
-### 38. 选择你的阵营
+### Nano Banana Pro Prompts #38: 选择你的阵营
 
-- Model: `Nano Banana Pro`
 - Category: `Poster`
 - Author / Source: [@aziz4ai](https://x.com/aziz4ai/status/1925595213726097803)
 - Image: `assets/thumbs/nano-63.jpeg`
@@ -970,9 +1122,8 @@ Prompt:
 A dramatic cinematic scene featuring two rival products placed side by side in a custom-designed environment that visually reflects their identities. The composition should include high contrast lighting, atmospheric effects like mist, fog, or neon glow, and hyper-detailed textures. Incorporate a powerful 3D slogan below or behind the products in bold stylized typography that fits the scene’s mood. The products must reflect the essence of [Brand A] and [Brand B] through color, lighting, and placement. Ultra-realistic, moody tones, 1:1 square format, with sharp depth of field and high resolution.
 ```
 
-### 39. 品牌设计指南海报
+### Nano Banana Pro Prompts #39: 品牌设计指南海报
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@ai4everyday](https://x.com/ai4everyday/status/1925838516979646795)
 - Image: `assets/thumbs/nano-62.jpeg`
@@ -985,9 +1136,8 @@ Prompt:
 Create a vertical 9:16 brand design guide poster using the uploaded product image. Adapt the design style to match the product’s niche and visual identity. Structure the poster with clear, elegant sections: (1) Large logo display and safe zone usage, (2) Product mockup centered and highlighted, (3) Primary and secondary color palette swatches with hex codes, (4) Typography guide with heading, subheading, body font samples, and line spacing specs, (5) Iconography or graphic motif examples used by the brand, (6) Image treatment style with sample lifestyle or studio visuals, (7) Grid system or layout rules, (8) Packaging mockups and surface applications, (9) Do’s & Don’ts with annotated visuals. Use minimalist white or soft neutral background with structured layout dividers and drop shadows. The result must be visually rich, clean, and suitable for a printed or digital brand book.
 ```
 
-### 40. 破碎的真相
+### Nano Banana Pro Prompts #40: 破碎的真相
 
-- Model: `Nano Banana Pro`
 - Category: `Portrait`
 - Author / Source: [@TheRelianceAI](https://x.com/TheRelianceAI/status/1925918144163450890)
 - Image: `assets/thumbs/nano-61.png`
@@ -1000,9 +1150,8 @@ Prompt:
 A close-up of [SUBJECT 1] holding a mirror shard to their face. The shard reflects a completely different [SUBJECT 2]. Around them, small cracks spread through the air like fractures in invisible glass, warping the space itself.
 ```
 
-### 41. 令人垂涎欲滴的广告
+### Nano Banana Pro Prompts #41: 令人垂涎欲滴的广告
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@aziz4ai](https://x.com/aziz4ai/status/1925470550035476622)
 - Image: `assets/thumbs/nano-60.jpeg`
@@ -1015,9 +1164,8 @@ Prompt:
 a vertical 2:3 high-resolution food advertisement featuring the most iconic and delicious product from a well-known brand called [INSERT BRAND NAME]. The product appears centered with mouthwatering details — such as melted cheese, dripping chocolate, whipped cream, or condensation — depending on the product. The background should be a gradient or pastel tone inspired by the brand’s identity. At the top, display a bold slogan in a color that matches the brand’s style. At the bottom, include the official logo of the brand. Use cinematic studio lighting, soft shadows, and ultra-sharp textures to create a visually irresistible and minimal poster.
 ```
 
-### 42. 军事计划
+### Nano Banana Pro Prompts #42: 军事计划
 
-- Model: `Nano Banana Pro`
 - Category: `Creative`
 - Author / Source: [@B_4AI](https://x.com/B_4AI/status/1925479609442738486)
 - Image: `assets/thumbs/nano-59.png`
@@ -1030,9 +1178,8 @@ Prompt:
 A humorous cartoon scene set inside a military training classroom, featuring a group of [Insect Name] soldiers sitting at desks, wearing tiny helmets and miniature combat gear. They listen attentively to their commander, who stands in front of a large board displaying a sketch of a threat to their existence — the enemy changes depending on the animal or insect. The commander explains the attack plan using a pointer, highlighting sensitive targets with red circles. Some soldiers take notes, others whisper tactical ideas to each other. The overall atmosphere blends seriousness with satire in an exaggerated cartoon style.
 ```
 
-### 43. 血月下的决斗
+### Nano Banana Pro Prompts #43: 血月下的决斗
 
-- Model: `Nano Banana Pro`
 - Category: `Photography`
 - Author / Source: [@B_4AI](https://x.com/B_4AI/status/1925509492298375388)
 - Image: `assets/thumbs/nano-58.png`
@@ -1045,9 +1192,8 @@ Prompt:
 [SUBJECT] in a cinematic painting, battling amid crumbling ruins under a colossal blood moon — ambient sparks flying. Set in an ancient valley, illuminated by firelight and shadows. soft [COLOR1] and vibrant [COLOR2], mood intense and epic.
 ```
 
-### 44. 手工毛线纹理
+### Nano Banana Pro Prompts #44: 手工毛线纹理
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@ecommartinez](https://x.com/ecommartinez/status/1925272798479405479)
 - Image: `assets/thumbs/nano-57.png`
@@ -1060,9 +1206,8 @@ Prompt:
 Crea un render 3D fotorrealista de este logo hecho con hilo grueso y tejido a mano. El hilo debe parecer suave, esponjoso y de gran tamaño, con patrones visibles de tejido como bucles, giros y trenzas. Usa colores brillantes y saturados, estética cálida. Resalta la textura de las fibras, la suavidad del material y el acabado artesanal. Iluminación de estudio suave. Fondo blanco o crema limpio. El logo debe estar centrado y sin elementos adicionales. Cuadrado.
 ```
 
-### 45. 玻璃盒内的图像可视化
+### Nano Banana Pro Prompts #45: 玻璃盒内的图像可视化
 
-- Model: `Nano Banana Pro`
 - Category: `3D`
 - Author / Source: [@umesh_ai](https://x.com/umesh_ai/status/1925462472825442469)
 - Image: `assets/thumbs/nano-56.jpeg`
@@ -1075,9 +1220,8 @@ Prompt:
 photorealistic image of a [COLOR] 3D [SUBJECT] encased in a luxurious transparent box, viewed from an enhanced side angle to better reveal the 3D shape of the [SUBJECT]. The box should be white, exquisitely designed, featuring crystal-clear glass with refined, sharp edges
 ```
 
-### 46. 彩色卡通俏皮图标和徽标
+### Nano Banana Pro Prompts #46: 彩色卡通俏皮图标和徽标
 
-- Model: `Nano Banana Pro`
 - Category: `Product`
 - Author / Source: [@gnrlyxyz](https://x.com/gnrlyxyz/status/1925553233881145499)
 - Image: `assets/thumbs/nano-55.jpeg`
@@ -1090,9 +1234,8 @@ Prompt:
 Create a 2D digital illustration of the [FIREFOX] logo in a colorful cartoon style with bold black outlines. The icon design should feature playful, vibrant solid colors such as pink, teal, orange, yellow, and purple, applied in a flat, bold way. Give the shapes a slightly exaggerated, bubbly form with rounded edges and fun details like starbursts, stripes, or spark effects if relevant. Keep the illustration simple and stylized with a hand-drawn look. Use thick outlines to emphasize form. Vector friendly. White background. Square aspect ratio.
 ```
 
-### 47. 三种形状和三种颜色
+### Nano Banana Pro Prompts #47: 三种形状和三种颜色
 
-- Model: `Nano Banana Pro`
 - Category: `Creative`
 - Author / Source: [@umesh_ai](https://x.com/umesh_ai/status/1925569394924740817)
 - Image: `assets/thumbs/nano-54.jpeg`
@@ -1105,9 +1248,8 @@ Prompt:
 Create a minimalist image of a [SUBJECT] using three geometric shapes, using a different color in each shape
 ```
 
-### 48. 由鲜花组成的小房子
+### Nano Banana Pro Prompts #48: 由鲜花组成的小房子
 
-- Model: `Nano Banana Pro`
 - Category: `Creative`
 - Author / Source: [@BeanieBlossom](https://x.com/BeanieBlossom/status/1925461720639971505)
 - Image: `assets/thumbs/nano-53.jpeg`
@@ -1120,192 +1262,17 @@ Prompt:
 A small house made of flowers, a tree with colorful leaves growing on top and around the door, in the style of fantasy, mountainscape in the background, natural lighting, soft colors, rich details, and a full atmosphere, subtle painterly style
 ```
 
-### 49. Reusable Pixar-style 3D character portrait prompt
+## Seedream 4.5 Prompts
 
-- Model: `GPT Image 2`
-- Category: `Portrait`
-- Author / Source: [Zara - @ZaraIrahh](https://x.com/ZaraIrahh/status/2048429244632408300)
-- Image: `assets/thumbs/gpt-01.png`
+- Entries: 4
+- With images: 0
+- Note: Current entries are Seedream prompt templates and can be adapted for Seedream 4.5 workflows.
 
-![Reusable Pixar-style 3D character portrait prompt](assets/thumbs/gpt-01.png)
+### Seedream 4.5 Prompts #1: Seedream product landing page visual
 
-Prompt:
-
-```text
-A stylized Pixar-style 3D portrait of a young person with smooth skin, large expressive blue eyes, soft facial features, wearing round transparent glasses, modern hairstyle (short styled hair / soft bob cut), casual outfit (hoodie or minimal sweater), slight head tilt and warm smile, friendly and approachable expression, ultra-clean character design, vibrant orange-to-pink gradient background, soft studio lighting with subtle rim light, cinematic depth of field, ultra-detailed, 8K render, octane render style.
-```
-
-### 50. Reusable cute animal selfie prompt
-
-- Model: `GPT Image 2`
-- Category: `Portrait`
-- Author / Source: [Al-Shamus - @im_shahid7](https://x.com/im_shahid7/status/2048432604291240275)
-- Image: `assets/thumbs/gpt-02.jpg`
-
-![Reusable cute animal selfie prompt](assets/thumbs/gpt-02.jpg)
-
-Prompt:
-
-```text
-a cute orange and white cat, he looks like hes thinking. taking a selfie inside a dramatically lit room dark room. the cat has big eyes, a chubby face, and a happy expression. the image is a wide-angle shot with sharp focus and high resolution, resulting in a high-definition photograph.
-```
-
-### 51. Reusable fashion editorial portrait prompt with effects
-
-- Model: `GPT Image 2`
-- Category: `Portrait`
-- Author / Source: [𝗦𝗮𝗻𝗶𝗮 - @saniaspeaks_](https://x.com/saniaspeaks_/status/2048431408318705733)
-- Image: `assets/thumbs/gpt-03.jpg`
-
-![Reusable fashion editorial portrait prompt with effects](assets/thumbs/gpt-03.jpg)
-
-Prompt:
-
-```text
-portrait of a young woman with short curly black hair and fair skin, wearing transparent safety goggles and a blue ribbed turtleneck sweater, seated in front of a solid azure blue background, double-exposure motion blur effect to the left side of the face, subtle soft reflections on the glasses, cold ambient lighting, high sharpness on facial features with dreamlike blur trail overlaying second face, fashion editorial studio setup, icy color palette, futuristic retro mood.
-```
-
-### 52. Reusable artistic progression/multi-panel prompt
-
-- Model: `GPT Image 2`
-- Category: `Creative`
-- Author / Source: [Sharon Riley - @Just_sharon7](https://x.com/Just_sharon7/status/2048440567605190853)
-- Image: `assets/thumbs/gpt-04.png`
-
-![Reusable artistic progression/multi-panel prompt](assets/thumbs/gpt-04.png)
-
-Prompt:
-
-```text
-Artistic progression in five vertical panels: from realistic sketch to modern abstract sculpture of a ballerina in arabesque pose. 1. Detailed pencil sketch of ballerina on pointe, elegant extended leg and arms. 2. Refined mid-stage sketch. 3. Strongly stylized flowing lines. 4. Angular geometric abstraction. 5. Final sleek, ribbon-twisted contemporary metal sculpture with beautiful curves and tension. Black ink and charcoal style on white background, high-contrast artistic study, luxury sculpture aesthetic --ar 3:2
-```
-
-### 53. Reusable cyber-poetry portrait prompt with text projection
-
-- Model: `GPT Image 2`
-- Category: `Portrait`
-- Author / Source: [Aijaz - @iamsofiaijaz](https://x.com/iamsofiaijaz/status/2048436757855945137)
-- Image: `assets/thumbs/gpt-05.png`
-
-![Reusable cyber-poetry portrait prompt with text projection](assets/thumbs/gpt-05.png)
-
-Prompt:
-
-```text
-A cinematic, ultra-realistic close-up portrait of a young woman with wet, tousled dark hair and luminous skin, staring directly into the camera with an intense, introspective expression. Glowing cyan handwritten text and symbols are projected across her face, neck, and shoulders, resembling poetic phrases, equations, and abstract handwriting. The light reflections shimmer on her damp skin, creating a futuristic, cyber-poetry aesthetic. Dark, moody background with soft shadows, shallow depth of field, sharp focus on the eyes, high contrast lighting, teal and blue color palette, hyper-detailed skin texture, photorealistic, dramatic atmosphere, cyberpunk meets fine-art portrait photography, 8K quality, cinematic lighting
-```
-
-### 54. Reusable luxury fashion ad prompt with text
-
-- Model: `GPT Image 2`
-- Category: `Poster`
-- Author / Source: [Mr Das - @MrDasOnX](https://x.com/MrDasOnX/status/2048432301445644740)
-- Image: `assets/thumbs/gpt-06.png`
-
-![Reusable luxury fashion ad prompt with text](assets/thumbs/gpt-06.png)
-
-Prompt:
-
-```text
-Avant-garde luxury watch fashion ad, sophisticated female model in sleek black evening attire dramatically posing with an oversized glowing mechanical watch as the centerpiece, intricate gears and sparkling diamonds visible, bold metallic typography ‘TIMELESS’ floating in the foreground, reflective dark studio floor with scattered gold accents and subtle light beams, high-end editorial photography, dramatic cinematic lighting, luxurious atmosphere –ar 1:1 –stylize 750
-```
-
-### 55. Reusable cinematic urban portrait prompt
-
-- Model: `GPT Image 2`
-- Category: `Portrait`
-- Author / Source: [K - @ChillaiKalan__](https://x.com/ChillaiKalan__/status/2048435840217731378)
-- Image: `assets/thumbs/gpt-07.png`
-
-![Reusable cinematic urban portrait prompt](assets/thumbs/gpt-07.png)
-
-Prompt:
-
-```text
-Edit this photo (keep the face unchanged), portrait. Cinematic close-up of a young woman at night in a moody urban setting with neon lighting. She looks back over her shoulder with a soft yet intense expression. Long dark wavy hair with wispy bangs, slightly wind-swept. Natural dewy makeup, minimal styling, wearing a dark oversized leather jacket. Background: blurred city bokeh with streetlights and car lights. Shot on Sony A7S III, 85mm lens, shallow depth of field. Off-center composition. Dramatic split lighting: cool blue on one side, warm red on the other. Teal-and-red color grade, high contrast, subtle film grain and glow.
-```
-
-### 56. Reusable luxury sports editorial prompt
-
-- Model: `GPT Image 2`
-- Category: `Poster`
-- Author / Source: [Taaruk - @Taaruk_](https://x.com/Taaruk_/status/2048438203611533367)
-- Image: `assets/thumbs/gpt-08.png`
-
-![Reusable luxury sports editorial prompt](assets/thumbs/gpt-08.png)
-
-Prompt:
-
-```text
-A dramatic sports editorial scene featuring a professional male footballer wearing an all-black kit, reclining confidently on top of an oversized soccer ball. The ball is hyper-detailed with realistic panels and branding, placed on a glossy reflective floor. The athlete’s pose is relaxed yet powerful, with one arm hanging down and legs extended, showcasing strength and elegance. The background is a bold deep blue studio with massive “GOAL” typography in large, subtle shadowed letters. High-contrast studio lighting with sharp highlights and deep shadows sculpting the body. Clean, minimal composition with a luxury sports campaign aesthetic. Shot with an 85mm lens, ultra-realistic, cinematic lighting, crisp details, 8K resolution, Nike/Adidas-style commercial photography.
-```
-
-### 57. Reusable cinematic character prompt with environment details
-
-- Model: `GPT Image 2`
-- Category: `Portrait`
-- Author / Source: [Snow - @iamrealsnow](https://x.com/iamrealsnow/status/2048444370844807555)
-- Image: `assets/thumbs/gpt-09.png`
-
-![Reusable cinematic character prompt with environment details](assets/thumbs/gpt-09.png)
-
-Prompt:
-
-```text
-A powerful young man standing in front of a matte black Hummer H2 on a snowy night, heavy snowfall, dark cinematic atmosphere. The Hummer has a glowing icy number plate with a frosted texture. The subject wears a long black trench coat, leather gloves, and boots, slightly messy hair, intense expression, looking straight into the camera. Low-angle shot to make him look dominant. Cold blue and deep shadow lighting, high contrast, sharp details, foggy breath visible, luxury criminal aura, ultra-realistic, 4K, dramatic tension.
-```
-
-### 58. Reusable detailed multi-panel transformation prompt for GPT Image 2
-
-- Model: `GPT Image 2`
-- Category: `Portrait`
-- Author / Source: [simply - @kingofdairyque](https://x.com/kingofdairyque/status/2048447045640544549)
-- Image: `assets/thumbs/gpt-10.jpg`
-
-![Reusable detailed multi-panel transformation prompt for GPT Image 2](assets/thumbs/gpt-10.jpg)
-
-Prompt:
-
-```text
-A high-end cinematic transformation artwork displayed in five vertical panels, showing a luxury perfume evolving from raw essence into a sculptural masterpiece, each panel separated by thin black dividers. Panel 1 (Origin): A premium glass perfume bottle resting on a dark reflective surface, surrounded by raw ingredients like rose petals, oud wood, citrus peel, and mist, soft studio lighting, elegant shadows. Panel 2 (Release): The perfume begins to diffuse into the air, visible fragrant mist swirling upward in fluid motion, forming soft organic shapes, glowing particles and vapor trails. Panel 3 (Transformation): The mist starts shaping into a semi-formed silhouette (abstract human figure or flowing fabric), blending liquid, vapor, and light, luminous and dreamy. Panel 4 (Abstraction): The form becomes fully abstract — flowing ribbons of scent turning into sleek glass-like curves and fluid geometry, dynamic motion frozen mid-air. Panel 5 (Transcendence): Final form — a luxurious sculptural perfume bottle or abstract glass statue inspired by the scent’s essence, polished, reflective, with glowing highlights, sitting on a minimal pedestal. Style: ultra-detailed, photorealistic to abstract progression, deep black background, gold and silver accents, soft glow, high contrast lighting, glossy reflections, cinematic luxury aesthetic, perfume ad style, 4K quality, sharp focus.
-```
-
-### 59. Recent post with complete reusable sticker pack prompt and output image.
-
-- Model: `GPT Image 2`
-- Category: `Portrait`
-- Author / Source: [Noor 🌸](https://x.com/Noor_ul_ain43/status/2049171970227581378)
-- Image: `assets/thumbs/gpt-11.png`
-
-![Recent post with complete reusable sticker pack prompt and output image.](assets/thumbs/gpt-11.png)
-
-Prompt:
-
-```text
-A high-quality sticker sheet featuring a cute semi-realistic cartoon girl inspired by the provided reference face: short messy bob haircut, bright yellow hair, soft freckles, brown eyes, glossy lips, hoop earrings, wearing a sleeveless yellow top. Create a grid of multiple expressions and poses: ... Ultra-detailed, 4K resolution, consistent character design across all stickers, no watermark, no extra text outside stickers.
-```
-
-### 60. Detailed reusable sports poster prompt for GPT Image 2 with media outputs.
-
-- Model: `GPT Image 2`
-- Category: `Poster`
-- Author / Source: [SPEEDYAI](https://x.com/SPEEDAI07/status/2049171788731465970)
-- Image: `assets/thumbs/gpt-12.png`
-
-![Detailed reusable sports poster prompt for GPT Image 2 with media outputs.](assets/thumbs/gpt-12.png)
-
-Prompt:
-
-```text
-Design a '4:5' sports campaign poster that elevates 'Kylian Mbappé' into a sculptural icon of ruthless speed and modern dominance, capturing a moment of explosive elevation as if gravity itself is shattering beneath his acceleration. ... FINISH: Crisp detail on skin and fabric ... NEGATIVE: Avoid generic football poses ...
-```
-
-### 61. Seedream product landing page visual
-
-- Model: `Seedream 5 Pro`
 - Category: `Product`
 - Author / Source: [Image Prompt Generator original](https://image-prompt-generator.com/)
-- Image: 暂无图片
+- Image: No image yet
 
 Prompt:
 
@@ -1313,12 +1280,11 @@ Prompt:
 Create a clean commercial product landing page hero image for [PRODUCT]. Use a premium studio setup, realistic lighting, crisp product edges, tasteful typography space, and a balanced layout suitable for an ecommerce homepage. Keep the product accurate, avoid clutter, and leave enough negative space for headline text.
 ```
 
-### 62. Seedream information card with Chinese text
+### Seedream 4.5 Prompts #2: Seedream information card with Chinese text
 
-- Model: `Seedream 5 Pro`
 - Category: `Infographic`
 - Author / Source: [Image Prompt Generator original](https://image-prompt-generator.com/)
-- Image: 暂无图片
+- Image: No image yet
 
 Prompt:
 
@@ -1326,12 +1292,11 @@ Prompt:
 Create a vertical Chinese information card about [TOPIC]. Use a clear editorial grid, strong title hierarchy, readable Chinese typography, small supporting illustrations, and concise section labels. Make it suitable for social sharing, with clean margins and high text legibility.
 ```
 
-### 63. Seedream multi-panel visual explanation
+### Seedream 4.5 Prompts #3: Seedream multi-panel visual explanation
 
-- Model: `Seedream 5 Pro`
 - Category: `Infographic`
 - Author / Source: [Image Prompt Generator original](https://image-prompt-generator.com/)
-- Image: 暂无图片
+- Image: No image yet
 
 Prompt:
 
@@ -1339,15 +1304,42 @@ Prompt:
 Create a five-panel visual explanation of [PROCESS]. Each panel should show one step with consistent characters, clean composition, short readable labels, and a coherent color system. The final image should feel like a polished educational storyboard.
 ```
 
-### 64. Seedream precise image editing brief
+### Seedream 4.5 Prompts #4: Seedream precise image editing brief
 
-- Model: `Seedream 5 Pro`
 - Category: `Photography`
 - Author / Source: [Image Prompt Generator original](https://image-prompt-generator.com/)
-- Image: 暂无图片
+- Image: No image yet
 
 Prompt:
 
 ```text
 Edit the uploaded image while preserving the main subject, face, pose, and original perspective. Change only [TARGET AREA] into [NEW DETAIL]. Match lighting, shadows, material texture, and camera grain so the edit looks natural and production-ready.
 ```
+
+## GPT Image 1.5 Prompts
+
+- Entries: 0
+- With images: 0
+
+Coming soon. Prompt examples and images will be added in a later import pass.
+
+## Seedance 2.0 Prompts
+
+- Entries: 0
+- With images: 0
+
+Coming soon. Prompt examples and images will be added in a later import pass.
+
+## Grok Imagine Prompts
+
+- Entries: 0
+- With images: 0
+
+Coming soon. Prompt examples and images will be added in a later import pass.
+
+## Gemini 3 Pro Prompts
+
+- Entries: 0
+- With images: 0
+
+Coming soon. Prompt examples and images will be added in a later import pass.

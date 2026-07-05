@@ -48,8 +48,8 @@
   <main id="top">
     <section class="hero" id="generator">
       <div class="hero-title">
-        <h1>GPT IMAGE 2</h1>
-        <div class="title-sticker">提示词</div>
+        <h1>Image Prompt Generator</h1>
+        <div class="title-sticker">提示词生成器</div>
         <p>每日持续更新中</p>
       </div>
 
@@ -57,19 +57,22 @@
         <div class="composer-main">
           <textarea id="subjectInput" rows="4" placeholder="描述你想要生成的图像...（例如：赛博朋克风格的夜晚城市）">一张高级质感的 AI 图片提示词网站首页，上方是生成框，下方是带图片和作者信息的提示词卡片</textarea>
           <div class="composer-tools">
-            <button class="tool-button" type="button" id="settingsButton">设置</button>
-            <button class="tool-button" type="button" id="imageButton">图片</button>
             <select id="styleSelect" aria-label="风格">
               <option>商业摄影</option>
               <option>电影感人像</option>
               <option>3D 粘土渲染</option>
               <option>手绘信息图</option>
               <option>编辑精准改图</option>
+              <option>视频分镜</option>
             </select>
             <select id="modelSelect" aria-label="模型">
               <option>GPT Image 2</option>
+              <option>GPT Image 1.5</option>
               <option>Nano Banana Pro</option>
               <option>Seedream 5 Pro</option>
+              <option>Seedance 2.0</option>
+              <option>Grok Imagine</option>
+              <option>Gemini 3 Pro</option>
             </select>
             <select id="ratioSelect" aria-label="比例">
               <option>1:1</option>
@@ -77,6 +80,9 @@
               <option>9:16</option>
               <option>16:9</option>
             </select>
+            <div class="turnstile-slot" id="turnstileSlot" data-sitekey="待配置" aria-label="Cloudflare Turnstile human verification">
+              Turnstile
+            </div>
           </div>
         </div>
         <button class="generate-button" type="submit">

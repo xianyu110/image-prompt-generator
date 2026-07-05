@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import re
 import shutil
+import subprocess
 import urllib.request
 from pathlib import Path
 
@@ -44,6 +45,26 @@ def slug(value: str) -> str:
 def clean(value: str) -> str:
     value = re.sub(r"<[^>]+>", " ", value)
     return re.sub(r"\s+", " ", value).strip()
+
+
+def title_and_source(title: str, block: str, fallback_source: str, fallback_url: str) -> tuple[str, str, str]:
+    source = fallback_source
+    url = fallback_url
+    title_match = re.search(r"^(.*?)\s*\(来源\s+\[([^\]]+)\]\(([^)]+)\)\)\s*$", title)
+    if title_match:
+        title = clean(title_match.group(1))
+        source = clean(title_match.group(2))
+        url = title_match.group(3)
+    author_match = re.search(
+        r"\*\*Author:\*\*\s*\[?([^\]\n]+)|作者\s*[:：]\s*([^\n]+)|来源\s+\[([^\]]+)\]\(([^)]+)\)",
+        block,
+    )
+    if author_match:
+        groups = author_match.groups()
+        source = clean(groups[0] or groups[1] or groups[2] or source)
+        url = groups[3] or url
+    title = re.sub(r"^案例\s+\d+\s*[：:]\s*", "", title).strip()
+    return title, source, url
 
 
 def model_for(repo: str) -> str:
@@ -150,12 +171,18 @@ def save_image(src: str, owner: str, repo: str, file_path: Path, item_slug: str)
 
     if src.startswith(("http://", "https://")):
         try:
-            req = urllib.request.Request(src, headers={"User-Agent": "Mozilla/5.0"})
-            with urllib.request.urlopen(req, timeout=5) as response:
-                data = response.read(MAX_BYTES + 1)
-            if len(data) > MAX_BYTES:
+            tmp = dest.with_suffix(dest.suffix + ".tmp")
+            result = subprocess.run(
+                ["curl", "-L", "--fail", "--silent", "--show-error", "--max-time", "12", "--output", str(tmp), src],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            if result.returncode != 0 or not tmp.exists() or tmp.stat().st_size == 0 or tmp.stat().st_size > MAX_BYTES:
+                if tmp.exists():
+                    tmp.unlink()
                 return None
-            dest.write_bytes(data)
+            tmp.replace(dest)
             return str(dest.relative_to(ROOT))
         except Exception:
             return None
@@ -180,6 +207,8 @@ def parse_markdown(owner: str, repo: str, file_path: Path) -> list[dict]:
         image_candidates = images_from(block)
         if not prompt or not image_candidates:
             continue
+        fallback_url = source_url(owner, repo, file_path)
+        clean_title, author, item_source_url = title_and_source(title, block, repo, fallback_url)
         item_slug = slug(f"{file_path.stem}-{len(rows) + 1}-{title}")
         image = None
         for candidate in image_candidates:
@@ -188,21 +217,17 @@ def parse_markdown(owner: str, repo: str, file_path: Path) -> list[dict]:
                 break
         if not image:
             continue
-        author = repo
-        author_match = re.search(r"\*\*Author:\*\*\s*\[?([^\]\n]+)|作者\s*[:：]\s*([^\n]+)|来源\s+\[([^\]]+)\]", block)
-        if author_match:
-            author = clean(next(group for group in author_match.groups() if group))
-        category = category_for(title, prompt)
+        category = category_for(clean_title, prompt)
         rows.append(
             {
                 "id": f"import-{slug(owner)}-{slug(repo)}-{len(rows) + 1}",
-                "title": title,
+                "title": clean_title,
                 "model": model_for(repo),
                 "category": category,
                 "style": category,
                 "useCase": category,
                 "source": author,
-                "sourceUrl": source_url(owner, repo, file_path),
+                "sourceUrl": item_source_url,
                 "sourceRepo": f"{owner}/{repo}",
                 "sourceFile": str(file_path),
                 "image": image,

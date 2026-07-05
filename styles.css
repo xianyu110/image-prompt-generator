@@ -117,10 +117,11 @@ a {
 }
 
 .hero-title h1 {
+  max-width: 1120px;
   margin: 0;
   color: var(--white);
-  font-size: clamp(48px, 6.6vw, 84px);
-  line-height: .9;
+  font-size: clamp(44px, 6.2vw, 82px);
+  line-height: .95;
   letter-spacing: 0;
   text-shadow: 6px 6px 0 #000;
 }
@@ -129,7 +130,7 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 190px;
+  min-width: 280px;
   margin-top: 12px;
   padding: 5px 20px 8px;
   border: 5px solid var(--line);
@@ -187,7 +188,6 @@ a {
   background: var(--white);
 }
 
-.tool-button,
 .composer-tools select,
 .outline-button,
 .mini-copy,
@@ -204,9 +204,24 @@ a {
   box-shadow: 3px 3px 0 #000;
 }
 
-.tool-button,
 .composer-tools select {
-  padding: 0 10px;
+  min-width: 150px;
+  padding: 0 14px;
+}
+
+.turnstile-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 3px dashed var(--line);
+  background: #f7f8f9;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: .04em;
+  text-transform: uppercase;
 }
 
 .generate-button {
@@ -739,12 +754,12 @@ details p {
 
 @media (max-width: 560px) {
   .hero-title h1 {
-    font-size: 48px;
+    font-size: 39px;
   }
 
   .title-sticker {
-    min-width: 180px;
-    font-size: 34px;
+    min-width: 220px;
+    font-size: 30px;
   }
 
   .prompt-grid,
