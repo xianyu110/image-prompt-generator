@@ -436,6 +436,7 @@ a {
 .model-links,
 .model-guide,
 .library,
+.seo-content,
 .faq {
   width: min(1080px, calc(100% - 32px));
   margin: 0 auto;
@@ -761,6 +762,37 @@ a {
   border: 3px solid var(--line);
   background: var(--surface);
   box-shadow: 3px 3px 0 #000;
+}
+
+.seo-content {
+  padding: 34px 0 54px;
+  border-top: 4px solid var(--line);
+}
+
+.seo-copy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px 32px;
+}
+
+.seo-copy-grid article {
+  padding-bottom: 18px;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 16%, transparent);
+}
+
+.seo-copy-grid h3 {
+  margin: 0 0 10px;
+  font-size: 22px;
+  line-height: 1.15;
+  font-weight: 950;
+}
+
+.seo-copy-grid p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.65;
 }
 
 .faq {
@@ -1152,7 +1184,8 @@ details p {
   }
 
   .model-link-grid,
-  .model-guide {
+  .model-guide,
+  .seo-copy-grid {
     grid-template-columns: 1fr;
   }
 
