@@ -78,7 +78,7 @@
       ]
     }
   </script>
-  <link rel="stylesheet" href="styles.css?v=20260705-lazy">
+  <link rel="stylesheet" href="styles.css?v=20260705-faq-copy">
 </head>
 <body>
   <header class="topbar">
@@ -90,7 +90,7 @@
       <a href="#generator" id="navGenerator">Generator</a>
       <a href="#hot" id="navHot">Trending Prompts</a>
       <a href="#library" id="navLibrary">Prompt Library</a>
-      <a href="#faq">FAQ</a>
+      <a href="#faq" id="navFaq">FAQ</a>
     </nav>
     <div class="topbar-actions">
       <button class="utility-button" id="languageToggle" type="button" aria-label="Switch language">中文</button>
@@ -115,13 +115,13 @@
     <section class="hero" id="generator">
       <div class="hero-title">
         <h1>Image Prompt Generator</h1>
-        <div class="title-sticker" id="titleSticker">Prompt Generator</div>
-        <p id="heroSubtitle">Fresh AI image prompts updated daily</p>
+        <div class="title-sticker" id="titleSticker">Describe Your Image Idea</div>
+        <p id="heroSubtitle">Describe an image idea, choose a model, and generate a stronger prompt.</p>
       </div>
 
       <form class="prompt-composer" id="builderForm">
         <div class="composer-main">
-          <textarea id="subjectInput" rows="4" placeholder="Describe the image you want to generate...">a cinematic orange and white cat taking a thoughtful selfie inside a dramatically lit room, wide-angle lens, sharp focus, high-resolution photograph</textarea>
+          <textarea id="subjectInput" rows="4" placeholder="Describe the image idea you want to create...">a cinematic orange and white cat taking a thoughtful selfie inside a dramatically lit room, wide-angle lens, sharp focus, high-resolution photograph</textarea>
           <div class="composer-tools">
             <select id="modelSelect" aria-label="Model">
               <option>GPT Image 2</option>
@@ -356,6 +356,6 @@
   <button class="back-to-top" id="backToTopButton" type="button" aria-label="Back to top">↑</button>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
-  <script src="script.js?v=20260705-lazy"></script>
+  <script src="script.js?v=20260705-faq-copy"></script>
 </body>
 </html>

@@ -24,6 +24,7 @@ const state = {
   turnstileVerifying: false,
   turnstileAccessToken: "",
   generatingPrompt: false,
+  suspendLazyLoad: false,
 };
 
 let turnstileVerifyPromise = null;
@@ -38,8 +39,10 @@ const copy = {
     navGenerator: "Generator",
     navHot: "Trending Prompts",
     navLibrary: "Prompt Library",
-    titleSticker: "Prompt Generator",
-    heroSubtitle: "Fresh AI image prompts updated daily",
+    navFaq: "FAQ",
+    titleSticker: "Describe Your Image Idea",
+    heroSubtitle: "Describe an image idea, choose a model, and generate a stronger prompt.",
+    subjectPlaceholder: "Describe the image idea you want to create...",
     generateLabel: "Generate",
     generatingLabel: "Generating...",
     generatedTitle: "Generated Prompt",
@@ -126,8 +129,10 @@ const copy = {
     navGenerator: "提示词生成",
     navHot: "热门提示词",
     navLibrary: "全部案例",
-    titleSticker: "提示词生成器",
-    heroSubtitle: "每日持续更新中",
+    navFaq: "常见问题",
+    titleSticker: "描述画面，生成提示词",
+    heroSubtitle: "描述你想生成的画面，选择模型，生成更好用的图片提示词。",
+    subjectPlaceholder: "描述你想创作的画面想法...",
     generateLabel: "生成",
     generatingLabel: "生成中...",
     generatedTitle: "生成结果",
@@ -515,6 +520,7 @@ function renderGrid() {
 }
 
 function loadMorePrompts() {
+  if (state.suspendLazyLoad) return;
   if (state.visibleCount >= state.filtered.length) return;
   state.visibleCount += GRID_BATCH_SIZE;
   renderGrid();
@@ -698,8 +704,10 @@ function renderStaticCopy() {
   document.querySelector("#navGenerator").textContent = t("navGenerator");
   document.querySelector("#navHot").textContent = t("navHot");
   document.querySelector("#navLibrary").textContent = t("navLibrary");
+  document.querySelector("#navFaq").textContent = t("navFaq");
   document.querySelector("#titleSticker").textContent = t("titleSticker");
   document.querySelector("#heroSubtitle").textContent = t("heroSubtitle");
+  els.subjectInput.placeholder = t("subjectPlaceholder");
   document.querySelector("#generateLabel").textContent = t("generateLabel");
   document.querySelector("#generatedTitle").textContent = t("generatedTitle");
   els.copyGeneratedButton.textContent = t("copy");
@@ -941,6 +949,27 @@ function setGenerating(isGenerating) {
   if (button) button.disabled = isGenerating;
 }
 
+function scrollToAnchor(hash) {
+  if (!hash || hash === "#") return;
+  const target = document.querySelector(hash);
+  if (!target) return;
+  const pauseLazyLoad = hash === "#faq";
+  if (pauseLazyLoad) state.suspendLazyLoad = true;
+  history.replaceState(null, "", hash);
+  const jump = () => {
+    const topbarHeight = document.querySelector(".topbar")?.offsetHeight || 0;
+    const correctedTop = target.getBoundingClientRect().top + window.scrollY - topbarHeight - 14;
+    window.scrollTo({ top: Math.max(0, correctedTop), behavior: "auto" });
+  };
+  jump();
+  requestAnimationFrame(jump);
+  setTimeout(jump, 120);
+  setTimeout(jump, 450);
+  if (pauseLazyLoad) setTimeout(() => {
+    state.suspendLazyLoad = false;
+  }, 1200);
+}
+
 function renderGeneratedPrompt(prompt, sourceLabel) {
   els.builderOutput.textContent = sourceLabel ? `${sourceLabel}\n\n${prompt}` : prompt;
   els.generatedOutput.hidden = false;
@@ -1116,7 +1145,14 @@ function attachEvents() {
   });
 
   document.querySelectorAll(".nav-links a").forEach((link) => {
-    link.addEventListener("click", () => document.body.classList.remove("menu-open"));
+    link.addEventListener("click", (event) => {
+      const href = link.getAttribute("href") || "";
+      if (href.startsWith("#")) {
+        event.preventDefault();
+        scrollToAnchor(href);
+      }
+      document.body.classList.remove("menu-open");
+    });
   });
 
   els.backToTopButton.addEventListener("click", () => {
@@ -1143,6 +1179,7 @@ async function init() {
   attachEvents();
   initLazyLoadObserver();
   await applyFilters();
+  if (window.location.hash) scrollToAnchor(window.location.hash);
   initTurnstile();
 }
 
