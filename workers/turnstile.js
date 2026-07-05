@@ -74,31 +74,46 @@ async function createAccessToken(env, hostname) {
     exp: now + ACCESS_TOKEN_TTL_SECONDS,
     hostname,
   })));
-  const signature = base64url(new Uint8Array(await hmac(env.TURNSTILE_SECRET_KEY, payload)));
+  const signature = base64url(new Uint8Array(await hmac(accessTokenSecret(env), payload)));
   return `${payload}.${signature}`;
 }
 
+function accessTokenSecrets(env) {
+  return [
+    env.PROMPT_ACCESS_TOKEN_SECRET,
+    env.TURNSTILE_SECRET_KEY,
+  ].filter(Boolean);
+}
+
+function accessTokenSecret(env) {
+  return accessTokenSecrets(env)[0] || "";
+}
+
 async function verifyAccessToken(env, token) {
-  if (!env.TURNSTILE_SECRET_KEY || !token || !token.includes(".")) return false;
+  if (!accessTokenSecret(env) || !token || !token.includes(".")) return false;
   const parts = token.split(".");
   if (parts.length !== 2) return false;
   const [payload, signature] = parts;
   if (!payload || !signature) return false;
 
   let a;
-  let b;
   try {
-    const expected = base64url(new Uint8Array(await hmac(env.TURNSTILE_SECRET_KEY, payload)));
     a = base64urlToBytes(signature);
-    b = base64urlToBytes(expected);
-    if (a.length !== b.length) return false;
   } catch {
     return false;
   }
 
-  let diff = 0;
-  for (let index = 0; index < a.length; index += 1) diff |= a[index] ^ b[index];
-  if (diff !== 0) return false;
+  let validSignature = false;
+  for (const secret of accessTokenSecrets(env)) {
+    const expected = base64url(new Uint8Array(await hmac(secret, payload)));
+    const b = base64urlToBytes(expected);
+    if (a.length !== b.length) continue;
+
+    let diff = 0;
+    for (let index = 0; index < a.length; index += 1) diff |= a[index] ^ b[index];
+    if (diff === 0) validSignature = true;
+  }
+  if (!validSignature) return false;
 
   try {
     const parsed = JSON.parse(new TextDecoder().decode(base64urlToBytes(payload)));
