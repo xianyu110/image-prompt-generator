@@ -31,6 +31,7 @@ MODEL_PAGES = [
         "description": "Explore Seedream 5 Pro prompts for controllable editing, Chinese text, product design, commercial images, and local refinements.",
         "h1": "Seedream 5 Pro Prompts",
         "intro": "Seedream 5 Pro prompt examples for controllable edits, commercial design output, readable typography, local refinements, and iteration-friendly image workflows.",
+        "limit": None,
         "tips": [
             "State what should stay unchanged before describing the edit.",
             "Separate layout, typography, material, and lighting instructions.",
@@ -189,7 +190,10 @@ def page_prompts(all_prompts, page):
     aliases = set(page.get("aliases") or [page["model"]])
     selected = [item for item in all_prompts if item.get("model") in aliases]
     selected.sort(key=lambda item: (not bool(item.get("image")), item.get("id") or ""))
-    return selected[:12]
+    limit = page.get("limit", 12)
+    if limit is None:
+        return selected
+    return selected[:limit]
 
 
 def related_links(active_slug):

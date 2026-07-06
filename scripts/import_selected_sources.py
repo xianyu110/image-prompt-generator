@@ -22,6 +22,9 @@ PROMPTS_DATA = ROOT / "data/prompts.json"
 MAX_PER_SOURCE = int(os.environ.get("MAX_PER_SOURCE", "80"))
 MAX_BYTES = 5 * 1024 * 1024
 IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
+SOURCE_LIMIT_OVERRIDES = {
+    ("YouMind-OpenLab", "awesome-seedream-4.5"): None,
+}
 
 
 SOURCES = [
@@ -93,6 +96,10 @@ def model_for(repo: str) -> str:
     if "nano" in text or "banana" in text or "gemini" in text:
         return "Nano Banana Pro"
     return "AI Image Model"
+
+
+def source_limit(owner: str, repo: str) -> int | None:
+    return SOURCE_LIMIT_OVERRIDES.get((owner, repo), MAX_PER_SOURCE)
 
 
 def category_for(title: str, prompt: str) -> str:
@@ -206,7 +213,7 @@ def save_image(src: str, owner: str, repo: str, file_path: Path, item_slug: str)
     return None
 
 
-def parse_markdown(owner: str, repo: str, file_path: Path) -> list[dict]:
+def parse_markdown(owner: str, repo: str, file_path: Path, limit: int | None) -> list[dict]:
     text = file_path.read_text(encoding="utf-8", errors="ignore")
     rows = []
     for title, block in parse_blocks(text):
@@ -243,12 +250,12 @@ def parse_markdown(owner: str, repo: str, file_path: Path) -> list[dict]:
                 "license": "check source repository",
             }
         )
-        if len(rows) >= MAX_PER_SOURCE:
+        if limit is not None and len(rows) >= limit:
             break
     return rows
 
 
-def parse_json(owner: str, repo: str, file_path: Path) -> list[dict]:
+def parse_json(owner: str, repo: str, file_path: Path, limit: int | None) -> list[dict]:
     data = json.loads(file_path.read_text(encoding="utf-8"))
     items = []
     if isinstance(data, dict):
@@ -291,7 +298,7 @@ def parse_json(owner: str, repo: str, file_path: Path) -> list[dict]:
                 "license": "check source repository",
             }
         )
-        if len(rows) >= MAX_PER_SOURCE:
+        if limit is not None and len(rows) >= limit:
             break
     return rows
 
@@ -375,10 +382,11 @@ def main() -> int:
         if not file_path.exists():
             print(f"skip missing {owner}/{repo}: {file_path}")
             continue
+        limit = source_limit(owner, repo)
         if file_path.suffix.lower() == ".json":
-            rows = parse_json(owner, repo, file_path)
+            rows = parse_json(owner, repo, file_path, limit)
         else:
-            rows = parse_markdown(owner, repo, file_path)
+            rows = parse_markdown(owner, repo, file_path, limit)
         imported.extend(rows)
         summary.append({"repo": f"{owner}/{repo}", "file": str(file_path), "items": len(rows)})
         print(f"{owner}/{repo}: {len(rows)}")
