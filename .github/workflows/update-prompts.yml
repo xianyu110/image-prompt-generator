@@ -34,6 +34,9 @@ jobs:
           MAX_PER_SOURCE: "140"
         run: python3 scripts/import_selected_sources.py
 
+      - name: Install image import dependencies
+        run: python3 -m pip install --user Pillow
+
       - name: Import YouMind image prompt references
         env:
           PROMPT_TARGET_TOTAL: "3200"

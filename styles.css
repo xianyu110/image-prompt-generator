@@ -116,6 +116,32 @@ a {
   gap: 8px;
 }
 
+.github-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 3px solid var(--line);
+  background: #050505;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 950;
+  box-shadow: 3px 3px 0 #000;
+}
+
+.github-badge svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.github-badge:hover,
+.github-badge:focus-visible {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 #000;
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
@@ -1116,6 +1142,21 @@ details p {
     gap: 5px;
   }
 
+  .github-badge {
+    width: 36px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .github-badge span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
   .brand span:last-child {
     max-width: clamp(128px, 42vw, 210px);
     overflow: hidden;
@@ -1210,6 +1251,14 @@ details p {
 }
 
 @media (max-width: 560px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .brand span:last-child {
+    display: none;
+  }
+
   .hero-title h1 {
     font-size: 39px;
   }
