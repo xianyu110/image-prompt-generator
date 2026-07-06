@@ -31,7 +31,7 @@ MODEL_PAGES = [
         "description": "Explore Seedream 5 Pro prompts for controllable editing, Chinese text, product design, commercial images, and local refinements.",
         "h1": "Seedream 5 Pro Prompts",
         "intro": "Seedream 5 Pro prompt examples for controllable edits, commercial design output, readable typography, local refinements, and iteration-friendly image workflows.",
-        "limit": None,
+        "dataFile": "../data/prompts/seedream-5-pro.json",
         "tips": [
             "State what should stay unchanged before describing the edit.",
             "Separate layout, typography, material, and lighting instructions.",
@@ -165,7 +165,7 @@ def image_html(item, prefix="../"):
 
 def card_html(item):
     return f"""
-        <article class="prompt-card">
+        <article class="prompt-card" data-prompt-id="{safe(item.get("id"))}">
           <div class="card-top">
             <span class="author">Author {safe(author_label(item))}</span>
             <span class="date">{safe(item.get("model"))}</span>
@@ -190,10 +190,7 @@ def page_prompts(all_prompts, page):
     aliases = set(page.get("aliases") or [page["model"]])
     selected = [item for item in all_prompts if item.get("model") in aliases]
     selected.sort(key=lambda item: (not bool(item.get("image")), item.get("id") or ""))
-    limit = page.get("limit", 12)
-    if limit is None:
-        return selected
-    return selected[:limit]
+    return selected[:12]
 
 
 def related_links(active_slug):
@@ -227,6 +224,83 @@ def faq_html(page):
           <p>{safe(a)}</p>
         </details>
     """ for q, a in faqs)
+
+
+def dynamic_prompts_script(page):
+    data_file = page.get("dataFile")
+    if not data_file:
+        return ""
+    return f"""
+  <script>
+    (() => {{
+      const grid = document.querySelector("[data-model-prompt-grid]");
+      const status = document.querySelector("[data-model-prompt-status]");
+      const initialIds = new Set(
+        Array.from(document.querySelectorAll("[data-prompt-id]")).map((card) => card.dataset.promptId)
+      );
+      const escapeHtml = (value) => String(value || "").replace(/[&<>"']/g, (char) => ({{
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\\"": "&quot;",
+        "'": "&#39;",
+      }}[char]));
+      const excerpt = (value) => {{
+        const text = String(value || "").replace(/\\s+/g, " ").trim();
+        return text.length > 340 ? `${{text.slice(0, 340).trim()}}...` : text;
+      }};
+      const imageUrl = (image) => {{
+        if (!image) return "";
+        if (image.startsWith("assets/imported/")) {{
+          return "https://raw.githubusercontent.com/xianyu110/image-prompt-generator/main/" + image;
+        }}
+        if (image.startsWith("assets/")) return "../" + image;
+        return image;
+      }};
+      const authorLabel = (source) => {{
+        if (!source) return "Image Prompt Generator";
+        if (source === "Image Prompt Generator" || source.includes("@")) return source;
+        return source.startsWith("@") ? source : `@${{source}}`;
+      }};
+      const cardHtml = (item) => {{
+        const image = imageUrl(item.image);
+        const imageMarkup = image
+          ? `<div class="card-image"><img src="${{escapeHtml(image)}}" alt="${{escapeHtml(item.title)}}" loading="lazy"></div>`
+          : `<div class="card-image"><div class="image-fallback">${{escapeHtml(item.model)}}<br>${{escapeHtml(item.category)}}</div></div>`;
+        return `
+        <article class="prompt-card" data-prompt-id="${{escapeHtml(item.id)}}">
+          <div class="card-top">
+            <span class="author">Author ${{escapeHtml(authorLabel(item.source))}}</span>
+            <span class="date">${{escapeHtml(item.model)}}</span>
+          </div>
+          ${{imageMarkup}}
+          <div class="prompt-preview">
+            <div class="preview-bar">Prompt example</div>
+            <p>${{escapeHtml(excerpt(item.prompt))}}</p>
+          </div>
+          <div class="tag-row">
+            <span class="tag model">${{escapeHtml(item.model)}}</span>
+            <span class="tag">${{escapeHtml(item.category)}}</span>
+          </div>
+          <div class="card-actions single">
+            <a class="try-button" href="${{escapeHtml(item.sourceUrl || "../")}}" target="_blank" rel="noreferrer">View source</a>
+          </div>
+        </article>`;
+      }};
+
+      fetch("{safe(data_file)}")
+        .then((response) => response.ok ? response.json() : Promise.reject(new Error("Prompt data failed to load")))
+        .then((data) => {{
+          const prompts = (data.prompts || []).filter((item) => !initialIds.has(item.id));
+          grid.insertAdjacentHTML("beforeend", prompts.map(cardHtml).join(""));
+          if (status) status.textContent = `${{data.count || prompts.length + initialIds.size}} prompt examples`;
+        }})
+        .catch(() => {{
+          if (status) status.textContent = "Prompt data failed to load.";
+        }});
+    }})();
+  </script>
+"""
 
 
 def page_json_ld(page, prompts):
@@ -278,6 +352,11 @@ def page_json_ld(page, prompts):
 
 def render_page(page, prompts):
     cards = "\n".join(card_html(item) for item in prompts)
+    section_action = (
+        f'<span class="outline-button" data-model-prompt-status>{len(prompts)} prompt examples</span>'
+        if page.get("dataFile")
+        else '<a class="outline-button" href="../#generator">Generate</a>'
+    )
     empty_note = "" if cards else f"""
         <article class="prompt-card">
           <div class="prompt-preview">
@@ -349,9 +428,9 @@ def render_page(page, prompts):
     <section class="hot-prompts model-prompts">
       <div class="section-header">
         <h2>{safe(page["model"])} prompt examples</h2>
-        <a class="outline-button" href="../#generator">Generate</a>
+        {section_action}
       </div>
-      <div class="prompt-grid">
+      <div class="prompt-grid" data-model-prompt-grid>
         {cards}
         {empty_note}
       </div>
@@ -369,6 +448,7 @@ def render_page(page, prompts):
     <p>Image Prompt Generator · AI image and video prompts with images, authors, and source links.</p>
     <a href="../">Back to generator</a>
   </footer>
+{dynamic_prompts_script(page)}
 </body>
 </html>
 """
