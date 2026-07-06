@@ -325,6 +325,7 @@ a {
 .mini-copy,
 .filter-chip,
 .try-button,
+.copy-prompt-button,
 .share-button {
   min-height: 34px;
   border: 3px solid var(--line);
@@ -668,6 +669,7 @@ a {
 }
 
 .try-button,
+.copy-prompt-button,
 .share-button {
   display: inline-flex;
   align-items: center;
@@ -676,6 +678,20 @@ a {
   padding: 0 14px;
   background: #151515;
   color: #ffffff;
+}
+
+.model-card-actions {
+  grid-template-columns: minmax(0, 1fr) minmax(116px, auto);
+}
+
+.copy-prompt-button {
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.copy-prompt-button:disabled {
+  opacity: .72;
+  cursor: wait;
 }
 
 .share-button {

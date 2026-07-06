@@ -165,7 +165,7 @@ def image_html(item, prefix="../"):
 
 def card_html(item):
     return f"""
-        <article class="prompt-card" data-prompt-id="{safe(item.get("id"))}">
+        <article class="prompt-card" data-prompt-id="{safe(item.get("id"))}" data-prompt-text="{safe(item.get("prompt"))}">
           <div class="card-top">
             <span class="author">Author {safe(author_label(item))}</span>
             <span class="date">{safe(item.get("model"))}</span>
@@ -179,8 +179,9 @@ def card_html(item):
             <span class="tag model">{safe(item.get("model"))}</span>
             <span class="tag">{safe(item.get("category"))}</span>
           </div>
-          <div class="card-actions single">
+          <div class="card-actions model-card-actions">
             <a class="try-button" href="{safe(item.get("sourceUrl") or "../")}" target="_blank" rel="noreferrer">View source</a>
+            <button class="copy-prompt-button" type="button" data-copy-prompt>Copy prompt</button>
           </div>
         </article>
     """
@@ -226,6 +227,56 @@ def faq_html(page):
     """ for q, a in faqs)
 
 
+def copy_prompts_script():
+    return """
+  <script>
+    (() => {
+      const copyText = async (text) => {
+        if (!text) return false;
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.top = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        const copied = document.execCommand("copy");
+        textarea.remove();
+        return copied;
+      };
+
+      document.addEventListener("click", async (event) => {
+        const button = event.target.closest("[data-copy-prompt]");
+        if (!button) return;
+        event.preventDefault();
+        event.stopPropagation();
+
+        const card = button.closest("[data-prompt-text]");
+        const prompt = card ? card.dataset.promptText : "";
+        const label = button.dataset.label || button.textContent || "Copy prompt";
+        button.dataset.label = label;
+        button.disabled = true;
+
+        try {
+          button.textContent = await copyText(prompt) ? "Copied" : "Copy failed";
+        } catch {
+          button.textContent = "Copy failed";
+        } finally {
+          window.setTimeout(() => {
+            button.textContent = button.dataset.label || "Copy prompt";
+            button.disabled = false;
+          }, 1600);
+        }
+      });
+    })();
+  </script>
+"""
+
+
 def dynamic_prompts_script(page):
     data_file = page.get("dataFile")
     if not data_file:
@@ -268,7 +319,7 @@ def dynamic_prompts_script(page):
           ? `<div class="card-image"><img src="${{escapeHtml(image)}}" alt="${{escapeHtml(item.title)}}" loading="lazy"></div>`
           : `<div class="card-image"><div class="image-fallback">${{escapeHtml(item.model)}}<br>${{escapeHtml(item.category)}}</div></div>`;
         return `
-        <article class="prompt-card" data-prompt-id="${{escapeHtml(item.id)}}">
+        <article class="prompt-card" data-prompt-id="${{escapeHtml(item.id)}}" data-prompt-text="${{escapeHtml(item.prompt)}}">
           <div class="card-top">
             <span class="author">Author ${{escapeHtml(authorLabel(item.source))}}</span>
             <span class="date">${{escapeHtml(item.model)}}</span>
@@ -282,8 +333,9 @@ def dynamic_prompts_script(page):
             <span class="tag model">${{escapeHtml(item.model)}}</span>
             <span class="tag">${{escapeHtml(item.category)}}</span>
           </div>
-          <div class="card-actions single">
+          <div class="card-actions model-card-actions">
             <a class="try-button" href="${{escapeHtml(item.sourceUrl || "../")}}" target="_blank" rel="noreferrer">View source</a>
+            <button class="copy-prompt-button" type="button" data-copy-prompt>Copy prompt</button>
           </div>
         </article>`;
       }};
@@ -448,6 +500,7 @@ def render_page(page, prompts):
     <p>Image Prompt Generator · AI image and video prompts with images, authors, and source links.</p>
     <a href="../">Back to generator</a>
   </footer>
+{copy_prompts_script()}
 {dynamic_prompts_script(page)}
 </body>
 </html>
