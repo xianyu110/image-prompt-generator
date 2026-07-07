@@ -438,6 +438,7 @@ def render_page(page, prompts):
 {page_json_ld(page, prompts)}
   </script>
   <link rel="stylesheet" href="../styles.css">
+  <script src="../analytics.js?v=20260707-ga4" defer></script>
 </head>
 <body>
   <header class="topbar">
