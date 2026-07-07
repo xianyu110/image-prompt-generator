@@ -2,26 +2,74 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://image-prompt-generator.com/</loc>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://image-prompt-generator.com/gpt-image-2-prompts/</loc>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://image-prompt-generator.com/seedream-5-pro-prompts/</loc>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://image-prompt-generator.com/seedance-2-prompts/</loc>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://image-prompt-generator.com/grok-imagine-prompts/</loc>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://image-prompt-generator.com/gemini-3-pro-prompts/</loc>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/portrait-prompts/</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/product-marketing-prompts/</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/infographic-prompts/</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/game-asset-prompts/</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/comic-storyboard-prompts/</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/social-media-post-prompts/</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/poster-flyer-prompts/</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/youtube-thumbnail-prompts/</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/app-web-design-prompts/</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/video-prompts/</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/3d-prompts/</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://image-prompt-generator.com/creative-prompts/</loc>
+    <priority>0.75</priority>
   </url>
 </urlset>

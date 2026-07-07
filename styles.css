@@ -480,6 +480,14 @@ a {
   gap: 12px;
 }
 
+.use-case-links {
+  padding-top: 20px;
+}
+
+.use-case-link-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
 .model-link-card,
 .model-link,
 .model-cta {
@@ -940,6 +948,10 @@ a {
 
 .model-prompts {
   padding-top: 28px;
+}
+
+.use-case-related {
+  padding: 18px 0 26px;
 }
 
 .faq-grid {
