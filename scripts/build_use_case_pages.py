@@ -513,11 +513,17 @@ def render_page(page, prompts, generated_pages):
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="../assets/site-icon.svg">
   <link rel="apple-touch-icon" href="../assets/site-icon.svg">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4JVL9RKKMF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){{dataLayer.push(arguments);}}
+    gtag("js", new Date());
+    gtag("config", "G-4JVL9RKKMF");
+  </script>
   <script type="application/ld+json">
 {page_json_ld(page, prompts)}
   </script>
   <link rel="stylesheet" href="../styles.css">
-  <script src="../analytics.js?v=20260707-ga4" defer></script>
 </head>
 <body>
   <header class="topbar">
