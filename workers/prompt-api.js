@@ -1,7 +1,5 @@
-const SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 const DEFAULT_UPSTREAM_API_BASE_URL = "https://apipro.maynor1024.live";
 const DEFAULT_PROMPT_TEXT_MODEL = "gpt-4o";
-const ACCESS_TOKEN_TTL_SECONDS = 2 * 60 * 60;
 
 const DEFAULT_ALLOWED_ORIGINS = [
   "https://image-prompt-generator.com",
@@ -41,85 +39,6 @@ async function readJson(request) {
     return await request.json();
   } catch {
     return null;
-  }
-}
-
-function base64url(bytes) {
-  let binary = "";
-  for (const byte of bytes) binary += String.fromCharCode(byte);
-  return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
-}
-
-function base64urlToBytes(value) {
-  const padded = value.replaceAll("-", "+").replaceAll("_", "/").padEnd(Math.ceil(value.length / 4) * 4, "=");
-  const binary = atob(padded);
-  return Uint8Array.from(binary, (char) => char.charCodeAt(0));
-}
-
-async function hmac(secret, message) {
-  const key = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign", "verify"],
-  );
-  return crypto.subtle.sign("HMAC", key, new TextEncoder().encode(message));
-}
-
-async function createAccessToken(env, hostname) {
-  const now = Math.floor(Date.now() / 1000);
-  const payload = base64url(new TextEncoder().encode(JSON.stringify({
-    iat: now,
-    exp: now + ACCESS_TOKEN_TTL_SECONDS,
-    hostname,
-  })));
-  const signature = base64url(new Uint8Array(await hmac(accessTokenSecret(env), payload)));
-  return `${payload}.${signature}`;
-}
-
-function accessTokenSecrets(env) {
-  return [
-    env.PROMPT_ACCESS_TOKEN_SECRET,
-    env.TURNSTILE_SECRET_KEY,
-  ].filter(Boolean);
-}
-
-function accessTokenSecret(env) {
-  return accessTokenSecrets(env)[0] || "";
-}
-
-async function verifyAccessToken(env, token) {
-  if (!accessTokenSecret(env) || !token || !token.includes(".")) return false;
-  const parts = token.split(".");
-  if (parts.length !== 2) return false;
-  const [payload, signature] = parts;
-  if (!payload || !signature) return false;
-
-  let a;
-  try {
-    a = base64urlToBytes(signature);
-  } catch {
-    return false;
-  }
-
-  let validSignature = false;
-  for (const secret of accessTokenSecrets(env)) {
-    const expected = base64url(new Uint8Array(await hmac(secret, payload)));
-    const b = base64urlToBytes(expected);
-    if (a.length !== b.length) continue;
-
-    let diff = 0;
-    for (let index = 0; index < a.length; index += 1) diff |= a[index] ^ b[index];
-    if (diff === 0) validSignature = true;
-  }
-  if (!validSignature) return false;
-
-  try {
-    const parsed = JSON.parse(new TextDecoder().decode(base64urlToBytes(payload)));
-    return Number(parsed.exp || 0) > Math.floor(Date.now() / 1000);
-  } catch {
-    return false;
   }
 }
 
@@ -191,48 +110,6 @@ function extractChatContent(result) {
     || "";
 }
 
-async function verifyTurnstile(request, env) {
-  const origin = corsOrigin(request, env);
-  if (!origin) {
-    return json({ success: false, error: "origin_not_allowed" }, { status: 403 });
-  }
-  if (!env.TURNSTILE_SECRET_KEY) {
-    return json({ success: false, error: "turnstile_secret_missing" }, { status: 500 }, origin);
-  }
-
-  const body = await readJson(request);
-  const token = typeof body?.token === "string" ? body.token.trim() : "";
-  if (!token) {
-    return json({ success: false, error: "token_required" }, { status: 400 }, origin);
-  }
-
-  const remoteip = request.headers.get("CF-Connecting-IP") || undefined;
-  const payload = {
-    secret: env.TURNSTILE_SECRET_KEY,
-    response: token,
-    remoteip,
-    idempotency_key: crypto.randomUUID(),
-  };
-
-  const response = await fetch(SITEVERIFY_URL, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  const outcome = await response.json().catch(() => ({ success: false, "error-codes": ["bad-response"] }));
-
-  if (!response.ok || !outcome.success) {
-    return json({
-      success: false,
-      error: "turnstile_failed",
-      codes: outcome["error-codes"] || [],
-    }, { status: 400 }, origin);
-  }
-
-  const accessToken = await createAccessToken(env, outcome.hostname || "");
-  return json({ success: true, hostname: outcome.hostname || "", accessToken }, { status: 200 }, origin);
-}
-
 async function generatePrompt(request, env) {
   const origin = corsOrigin(request, env);
   if (!origin) {
@@ -240,10 +117,6 @@ async function generatePrompt(request, env) {
   }
 
   const body = await readJson(request);
-  const accessToken = typeof body?.accessToken === "string" ? body.accessToken.trim() : "";
-  if (!(await verifyAccessToken(env, accessToken))) {
-    return json({ success: false, error: "human_check_required" }, { status: 401 }, origin);
-  }
   if (!env.MAYNOR_API_KEY) {
     return json({ success: false, error: "prompt_api_key_missing" }, { status: 500 }, origin);
   }
@@ -309,9 +182,6 @@ export default {
       });
     }
 
-    if (url.pathname === "/api/verify-turnstile" && request.method === "POST") {
-      return verifyTurnstile(request, env);
-    }
     if (url.pathname === "/api/generate-prompt" && request.method === "POST") {
       return generatePrompt(request, env);
     }

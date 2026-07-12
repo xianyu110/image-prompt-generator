@@ -18,8 +18,6 @@
   <meta name="twitter:description" content="Free AI image prompt generator with model filters, prompt examples, and copy-ready ideas for GPT Image, Seedream, Seedance, Grok Imagine, and Gemini.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://image-prompt-generator.com/assets/thumbs/nano-100.png">
-  <meta name="turnstile-site-key" content="0x4AAAAAADv0Q1P-Bkzj6LLM">
-  <meta name="turnstile-verify-endpoint" content="https://image-prompt-generator-api.chatgpt-plus.workers.dev/api/verify-turnstile">
   <meta name="prompt-generate-endpoint" content="https://image-prompt-generator-api.chatgpt-plus.workers.dev/api/generate-prompt">
   <link rel="icon" type="image/svg+xml" href="assets/site-icon.svg">
   <link rel="apple-touch-icon" href="assets/site-icon.svg">
@@ -153,10 +151,6 @@
               <option>9:16</option>
               <option>16:9</option>
             </select>
-            <div class="turnstile-block" aria-label="Cloudflare Turnstile human verification">
-              <div class="turnstile-slot" id="turnstileSlot"></div>
-              <span class="turnstile-status" id="turnstileStatus">Turnstile loading</span>
-            </div>
           </div>
         </div>
         <button class="generate-button" type="submit">
@@ -164,13 +158,6 @@
           <span id="generateLabel">Generate</span>
         </button>
       </form>
-
-      <div class="copy-gate" id="copyGate" data-state="locked">
-        <div>
-          <strong id="copyGateTitle">Copy protection</strong>
-          <p id="copyGateText">Complete Turnstile before copying prompts.</p>
-        </div>
-      </div>
 
       <div class="generated-output" id="generatedOutput" hidden>
         <div>
@@ -391,7 +378,6 @@
 
   <button class="back-to-top" id="backToTopButton" type="button" aria-label="Back to top">↑</button>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
   <script src="script.js?v=20260705-faq-copy"></script>
 </body>
 </html>

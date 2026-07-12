@@ -1,5 +1,5 @@
 name = "image-prompt-generator-api"
-main = "workers/turnstile.js"
+main = "workers/prompt-api.js"
 compatibility_date = "2026-07-05"
 workers_dev = true
 
