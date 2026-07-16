@@ -595,7 +595,13 @@ def render_page(page, prompts, generated_pages):
 
   <footer class="footer">
     <p>Image Prompt Generator · AI image and video prompts with images, authors, and source links.</p>
-    <a href="../">Back to generator</a>
+    <nav class="footer-links" aria-label="Site information">
+      <a href="../">Home</a>
+      <a href="../about/">About</a>
+      <a href="../privacy-policy/">Privacy</a>
+      <a href="../contact/">Contact</a>
+      <a href="../terms/">Terms</a>
+    </nav>
   </footer>
 {copy_prompts_script()}
 </body>

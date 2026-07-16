@@ -32,14 +32,18 @@ jobs:
           rm -rf public
           mkdir -p public/assets public/data/prompts
 
-          cp index.html styles.css script.js CNAME .nojekyll robots.txt sitemap.xml pages-sitemap.xml public/
+          cp index.html styles.css script.js CNAME .nojekyll robots.txt ads.txt sitemap.xml pages-sitemap.xml public/
           cp image-sitemap.xml public/
           cp assets/site-icon.svg public/assets/
           cp -R assets/thumbs-optimized public/assets/
+          if [ -d assets/prompt-thumbs ]; then cp -R assets/prompt-thumbs public/assets/; fi
           cp data/prompt-index.json public/data/
+          if [ -f data/prompt-image-variants.json ]; then cp data/prompt-image-variants.json public/data/; fi
           cp -R data/prompts/. public/data/prompts/
           cp data/model-page-assets.json public/data/
+          cp -R about privacy-policy contact terms public/
           cp -R gpt-image-2-prompts seedream-5-pro-prompts seedance-2-prompts grok-imagine-prompts gemini-3-pro-prompts public/
+          cp -R portrait-prompts product-marketing-prompts infographic-prompts game-asset-prompts comic-storyboard-prompts social-media-post-prompts poster-flyer-prompts youtube-thumbnail-prompts app-web-design-prompts video-prompts 3d-prompts creative-prompts public/
           python3 - <<'PY'
           import json
           from pathlib import Path
