@@ -5,6 +5,7 @@ A multi-model AI image prompt generator and prompt gallery for GPT Image, Nano B
 [Chinese README](readme/zh.md)
 
 Site: <https://image-prompt-generator.com/>
+GPT Image 2 app: <https://gptimage2.asia/>
 GitHub: <https://github.com/xianyu110/image-prompt-generator>
 
 ## Maintainer and Contact
