@@ -744,7 +744,6 @@ async function tryPrompt(item) {
   if (item.model.includes("Gemini")) els.modelSelect.value = "Gemini 3 Pro";
   state.model = els.modelSelect.value;
   state.category = ALL_CATEGORIES;
-  await generatePrompt();
   await applyFilters();
   await copyText(item.prompt);
   document.querySelector("#generator").scrollIntoView({ behavior: "smooth", block: "start" });
