@@ -954,11 +954,6 @@ function attachEvents() {
     renderFeatured();
   });
 
-  els.builderForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    generatePrompt();
-  });
-
   els.copyGeneratedButton.addEventListener("click", () => {
     if (els.builderOutput.textContent) copyText(els.builderOutput.textContent);
   });
