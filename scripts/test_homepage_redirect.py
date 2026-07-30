@@ -5,7 +5,7 @@ import unittest
 
 TARGET_URL = "https://gptimage2.asia/generate"
 STYLE_CACHE_VERSION = "20260730-generator-redirect"
-SCRIPT_CACHE_VERSION = "20260730-try-without-generate"
+SCRIPT_CACHE_VERSION = "20260730-copy-and-try-link"
 
 
 class GenerateControlParser(HTMLParser):
@@ -36,13 +36,12 @@ class HomepageRedirectTest(unittest.TestCase):
         self.assertIn(f"styles.css?v={STYLE_CACHE_VERSION}", html)
         self.assertIn(f"script.js?v={SCRIPT_CACHE_VERSION}", html)
 
-    def test_try_prompt_does_not_generate_automatically(self):
+    def test_card_actions_copy_or_open_generator(self):
         script = (Path(__file__).parents[1] / "script.js").read_text()
-        try_prompt = script.split("async function tryPrompt(item) {", 1)[1].split(
-            "\n}\n\nfunction buildLocalPrompt", 1
-        )[0]
 
-        self.assertNotIn("generatePrompt(", try_prompt)
+        self.assertIn('data-copy-id="${escapeHtml(item.id)}"', script)
+        self.assertIn('class="try-button" href="https://gptimage2.asia/generate"', script)
+        self.assertNotIn("function tryPrompt", script)
 
 
 if __name__ == "__main__":

@@ -617,7 +617,7 @@ a {
 
 .card-actions {
   display: grid;
-  grid-template-columns: 1fr 42px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 42px;
   gap: 8px;
   padding: 0 14px 14px;
 }
@@ -1020,6 +1020,7 @@ details p {
 
 .modal-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-top: 16px;
 }
@@ -1314,7 +1315,7 @@ details p {
   }
 
   .card-actions {
-    grid-template-columns: 1fr 44px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 44px;
   }
 
   .library-controls {

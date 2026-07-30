@@ -77,6 +77,7 @@ const copy = {
     curated: "Curated",
     sourceX: "X source",
     viewPrompt: "View full prompt →",
+    copyPrompt: "Copy prompt",
     tryIt: "Try it",
     copied: "Prompt copied",
     generationFailed: "Live generation failed. Showing a local prompt instead.",
@@ -158,6 +159,7 @@ const copy = {
     curated: "精选",
     sourceX: "X 来源",
     viewPrompt: "查看完整提示词 →",
+    copyPrompt: "一键复制",
     tryIt: "立即尝试",
     copied: "已复制提示词",
     generationFailed: "真实生成失败，已显示本地兜底提示词。",
@@ -269,6 +271,7 @@ const els = {
   modalPrompt: document.querySelector("#modalPrompt"),
   modalSource: document.querySelector("#modalSource"),
   copyModalButton: document.querySelector("#copyModalButton"),
+  modalTryLink: document.querySelector("#modalTryLink"),
   toast: document.querySelector("#toast"),
   menuButton: document.querySelector("#menuButton"),
   languageToggle: document.querySelector("#languageToggle"),
@@ -455,7 +458,8 @@ function cardTemplate(item) {
         <span class="tag">${escapeHtml(item.category)}</span>
       </div>
       <div class="card-actions">
-        <button class="try-button" type="button" data-try-id="${escapeHtml(item.id)}">${escapeHtml(t("tryIt"))}</button>
+        <button class="copy-prompt-button" type="button" data-copy-id="${escapeHtml(item.id)}">${escapeHtml(t("copyPrompt"))}</button>
+        <a class="try-button" href="https://gptimage2.asia/generate">${escapeHtml(t("tryIt"))}</a>
         <a class="share-button" href="${escapeHtml(item.sourceUrl || "#")}" target="_blank" rel="noreferrer" aria-label="查看来源">↗</a>
       </div>
     </article>
@@ -711,7 +715,8 @@ function renderStaticCopy() {
   document.querySelector("#faqSevenBody").textContent = t("faqSevenBody");
   document.querySelector("#faqEightTitle").textContent = t("faqEightTitle");
   document.querySelector("#faqEightBody").textContent = t("faqEightBody");
-  els.copyModalButton.textContent = t("tryIt");
+  els.copyModalButton.textContent = t("copyPrompt");
+  els.modalTryLink.textContent = t("tryIt");
   els.modalSource.textContent = t("modalSource");
   els.languageToggle.textContent = t("languageToggle");
   els.backgroundPickerLabel.textContent = t("backgroundLabel");
@@ -731,22 +736,6 @@ async function syncModelFilterFromSelect() {
 
 function updateBackToTopVisibility() {
   els.backToTopButton.classList.toggle("show", window.scrollY > 520);
-}
-
-async function tryPrompt(item) {
-  els.subjectInput.value = item.prompt;
-  if (item.model.includes("Nano")) els.modelSelect.value = "Nano Banana Pro";
-  if (item.model.includes("Seedream")) els.modelSelect.value = "Seedream 5 Pro";
-  if (item.model.includes("GPT Image 1.5")) els.modelSelect.value = "GPT Image 1.5";
-  if (item.model.includes("GPT Image 2")) els.modelSelect.value = "GPT Image 2";
-  if (item.model.includes("Seedance")) els.modelSelect.value = "Seedance 2.0";
-  if (item.model.includes("Grok")) els.modelSelect.value = "Grok Imagine";
-  if (item.model.includes("Gemini")) els.modelSelect.value = "Gemini 3 Pro";
-  state.model = els.modelSelect.value;
-  state.category = ALL_CATEGORIES;
-  await applyFilters();
-  await copyText(item.prompt);
-  document.querySelector("#generator").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function buildLocalPrompt({ subject, model, ratio }) {
@@ -868,16 +857,16 @@ function findPrompt(id) {
 }
 
 function handleCardClick(event) {
-  const tryButton = event.target.closest("[data-try-id]");
-  if (tryButton) {
+  const copyButton = event.target.closest("[data-copy-id]");
+  if (copyButton) {
     event.preventDefault();
     event.stopPropagation();
-    const item = findPrompt(tryButton.dataset.tryId);
-    if (item) tryPrompt(item);
+    const item = findPrompt(copyButton.dataset.copyId);
+    if (item) copyText(item.prompt);
     return;
   }
 
-  if (event.target.closest(".share-button")) {
+  if (event.target.closest(".try-button, .share-button")) {
     event.stopPropagation();
     return;
   }
@@ -894,9 +883,11 @@ function attachEvents() {
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !els.promptModal.hidden) closeModal();
-    if ((event.key === "Enter" || event.key === " ") && event.target.closest(".prompt-card")) {
+    const card = event.target.closest(".prompt-card");
+    const isInteractiveControl = event.target.closest("a, button, input, select, textarea");
+    if ((event.key === "Enter" || event.key === " ") && card && !isInteractiveControl) {
       event.preventDefault();
-      const item = findPrompt(event.target.closest(".prompt-card").dataset.id);
+      const item = findPrompt(card.dataset.id);
       if (item) openModal(item);
     }
   });
@@ -958,13 +949,7 @@ function attachEvents() {
   });
 
   els.copyModalButton.addEventListener("click", () => {
-    if (state.activePrompt) {
-      copyText(state.activePrompt.prompt).then((copied) => {
-        if (!copied) return;
-        tryPrompt(state.activePrompt);
-        closeModal();
-      });
-    }
+    if (state.activePrompt) copyText(state.activePrompt.prompt);
   });
 
   els.modalClose.addEventListener("click", closeModal);
