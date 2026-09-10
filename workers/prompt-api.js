@@ -1,4 +1,4 @@
-const DEFAULT_UPSTREAM_API_BASE_URL = "https://apipro.maynor1024.live";
+const DEFAULT_UPSTREAM_API_BASE_URL = "https://tryallapi.com";
 const DEFAULT_PROMPT_TEXT_MODEL = "gpt-4o";
 
 const DEFAULT_ALLOWED_ORIGINS = [
