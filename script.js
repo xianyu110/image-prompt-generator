@@ -101,6 +101,8 @@ const copy = {
     faqSevenBody: "The current version is a static prompt generator and gallery. A future version can connect Seedream 5 Pro through a server-side API layer such as Cloudflare Workers or Vercel Functions.",
     faqEightTitle: "Can I change the site background color?",
     faqEightBody: "Yes. Use the Background selector in the top bar to switch between green, blue, pink, yellow, and black. Your choice is saved locally in the browser.",
+    footerSister: "Sister tools: Skilloop — Agent Skills hub & free 3D tools (dot avatars, phone mockups).",
+    footerSkilloop: "Skilloop",
     languageToggle: "中文",
     themeDark: "Dark",
     themeLight: "Light",
@@ -183,6 +185,8 @@ const copy = {
     faqSevenBody: "当前版本是静态提示词生成器和案例库。后续可以通过 Cloudflare Workers 或 Vercel Functions 这类服务端 API 层接入 Seedream 5 Pro。",
     faqEightTitle: "可以更换网站背景颜色吗？",
     faqEightBody: "可以。顶部的“背景”选择器支持绿色、蓝色、粉色、黄色和黑色，并会把选择保存在当前浏览器里。",
+    footerSister: "姐妹站：Skilloop — Agent Skills 合集与免费 3D 工具（点点头像、手机样机）。",
+    footerSkilloop: "Skilloop",
     languageToggle: "English",
     themeDark: "深色",
     themeLight: "浅色",
@@ -731,6 +735,13 @@ function renderStaticCopy() {
   els.copyModalButton.textContent = t("copyPrompt");
   els.modalTryLink.textContent = t("tryIt");
   els.modalSource.textContent = t("modalSource");
+  const footerSister = document.querySelector("#footerSisterBlurb");
+  if (footerSister) {
+    const linkHtml = `<a href="https://skilloop.dev/?utm_source=image-prompt-generator.com&utm_medium=referral&utm_campaign=footer" rel="noopener noreferrer" target="_blank" id="footerSkilloopLink">${t("footerSkilloop")}</a>`;
+    footerSister.innerHTML = t("footerSister").replace("Skilloop", linkHtml);
+  }
+  const footerSkilloopNav = document.querySelector("#footerSkilloopNav");
+  if (footerSkilloopNav) footerSkilloopNav.textContent = t("footerSkilloop");
   els.languageToggle.textContent = t("languageToggle");
   els.backgroundPickerLabel.textContent = t("backgroundLabel");
   els.backToTopButton.setAttribute("aria-label", t("backToTop"));
