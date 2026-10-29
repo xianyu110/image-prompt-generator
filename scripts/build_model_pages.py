@@ -6,7 +6,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_URL = "https://image-prompt-generator.com"
-RAW_ASSET_BASE = "https://raw.githubusercontent.com/xianyu110/image-prompt-generator/main/"
+RAW_ASSET_BASE = "https://cdn.jsdelivr.net/gh/xianyu110/image-prompt-generator@main/"
+CDN_ASSET_BASE = RAW_ASSET_BASE
 
 
 MODEL_PAGES = [
@@ -136,8 +137,23 @@ def author_label(item):
     return source if source.startswith("@") else f"@{source}"
 
 
-def published_image_path(item):
+def load_image_variants():
+    path = ROOT / "data" / "prompt-image-variants.json"
+    if not path.is_file():
+        return {}
+    try:
+        return json.loads(path.read_text()).get("variants") or {}
+    except Exception:
+        return {}
+
+
+def published_image_path(item, variants=None):
     image = item.get("image") or ""
+    variants = variants if variants is not None else load_image_variants()
+    if image in variants:
+        return variants[image]
+    if image.startswith("assets/thumbs-optimized/") or image.startswith("assets/prompt-thumbs/"):
+        return image if (ROOT / image).is_file() or image.startswith("assets/") else ""
     if not image.startswith(("assets/thumbs/", "assets/imported/")):
         return ""
     if image.startswith("assets/thumbs/"):
@@ -152,14 +168,14 @@ def published_image_path(item):
 
 def image_url(image, prefix="../"):
     if image.startswith("assets/imported/"):
-        return RAW_ASSET_BASE + image
+        return CDN_ASSET_BASE + image
     return prefix + image
 
 
 def image_html(item, prefix="../"):
     image = published_image_path(item)
     if image:
-        return f'<div class="card-image"><img src="{safe(image_url(image, prefix))}" alt="{safe(item.get("title"))}" loading="lazy"></div>'
+        return f'<div class="card-image"><img src="{safe(image_url(image, prefix))}" alt="{safe(item.get("title"))}" loading="lazy" decoding="async" width="640" height="400"></div>'
     return f'<div class="card-image"><div class="image-fallback">{safe(item.get("model"))}<br>{safe(item.get("category"))}</div></div>'
 
 
@@ -303,7 +319,7 @@ def dynamic_prompts_script(page):
       const imageUrl = (image) => {{
         if (!image) return "";
         if (image.startsWith("assets/imported/")) {{
-          return "https://raw.githubusercontent.com/xianyu110/image-prompt-generator/main/" + image;
+          return "https://cdn.jsdelivr.net/gh/xianyu110/image-prompt-generator@main/" + image;
         }}
         if (image.startsWith("assets/")) return "../" + image;
         return image;
@@ -316,7 +332,7 @@ def dynamic_prompts_script(page):
       const cardHtml = (item) => {{
         const image = imageUrl(item.image);
         const imageMarkup = image
-          ? `<div class="card-image"><img src="${{escapeHtml(image)}}" alt="${{escapeHtml(item.title)}}" loading="lazy"></div>`
+          ? `<div class="card-image"><img src="${{escapeHtml(image)}}" alt="${{escapeHtml(item.title)}}" loading="lazy" decoding="async" width="640" height="400"></div>`
           : `<div class="card-image"><div class="image-fallback">${{escapeHtml(item.model)}}<br>${{escapeHtml(item.category)}}</div></div>`;
         return `
         <article class="prompt-card" data-prompt-id="${{escapeHtml(item.id)}}" data-prompt-text="${{escapeHtml(item.prompt)}}">

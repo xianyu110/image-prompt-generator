@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_URL = "https://image-prompt-generator.com"
-RAW_ASSET_BASE = "https://raw.githubusercontent.com/xianyu110/image-prompt-generator/main/"
+RAW_ASSET_BASE = "https://cdn.jsdelivr.net/gh/xianyu110/image-prompt-generator@main/"
 PROMPTS_DIR = ROOT / "data" / "prompts"
 
 MODEL_PAGE_SLUGS = {
@@ -42,14 +42,27 @@ def load_prompts():
     return data.get("prompts", [])
 
 
-def clean_prompt(item, order):
+def clean_prompt(item, order, variants=None):
     prompt = {key: item.get(key, "") for key in PUBLIC_FIELDS}
-    prompt["image"] = optimized_image_path(prompt.get("image") or "")
+    prompt["image"] = optimized_image_path(prompt.get("image") or "", variants)
     prompt["order"] = order
     return prompt
 
 
-def optimized_image_path(image):
+def load_image_variants():
+    path = ROOT / "data" / "prompt-image-variants.json"
+    if not path.is_file():
+        return {}
+    try:
+        return json.loads(path.read_text()).get("variants") or {}
+    except json.JSONDecodeError:
+        return {}
+
+
+def optimized_image_path(image, variants=None):
+    variants = variants if variants is not None else load_image_variants()
+    if image in variants:
+        return variants[image]
     if image.startswith("assets/thumbs/"):
         source = Path(image)
         optimized = ROOT / "assets" / "thumbs-optimized" / f"{source.stem}.webp"
@@ -64,7 +77,7 @@ def write_json(path, data):
 
 
 def image_url(image):
-    if image.startswith("assets/thumbs-optimized/"):
+    if image.startswith(("assets/thumbs-optimized/", "assets/prompt-thumbs/")):
         return f"{SITE_URL}/{image}"
     if image.startswith(("assets/imported/", "assets/thumbs/")):
         return RAW_ASSET_BASE + image
@@ -137,12 +150,13 @@ def write_image_sitemap(prompts):
 
 def main():
     prompts = load_prompts()
+    variants = load_image_variants()
     by_model = defaultdict(list)
     categories = set()
 
     for order, item in enumerate(prompts):
         model = item.get("model") or "AI Image Model"
-        clean = clean_prompt(item, order)
+        clean = clean_prompt(item, order, variants)
         by_model[model].append(clean)
         if clean.get("category"):
             categories.add(clean["category"])

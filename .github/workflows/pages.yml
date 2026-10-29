@@ -25,6 +25,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Configure Pages
         uses: actions/configure-pages@v5
+      - name: Install image tools
+        run: python3 -m pip install --user Pillow
+      - name: Build optimized card thumbs
+        run: python3 scripts/optimize_prompt_thumbs.py
       - name: Build Pages artifact
         run: |
           set -euo pipefail
@@ -48,17 +52,32 @@ jobs:
           import json
           from pathlib import Path
 
-          raw_base = "https://raw.githubusercontent.com/xianyu110/image-prompt-generator/main/"
+          variants = {}
+          variants_path = Path("data/prompt-image-variants.json")
+          if variants_path.is_file():
+              variants = json.loads(variants_path.read_text()).get("variants") or {}
+
+          # Prefer same-origin optimized thumbs. Fall back to jsDelivr (usually
+          # faster/more reachable than raw.githubusercontent.com from CN).
+          cdn_base = "https://cdn.jsdelivr.net/gh/xianyu110/image-prompt-generator@main/"
+
           for path in Path("public/data/prompts").glob("*.json"):
               data = json.loads(path.read_text())
               for prompt in data.get("prompts", []):
                   image = prompt.get("image") or ""
-                  if image.startswith("assets/imported/"):
-                      prompt["image"] = raw_base + image
+                  if image in variants:
+                      prompt["image"] = variants[image]
+                  elif image.startswith("assets/thumbs/"):
+                      stem = Path(image).stem
+                      optimized = Path(f"assets/thumbs-optimized/{stem}.webp")
+                      if optimized.is_file():
+                          prompt["image"] = str(optimized)
+                  elif image.startswith("assets/imported/"):
+                      prompt["image"] = cdn_base + image
               path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n")
           PY
 
-          du -sh public
+          du -sh public public/assets/prompt-thumbs public/assets/thumbs-optimized
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

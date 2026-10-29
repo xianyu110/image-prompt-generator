@@ -311,9 +311,19 @@ function isGeneratorModel(model) {
 
 function normalizeImageUrl(image) {
   if (!image) return "";
-  if (/^https?:\/\//.test(image)) return image;
+  if (/^https?:\/\//.test(image)) {
+    // Prefer jsDelivr over raw.githubusercontent.com (often slow/blocked in CN).
+    return image.replace(
+      /^https?:\/\/raw\.githubusercontent\.com\/xianyu110\/image-prompt-generator\/main\//i,
+      "https://cdn.jsdelivr.net/gh/xianyu110/image-prompt-generator@main/"
+    );
+  }
+  if (image.startsWith("assets/thumbs/") && !image.includes("thumbs-optimized/")) {
+    const stem = image.split("/").pop().replace(/\.[^.]+$/, "");
+    return `assets/thumbs-optimized/${stem}.webp`;
+  }
   if (image.startsWith("assets/imported/")) {
-    return `https://raw.githubusercontent.com/xianyu110/image-prompt-generator/main/${image}`;
+    return `https://cdn.jsdelivr.net/gh/xianyu110/image-prompt-generator@main/${image}`;
   }
   return image;
 }
@@ -434,21 +444,24 @@ function timeLabel(item) {
   return t("curated");
 }
 
-function imageBlock(item) {
+function imageBlock(item, options = {}) {
   if (item.image) {
-    return `<div class="card-image"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy"></div>`;
+    const eager = Boolean(options.eager);
+    const loading = eager ? "eager" : "lazy";
+    const priority = eager ? ' fetchpriority="high"' : "";
+    return `<div class="card-image"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="${loading}" decoding="async" width="640" height="400"${priority}></div>`;
   }
   return `<div class="card-image"><div class="image-fallback">${escapeHtml(item.model)}<br>${escapeHtml(item.category)}</div></div>`;
 }
 
-function cardTemplate(item) {
+function cardTemplate(item, options = {}) {
   return `
     <article class="prompt-card" data-id="${escapeHtml(item.id)}" tabindex="0">
       <div class="card-top">
         <span class="author">${escapeHtml(t("author"))} ${escapeHtml(authorLabel(item))}</span>
         <span class="date">${escapeHtml(timeLabel(item))}</span>
       </div>
-      ${imageBlock(item)}
+      ${imageBlock(item, options)}
       <div class="prompt-preview">
         <div class="preview-bar">${escapeHtml(t("viewPrompt"))}</div>
         <p>${escapeHtml(truncate(item.prompt))}</p>
@@ -473,7 +486,7 @@ function renderFeatured() {
   const pool = gpt.concat(withImages, scoped.filter((item) => !item.image));
   const start = state.featuredOffset % Math.max(pool.length, 1);
   const items = [...pool.slice(start, start + 6), ...pool.slice(0, Math.max(0, start + 6 - pool.length))].slice(0, 6);
-  els.featuredGrid.innerHTML = items.map(cardTemplate).join("");
+  els.featuredGrid.innerHTML = items.map((item, index) => cardTemplate(item, { eager: index < 3 })).join("");
 }
 
 function renderGrid() {
@@ -624,7 +637,7 @@ function showToast(message) {
 function openModal(item) {
   state.activePrompt = item;
   els.modalImage.innerHTML = item.image
-    ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}">`
+    ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" decoding="async" width="960" height="600">`
     : `<div class="image-fallback">${escapeHtml(item.model)}<br>${escapeHtml(item.category)}</div>`;
   els.modalAuthor.textContent = `${t("author")} ${authorLabel(item)} · ${item.model} · ${item.category}`;
   els.modalTitle.textContent = item.title;
