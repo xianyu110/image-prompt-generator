@@ -41,7 +41,7 @@ const copy = {
     generatingLabel: "Generating...",
     generatedTitle: "Generated Prompt",
     copy: "Copy",
-    statPill: "3,000 image prompts",
+    statPill: "3,527 image prompts",
     hotTitle: "Free AI Image Prompt Generator",
     shuffle: "Shuffle",
     libraryTitle: "Image Prompt Examples",
@@ -125,7 +125,7 @@ const copy = {
     generatingLabel: "生成中...",
     generatedTitle: "生成结果",
     copy: "复制",
-    statPill: "3,000 图片提示词",
+    statPill: "3,527 图片提示词",
     hotTitle: "免费 AI 图片提示词生成器",
     shuffle: "换一批",
     libraryTitle: "图片提示词案例",
@@ -204,6 +204,7 @@ const modelAliases = {
   "GPT Image 1.5": ["GPT Image 1.5"],
   "Nano Banana Pro": ["Nano Banana Pro"],
   "Seedream 5 Pro": ["Seedream 5 Pro", "Seedream"],
+  "Seedream 5.5": ["Seedream 5.5"],
   "Seedance 2.0": ["Seedance 2.0"],
   "Grok Imagine": ["Grok Imagine"],
   "Gemini 3 Pro": ["Gemini 3 Pro"],
@@ -444,7 +445,7 @@ function authorLabel(item) {
 
 function timeLabel(item) {
   if (item.id.startsWith("gpt-")) return t("sourceX");
-  if (item.id.startsWith("seedream-") || item.id.startsWith("model-template-")) return t("original");
+  if (/^seedream-\d+$/.test(item.id) || item.id.startsWith("model-template-")) return t("original");
   return t("curated");
 }
 
@@ -765,6 +766,7 @@ function updateBackToTopVisibility() {
 function buildLocalPrompt({ subject, model, ratio }) {
   const modelHints = state.language === "zh" ? {
     "Seedream 5 Pro": "强调可控编辑、中文文字可读性、多轮改图、局部修改和商业设计落地。",
+    "Seedream 5.5": "强调先写明保持不变的部分，再进行多轮改图（可长达约 100 轮）、中英文排版、RGBA/透明素材，以及照片级材质与光影。",
     "Nano Banana Pro": "强调创意发散、复杂画面、多图融合、风格化视觉和强烈视觉记忆点。",
     "GPT Image 2": "强调真实世界知识、文字渲染、精确构图、细节一致性和高质量成片。",
     "GPT Image 1.5": "强调稳定照片质感、自然光影、清晰主体和较少复杂文字的安全构图。",
@@ -773,6 +775,7 @@ function buildLocalPrompt({ subject, model, ratio }) {
     "Gemini 3 Pro": "强调复杂指令理解、多模态推理、信息结构和长上下文一致性。",
   } : {
     "Seedream 5 Pro": "Prioritize controllable edits, readable text, iterative image changes, local refinements, and commercial design output.",
+    "Seedream 5.5": "Prioritize keep-unchanged edit instructions, long multi-round revisions (up to around 100 rounds), readable typography, RGBA/transparent assets, and photoreal textures and lighting.",
     "Nano Banana Pro": "Prioritize creative exploration, complex scenes, multi-image fusion, stylized visuals, and memorable compositions.",
     "GPT Image 2": "Prioritize real-world knowledge, accurate text rendering, precise composition, detail consistency, and polished final imagery.",
     "GPT Image 1.5": "Prioritize stable photographic realism, natural lighting, clear subjects, and safe compositions with minimal complex text.",

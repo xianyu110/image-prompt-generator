@@ -15,6 +15,7 @@ PROMPTS_DIR = ROOT / "data" / "prompts"
 MODEL_PAGE_SLUGS = {
     "GPT Image 2": "gpt-image-2-prompts",
     "Seedream 5 Pro": "seedream-5-pro-prompts",
+    "Seedream 5.5": "seedream-5-5-prompts",
     "Seedance 2.0": "seedance-2-prompts",
     "Grok Imagine": "grok-imagine-prompts",
     "Gemini 3 Pro": "gemini-3-pro-prompts",

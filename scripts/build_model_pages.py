@@ -40,6 +40,21 @@ MODEL_PAGES = [
         ],
     },
     {
+        "model": "Seedream 5.5",
+        "aliases": ["Seedream 5.5"],
+        "slug": "seedream-5-5-prompts",
+        "title": "Seedream 5.5 Prompts | Image Prompt Generator",
+        "description": "Browse Seedream 5.5 prompts for 100-round editing, typography, RGBA transparent assets, photoreal textures, and sourced community examples.",
+        "h1": "Seedream 5.5 Prompts",
+        "intro": "Seedream 5.5 prompt examples for long multi-round editing, readable typography, RGBA/transparent assets, and photoreal textures. Sourced from official demos and community tests. This gallery is not affiliated with ByteDance, Seed, or 即梦.",
+        "dataFile": "../data/prompts/seedream-5-5.json",
+        "tips": [
+            "State what should stay unchanged before describing the edit, then change one thing at a time across rounds.",
+            "Use Seedream 5.5 for long iterative edits, typography layouts, and RGBA or transparent cutout assets.",
+            "Ask for photoreal materials, lighting, and texture when you need a photographic result.",
+        ],
+    },
+    {
         "model": "Seedance 2.0",
         "slug": "seedance-2-prompts",
         "title": "Seedance 2.0 Prompts | Image Prompt Generator",
@@ -152,6 +167,8 @@ def published_image_path(item, variants=None):
     variants = variants if variants is not None else load_image_variants()
     if image in variants:
         return variants[image]
+    if image.startswith(("http://", "https://")):
+        return image
     if image.startswith("assets/thumbs-optimized/") or image.startswith("assets/prompt-thumbs/"):
         return image if (ROOT / image).is_file() or image.startswith("assets/") else ""
     if not image.startswith(("assets/thumbs/", "assets/imported/")):
@@ -167,6 +184,8 @@ def published_image_path(item, variants=None):
 
 
 def image_url(image, prefix="../"):
+    if image.startswith(("http://", "https://")):
+        return image
     if image.startswith("assets/imported/"):
         return CDN_ASSET_BASE + image
     return prefix + image

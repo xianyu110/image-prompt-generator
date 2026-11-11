@@ -66,6 +66,7 @@ function promptSystem(language) {
 function modelStrategy(model, language) {
   const zh = {
     "Seedream 5 Pro": "强调可控编辑、中文文字可读性、多轮改图、局部修改和商业设计落地。",
+    "Seedream 5.5": "强调先写明保持不变的部分，再进行多轮改图（可长达约 100 轮）、中英文排版、RGBA/透明素材，以及照片级材质与光影。",
     "Nano Banana Pro": "强调创意发散、复杂画面、多图融合、风格化视觉和强烈视觉记忆点。",
     "GPT Image 2": "强调真实世界知识、文字渲染、精确构图、细节一致性和高质量成片。",
     "GPT Image 1.5": "强调稳定照片质感、自然光影、清晰主体和较少复杂文字的安全构图。",
@@ -75,6 +76,7 @@ function modelStrategy(model, language) {
   };
   const en = {
     "Seedream 5 Pro": "Prioritize controllable edits, readable text, iterative image changes, local refinements, and commercial design output.",
+    "Seedream 5.5": "Prioritize keep-unchanged edit instructions, long multi-round revisions (up to around 100 rounds), readable typography, RGBA/transparent assets, and photoreal textures and lighting.",
     "Nano Banana Pro": "Prioritize creative exploration, complex scenes, multi-image fusion, stylized visuals, and memorable compositions.",
     "GPT Image 2": "Prioritize real-world knowledge, accurate text rendering, precise composition, detail consistency, and polished final imagery.",
     "GPT Image 1.5": "Prioritize stable photographic realism, natural lighting, clear subjects, and safe compositions with minimal complex text.",

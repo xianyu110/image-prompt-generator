@@ -188,6 +188,7 @@ USE_CASE_PAGES = [
 MODEL_PAGES = [
     ("GPT Image 2 Prompts", "gpt-image-2-prompts"),
     ("Seedream 5 Pro Prompts", "seedream-5-pro-prompts"),
+    ("Seedream 5.5 Prompts", "seedream-5-5-prompts"),
     ("Seedance 2.0 Prompts", "seedance-2-prompts"),
     ("Grok Imagine Prompts", "grok-imagine-prompts"),
     ("Gemini 3 Pro Prompts", "gemini-3-pro-prompts"),
